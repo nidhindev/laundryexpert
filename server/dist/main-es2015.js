@@ -428,8 +428,6 @@ class GetStatusComponent {
         this.isSearched = false;
     }
     onSubmit() {
-        // TODO: Use EventEmitter with form value
-        console.warn(this.customerData.value);
         if (this.customerData.invalid) {
             return;
         }
@@ -444,7 +442,6 @@ class GetStatusComponent {
         const elements = [];
         this.googleSheetService.getSheet()
             .subscribe((data) => {
-            console.log(data);
             data.forEach(it => {
                 let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark };
                 elements.push(element);
@@ -542,13 +539,10 @@ __webpack_require__.r(__webpack_exports__);
 class GoogleSheetService {
     constructor(http) {
         this.http = http;
-        //https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8
-        //const doc = new GoogleSpreadsheet('https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
         this.data = null;
     }
     getSheet() {
-        console.log("reached");
-        let res = this.http.get('http://localhost:3000/googlesheet');
+        let res = this.http.get('https://laundryexpert.herokuapp.com/googlesheet');
         return res;
     }
 }

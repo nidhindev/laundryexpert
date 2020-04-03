@@ -814,9 +814,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "onSubmit",
         value: function onSubmit() {
-          // TODO: Use EventEmitter with form value
-          console.warn(this.customerData.value);
-
           if (this.customerData.invalid) {
             return;
           } else {
@@ -833,7 +830,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           var elements = [];
           this.googleSheetService.getSheet().subscribe(function (data) {
-            console.log(data);
             data.forEach(function (it) {
               var element = {
                 name: it.name,
@@ -1034,17 +1030,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       function GoogleSheetService(http) {
         _classCallCheck(this, GoogleSheetService);
 
-        this.http = http; //https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8
-        //const doc = new GoogleSpreadsheet('https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
-
+        this.http = http;
         this.data = null;
       }
 
       _createClass(GoogleSheetService, [{
         key: "getSheet",
         value: function getSheet() {
-          console.log("reached");
-          var res = this.http.get('http://localhost:3000/googlesheet');
+          var res = this.http.get('https://laundryexpert.herokuapp.com/googlesheet');
           return res;
         }
       }]);
