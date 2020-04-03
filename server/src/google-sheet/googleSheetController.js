@@ -8,11 +8,14 @@ const myCache = new NodeCache({ stdTTL: 86400, checkperiod: 3600, });
 router.get('/', (req, res) => {
 
   if (myCache.has("googleSheetData")) {
+    console.log("inside cache")
     res.setHeader('Content-Type', 'application/json');
     res.send(myCache.get('googleSheetData')).status(200);
   } else {
+    console.log("going to call google shet")
     googleSheetService.getSheet().then(result => {
       myCache.set("googleSheetData", result, 3600)
+      console.log("put in to cache")
       res.setHeader('Content-Type', 'application/json');
       res.send(result).status(200);
     })

@@ -41,8 +41,6 @@ export class GetStatusComponent implements OnInit {
     this.isSearched = false
   }
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.customerData.value);
     if (this.customerData.invalid) {
       return;
     } else {
@@ -57,7 +55,6 @@ export class GetStatusComponent implements OnInit {
     const elements: PeriodicElement[] = [];
     this.googleSheetService.getSheet()
       .subscribe((data: any[])=>{
-        console.log(data);
         data.forEach(it =>{
           let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
           elements.push(element)
