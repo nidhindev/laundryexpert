@@ -6,24 +6,37 @@ const myCache = new NodeCache({ stdTTL: 86400, checkperiod: 3600, });
 
 
 router.get('/', (req, res) => {
-
   if (myCache.has("googleSheetData")) {
-    console.log("inside cache")
-    res.setHeader('Content-Type', 'application/json');
-    res.send(myCache.get('googleSheetData')).status(200);
+    filterCustomer(req.query.phoneNumber, myCache.get('googleSheetData')).then(data => {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(data).status(200);
+    });
   } else {
-    console.log("going to call google shet")
     googleSheetService.getSheet().then(result => {
       myCache.set("googleSheetData", result, 3600)
-      console.log("put in to cache")
-      res.setHeader('Content-Type', 'application/json');
-      res.send(result).status(200);
-    })
+      filterCustomer(req.query.phoneNumber, result).then(data => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data).status(200);
+      });
+    });
   }
-  //res.setHeader('Content-Type', 'application/json');
-  //res.send('[{"name":"Ammu","billNumber":"787878BGHJ","phoneNumber":"9789821252","status":"In Progress"},{"name":"qqqq","billNumber":"jbkjkjkjjkj","phoneNumber":"5348758798","status":"yeyyey"},{"name":"jbnnjnkj","billNumber":"bjhjk","phoneNumber":"87875908","status":"oj9ipo"}]').status(200)
-
 });
 
+async function filterCustomer(phoneNumber, data) {
+  var customers = []
+  for (i = 0; i < data.length; i++) {
+    if (phoneNumber == data[i].phoneNumber) {
+      var model = {
+        name: data[i].name,
+        billNumber: data[i].billNumber,
+        phoneNumber: data[i].phoneNumber,
+        status: data[i].status,
+        remark: data[i].remark,
+      }
+      await customers.push(model);
+    }
+  }
+  return customers;
+}
 
 module.exports = router;

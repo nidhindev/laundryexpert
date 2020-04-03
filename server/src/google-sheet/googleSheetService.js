@@ -4,6 +4,7 @@ const doc = new GoogleSpreadsheet('17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
 
 
 async function getSheet() {
+    console.log('calling google service');
     await doc.useServiceAccountAuth(creds);
     await doc.loadInfo();
     const sheet = doc.sheetsByIndex[0]; 
