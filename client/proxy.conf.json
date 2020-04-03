@@ -1,6 +1,7 @@
 {
     "/spreadsheets": {
-      "target": "https://docs.google.com",
+      "target": "https://laundryexpert.herokuapp.com",
       "secure": false
+
     }
   }

@@ -11,9 +11,10 @@ export interface PeriodicElement {
   status: string;
   remark: string;
 }
-const ELEMENT_DATA: PeriodicElement[] = [
-  { name: 'Nidhin', billNumber: '123AVF3434', phoneNumber: '4354334543534', status: 'In progrees', remark: 'All good' }
-];
+
+
+
+const ELEMENT_DATA: PeriodicElement[] = [];
 @Component({
   selector: 'app-get-status',
   templateUrl: './get-status.component.html',
@@ -59,9 +60,12 @@ export class GetStatusComponent implements OnInit {
 
   getSheets(): void {
     this.googleSheetService.getSheet()
-      .subscribe(resp => {
-        console.log("resp : "+ resp)
-        
+      .subscribe((data: any[])=>{
+        console.log(data);
+        data.forEach(it =>{
+          let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
+          ELEMENT_DATA.push(element)
+        })
       });
   }
 

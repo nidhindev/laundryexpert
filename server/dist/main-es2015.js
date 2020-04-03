@@ -409,9 +409,7 @@ function GetStatusComponent_ng_template_13_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Go Ahead ");
 } }
 const _c0 = function (a0) { return { "has-error": a0 }; };
-const ELEMENT_DATA = [
-    { name: 'Nidhin', billNumber: '123AVF3434', phoneNumber: '4354334543534', status: 'In progrees', remark: 'All good' }
-];
+const ELEMENT_DATA = [];
 class GetStatusComponent {
     constructor(googleSheetService) {
         this.googleSheetService = googleSheetService;
@@ -446,8 +444,12 @@ class GetStatusComponent {
     }
     getSheets() {
         this.googleSheetService.getSheet()
-            .subscribe(resp => {
-            console.log("resp : " + resp);
+            .subscribe((data) => {
+            console.log(data);
+            data.forEach(it => {
+                let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark };
+                ELEMENT_DATA.push(element);
+            });
         });
     }
     get f() { return this.customerData.controls; }
@@ -546,8 +548,7 @@ class GoogleSheetService {
     }
     getSheet() {
         console.log("reached");
-        let res = this.http.get('https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
-        console.log("result: " + res);
+        let res = this.http.get('http://localhost:3000/googlesheet');
         return res;
     }
 }

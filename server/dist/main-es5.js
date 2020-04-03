@@ -786,13 +786,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       };
     };
 
-    var ELEMENT_DATA = [{
-      name: 'Nidhin',
-      billNumber: '123AVF3434',
-      phoneNumber: '4354334543534',
-      status: 'In progrees',
-      remark: 'All good'
-    }];
+    var ELEMENT_DATA = [];
 
     var GetStatusComponent = /*#__PURE__*/function () {
       function GetStatusComponent(googleSheetService) {
@@ -838,8 +832,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getSheets",
         value: function getSheets() {
-          this.googleSheetService.getSheet().subscribe(function (resp) {
-            console.log("resp : " + resp);
+          this.googleSheetService.getSheet().subscribe(function (data) {
+            console.log(data);
+            data.forEach(function (it) {
+              var element = {
+                name: it.name,
+                billNumber: it.billNumber,
+                phoneNumber: it.phoneNumber,
+                status: it.status,
+                remark: it.remark
+              };
+              ELEMENT_DATA.push(element);
+            });
           });
         }
       }, {
@@ -1039,8 +1043,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "getSheet",
         value: function getSheet() {
           console.log("reached");
-          var res = this.http.get('https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
-          console.log("result: " + res);
+          var res = this.http.get('http://localhost:3000/googlesheet');
           return res;
         }
       }]);

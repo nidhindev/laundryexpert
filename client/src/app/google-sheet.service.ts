@@ -15,8 +15,7 @@ data: any = null;
 
   getSheet() {
     console.log("reached")
-    let res = this.http.get('https://docs.google.com/spreadsheets/d/17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
-    console.log("result: "+ res)
+    let res = this.http.get('http://localhost:3000/googlesheet');
     return res;
   }
 }
