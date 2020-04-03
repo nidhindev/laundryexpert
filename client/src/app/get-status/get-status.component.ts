@@ -12,9 +12,6 @@ export interface PeriodicElement {
   remark: string;
 }
 
-
-
-const ELEMENT_DATA: PeriodicElement[] = [];
 @Component({
   selector: 'app-get-status',
   templateUrl: './get-status.component.html',
@@ -39,7 +36,6 @@ export class GetStatusComponent implements OnInit {
   dataSource = [];
   showResult = false;
   isSearched: boolean;
-  sheets
 
   ngOnInit(): void {
     this.isSearched = false
@@ -51,7 +47,6 @@ export class GetStatusComponent implements OnInit {
       return;
     } else {
       this.getSheets();
-      this.dataSource = ELEMENT_DATA;
       this.showResult = true;
       this.isSearched = true;
       this.submitted = true;
@@ -59,13 +54,15 @@ export class GetStatusComponent implements OnInit {
   }
 
   getSheets(): void {
+    const elements: PeriodicElement[] = [];
     this.googleSheetService.getSheet()
       .subscribe((data: any[])=>{
         console.log(data);
         data.forEach(it =>{
           let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
-          ELEMENT_DATA.push(element)
+          elements.push(element)
         })
+        this.dataSource = elements;
       });
   }
 

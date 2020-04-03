@@ -409,7 +409,6 @@ function GetStatusComponent_ng_template_13_Template(rf, ctx) { if (rf & 1) {
     _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](2, " Go Ahead ");
 } }
 const _c0 = function (a0) { return { "has-error": a0 }; };
-const ELEMENT_DATA = [];
 class GetStatusComponent {
     constructor(googleSheetService) {
         this.googleSheetService = googleSheetService;
@@ -436,20 +435,21 @@ class GetStatusComponent {
         }
         else {
             this.getSheets();
-            this.dataSource = ELEMENT_DATA;
             this.showResult = true;
             this.isSearched = true;
             this.submitted = true;
         }
     }
     getSheets() {
+        const elements = [];
         this.googleSheetService.getSheet()
             .subscribe((data) => {
             console.log(data);
             data.forEach(it => {
                 let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark };
-                ELEMENT_DATA.push(element);
+                elements.push(element);
             });
+            this.dataSource = elements;
         });
     }
     get f() { return this.customerData.controls; }

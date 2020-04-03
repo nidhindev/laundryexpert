@@ -786,8 +786,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       };
     };
 
-    var ELEMENT_DATA = [];
-
     var GetStatusComponent = /*#__PURE__*/function () {
       function GetStatusComponent(googleSheetService) {
         _classCallCheck(this, GetStatusComponent);
@@ -823,7 +821,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             return;
           } else {
             this.getSheets();
-            this.dataSource = ELEMENT_DATA;
             this.showResult = true;
             this.isSearched = true;
             this.submitted = true;
@@ -832,6 +829,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getSheets",
         value: function getSheets() {
+          var _this = this;
+
+          var elements = [];
           this.googleSheetService.getSheet().subscribe(function (data) {
             console.log(data);
             data.forEach(function (it) {
@@ -842,8 +842,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 status: it.status,
                 remark: it.remark
               };
-              ELEMENT_DATA.push(element);
+              elements.push(element);
             });
+            _this.dataSource = elements;
           });
         }
       }, {

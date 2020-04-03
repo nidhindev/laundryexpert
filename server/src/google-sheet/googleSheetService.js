@@ -4,10 +4,9 @@ const doc = new GoogleSpreadsheet('17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
 
 
 async function getSheet() {
-
     await doc.useServiceAccountAuth(creds);
     await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0]; // or use doc.sheetsById[id]
+    const sheet = doc.sheetsByIndex[0]; 
     const rows = await sheet.getRows();
     var customers = []
     for (i = 0; i < rows.length; i++) {
