@@ -470,9 +470,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _phoneNuber_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
-    /*! ./phoneNuber-validator */
-    "./src/app/get-status/phoneNuber-validator.ts");
+    var _phoneNumber_validator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(
+    /*! ./phoneNumber-validator */
+    "./src/app/get-status/phoneNumber-validator.ts");
     /* harmony import */
 
 
@@ -803,7 +803,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "createFormGroup",
         value: function createFormGroup() {
           return new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({
-            custPhoneNumber: new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _phoneNuber_validator__WEBPACK_IMPORTED_MODULE_2__["phoneNumberValidator"]])
+            custPhoneNumber: new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required, _phoneNumber_validator__WEBPACK_IMPORTED_MODULE_2__["phoneNumberValidator"]])
           });
         }
       }, {
@@ -817,7 +817,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           if (this.customerData.invalid) {
             return;
           } else {
-            this.getSheets();
+            this.getSheets(this.customerData.value.custPhoneNumber);
             this.showResult = true;
             this.isSearched = true;
             this.submitted = true;
@@ -825,11 +825,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }, {
         key: "getSheets",
-        value: function getSheets() {
+        value: function getSheets(phoneNumber) {
           var _this = this;
 
           var elements = [];
-          this.googleSheetService.getSheet().subscribe(function (data) {
+          this.googleSheetService.getSheet(phoneNumber).subscribe(function (data) {
             data.forEach(function (it) {
               var element = {
                 name: it.name,
@@ -962,15 +962,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   },
 
   /***/
-  "./src/app/get-status/phoneNuber-validator.ts":
-  /*!****************************************************!*\
-    !*** ./src/app/get-status/phoneNuber-validator.ts ***!
-    \****************************************************/
+  "./src/app/get-status/phoneNumber-validator.ts":
+  /*!*****************************************************!*\
+    !*** ./src/app/get-status/phoneNumber-validator.ts ***!
+    \*****************************************************/
 
   /*! exports provided: phoneNumberValidator */
 
   /***/
-  function srcAppGetStatusPhoneNuberValidatorTs(module, __webpack_exports__, __webpack_require__) {
+  function srcAppGetStatusPhoneNumberValidatorTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -1036,8 +1036,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       _createClass(GoogleSheetService, [{
         key: "getSheet",
-        value: function getSheet() {
-          var res = this.http.get('https://laundryexpert.herokuapp.com/googlesheet');
+        value: function getSheet(phoneNumber) {
+          var res = this.http.get('https://laundryexpert.herokuapp.com/googlesheet?phoneNumber=' + phoneNumber);
           return res;
         }
       }]);

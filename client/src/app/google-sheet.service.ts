@@ -9,8 +9,8 @@ export class GoogleSheetService {
 
   data: any = null;
   constructor(private http: HttpClient) { }
-  getSheet() {
-    let res = this.http.get('https://laundryexpert.herokuapp.com/googlesheet');
+  getSheet(phoneNumber) {
+    let res = this.http.get('https://laundryexpert.herokuapp.com/googlesheet?phoneNumber='+phoneNumber);
     return res;
   }
 }

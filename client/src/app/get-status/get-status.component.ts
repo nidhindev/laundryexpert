@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { phoneNumberValidator } from './phoneNuber-validator';
+import { phoneNumberValidator } from './phoneNumber-validator';
 import { GoogleSheetService } from '../google-sheet.service';
 
 
@@ -44,16 +44,16 @@ export class GetStatusComponent implements OnInit {
     if (this.customerData.invalid) {
       return;
     } else {
-      this.getSheets();
+      this.getSheets(this.customerData.value.custPhoneNumber);
       this.showResult = true;
       this.isSearched = true;
       this.submitted = true;
     }
   }
 
-  getSheets(): void {
+  getSheets(phoneNumber): void {
     const elements: PeriodicElement[] = [];
-    this.googleSheetService.getSheet()
+    this.googleSheetService.getSheet(phoneNumber)
       .subscribe((data: any[])=>{
         data.forEach(it =>{
           let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
