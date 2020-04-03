@@ -1,0 +1,9 @@
+{
+    "name": "shipment-status",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "build": "cd client; ng build && rm -rf ../server/dist && mkdir ../server/dist && mv dist/shipment-status/** ../server/dist",
+        "prod": "npm run build; cd server; node index.js"
+    }
+}

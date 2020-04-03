@@ -1,0 +1,59 @@
+<div class="status-margin">
+    <h2>Find Status</h2>
+    <form [formGroup]="customerData" (ngSubmit)="onSubmit()">
+        <mat-form-field [ngClass]="{ 'has-error': submitted && f.custPhoneNumber.errors }">
+            <mat-label>Customer phone number</mat-label>
+            <input matInput placeholder="9789821252" formControlName="custPhoneNumber" value="9789821252">
+            <div *ngIf="submitted && f.custPhoneNumber.errors" class="help-block">
+                <div *ngIf="f.custPhoneNumber.errors.required">Phone no is required</div>
+            </div>
+        </mat-form-field>
+
+
+        <button mat-icon-button color="primary" type="submit" [disabled]="!customerData.valid">
+            <mat-icon>send</mat-icon>
+        </button>
+    </form>
+
+    <div *ngIf="showResult; else elseBlock">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+            <ng-container matColumnDef="phoneNumber">
+                <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+                <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="billNumber">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Bill Number </th>
+                <td mat-cell *matCellDef="let element"> {{element.billNumber}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="remark">
+                <th mat-header-cell *matHeaderCellDef> Remark </th>
+                <td mat-cell *matCellDef="let element"> {{element.remark}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <ng-template #elseBlock>
+        <div ngIf="isSearched">
+            No Results found
+        </div>
+        Go Ahead
+    </ng-template>
+</div>

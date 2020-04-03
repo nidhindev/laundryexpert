@@ -1,0 +1,6 @@
+{
+    "/spreadsheets": {
+      "target": "https://docs.google.com",
+      "secure": false
+    }
+  }
