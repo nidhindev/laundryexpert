@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "prod-build": "ng build && rm -rf ../server/dist && mkdir ../server/dist && mv dist/shipment-status/** ../server/dist",
+    "local-build": "ng build && rm -rf ../server/dist && mkdir ../server/dist && mv dist/shipment-status/** ../server/dist",
+    "prod-build": "ng build --configuration=production && rm -rf ../server/dist && mkdir ../server/dist && mv dist/shipment-status/** ../server/dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

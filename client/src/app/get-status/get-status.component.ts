@@ -10,6 +10,14 @@ export interface PeriodicElement {
   name: string;
   status: string;
   remark: string;
+  iconName: string;
+  iconClass: string;
+  items: Item[];
+}
+
+export interface Item {
+  name: string;
+  quantity: string;
 }
 
 @Component({
@@ -21,8 +29,9 @@ export interface PeriodicElement {
 
 
 export class GetStatusComponent implements OnInit {
-  customerData: FormGroup
-  submitted = false
+  customerData: FormGroup;
+  submitted = false;
+  panelOpenState = false;
   constructor(private googleSheetService: GoogleSheetService) {
     this.customerData = this.createFormGroup();
   }
@@ -52,15 +61,62 @@ export class GetStatusComponent implements OnInit {
   }
 
   getSheets(phoneNumber): void {
-    const elements: PeriodicElement[] = [];
-    this.googleSheetService.getSheet(phoneNumber)
-      .subscribe((data: any[])=>{
-        data.forEach(it =>{
-          let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
-          elements.push(element)
-        })
-        this.dataSource = elements;
-      });
+    const elements: PeriodicElement[] = [
+      {
+        name: 'nidhin',
+        billNumber: '1212',
+        phoneNumber: '9789821252',
+        status: 'in progress',
+        remark: 'on track',
+        iconName: 'error',
+        iconClass: 'error-icon',
+        items:[
+          {
+            name: 'Shirt',
+            quantity: '4'
+          },
+          {
+            name: 'Pant',
+            quantity: '10'
+          },
+          {
+            name: 'Saree',
+            quantity: '2'
+          }
+        ]
+      },
+      {
+        name: 'nidhin',
+        billNumber: '1212',
+        phoneNumber: '9789821252',
+        status: 'in progress',
+        remark: 'on track',
+        iconName: 'error',
+        iconClass: 'error-icon',
+        items:[
+          {
+            name: 'Shirt',
+            quantity: '4'
+          },
+          {
+            name: 'Pant',
+            quantity: '10'
+          },
+          {
+            name: 'Saree',
+            quantity: '2'
+          }
+        ]
+      }];
+    this.dataSource = elements;
+    // this.googleSheetService.getSheet(phoneNumber)
+    //   .subscribe((data: any[])=>{
+    //     data.forEach(it =>{
+    //       let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
+    //       elements.push(element)
+    //     })
+    //     this.dataSource = elements;
+    //   });
   }
 
   get f() { return this.customerData.controls; }

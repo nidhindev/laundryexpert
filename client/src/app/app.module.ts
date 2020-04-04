@@ -12,6 +12,9 @@ import { BannerComponent } from './banner/banner.component';
 import {MatTableModule} from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatListModule} from '@angular/material/list';
+import {MatBadgeModule} from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -31,6 +34,9 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatExpansionModule,
+    MatListModule,
+    MatBadgeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
