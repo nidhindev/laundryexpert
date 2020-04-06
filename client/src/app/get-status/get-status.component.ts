@@ -12,6 +12,7 @@ export interface PeriodicElement {
   remark: string;
   iconName: string;
   iconClass: string;
+  link: string;
   items: Item[];
 }
 
@@ -64,35 +65,37 @@ export class GetStatusComponent implements OnInit {
     const elements: PeriodicElement[] = [
       {
         name: 'nidhin',
-        billNumber: '1212',
+        billNumber: '67689',
         phoneNumber: '9789821252',
-        status: 'in progress',
+        status: 'done',
         remark: 'on track',
-        iconName: 'error',
-        iconClass: 'error-icon',
+        iconName: 'check_circle',
+        iconClass: 'done-icon',
+        link: 'https://wa.me/31633645263/?text=you can pick the order',
         items:[
           {
             name: 'Shirt',
-            quantity: '4'
+            quantity: '34'
           },
           {
             name: 'Pant',
-            quantity: '10'
+            quantity: '3'
           },
           {
             name: 'Saree',
-            quantity: '2'
+            quantity: '8'
           }
         ]
       },
       {
-        name: 'nidhin',
+        name: 'Abbin',
         billNumber: '1212',
-        phoneNumber: '9789821252',
+        phoneNumber: '31633645263',
         status: 'in progress',
         remark: 'on track',
-        iconName: 'error',
-        iconClass: 'error-icon',
+        iconName: 'warning',
+        iconClass: 'inprogress-icon',
+        link: 'https://wa.me/31633645263/?text=your order is work inprogress',
         items:[
           {
             name: 'Shirt',

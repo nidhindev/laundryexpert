@@ -16,8 +16,8 @@
     </form>
 
     <div *ngIf="showResult; else elseBlock">
-        <mat-accordion *ngFor="let data of dataSource">
-            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-accordion  class="accordion-extend">
+            <mat-expansion-panel  *ngFor="let data of dataSource" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header >
                     <mat-panel-title >
                         Bill NO: {{data.billNumber}} 
@@ -29,44 +29,16 @@
                 <div>Name : {{data.name}}</div>
                 <div>Phone number : {{data.phoneNumber}}</div>
                 <div>Items :
-                    <mat-list class="custom-list-item" *ngFor="let item of data.items">
-                        <mat-list-item> <span [matBadge]="item.quantity" matBadgeOverlap="false" matBadgeSize="small">{{item.name}}</span> </mat-list-item>
+                    <mat-list ngClass="custom-list-item" *ngFor="let item of data.items">
+                        <!--<mat-list-item> <span [matBadge]="item.quantity" matBadgeOverlap="false" matBadgeSize="small">{{item.name}}</span> </mat-list-item>--->
+                        <div ><span >{{item.quantity}}</span></div>
                     </mat-list>
                 </div>
                 <mat-action-row>
-                    <button mat-button>Send to WhatsApp</button>
+                    <a mat-raised-button [href]= "data.link" target="_blank" color="primary">Send to WhatsApp</a>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
-        <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <ng-container matColumnDef="phoneNumber">
-                <th mat-header-cell *matHeaderCellDef> Phone Number </th>
-                <td mat-cell *matCellDef="let element"> {{element.phoneNumber}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="billNumber">
-                <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Bill Number </th>
-                <td mat-cell *matCellDef="let element"> {{element.billNumber}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="remark">
-                <th mat-header-cell *matHeaderCellDef> Remark </th>
-                <td mat-cell *matCellDef="let element"> {{element.remark}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table> -->
     </div>
     <ng-template #elseBlock>
         <div ngIf="isSearched">

@@ -1,26 +1,45 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = require('./gcpconfig.json');
-const doc = new GoogleSpreadsheet('17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
+var { JWT } = require('google-auth-library');
+const keys = require('./gcpconfig.json');
+const {google} = require('googleapis');
+const sheets = google.sheets('v4');
 
-
+const spreadsheetId = '17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
 async function getSheet() {
-    console.log('calling google service');
-    await doc.useServiceAccountAuth(creds);
-    await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0]; 
-    const rows = await sheet.getRows();
-    var customers = []
-    for (i = 0; i < rows.length; i++) {
-        var model = {
-            name: rows[i].Name,
-            billNumber: rows[i].BillNumber,
-            phoneNumber: rows[i].PhoneNumber,
-            status: rows[i].Status,
-            remark: rows[i].Remark,
-        }
-        customers.push(model);
-    }
-    return customers;
+    //console.log(JSON.stringify(keys));
+    //GoogleAuth.fromJSON() 
+    /**
+     * const keysEnvVar = process.env['CREDS'];
+if (!keysEnvVar) {
+  throw new Error('The $CREDS environment variable was not found!');
 }
+const keys = JSON.parse(keysEnvVar);
+  const client = auth.fromJSON(keys);
+
+     */
+    const client = new JWT(
+        keys.client_email,
+        null,
+        keys.private_key,
+        ['https://www.googleapis.com/auth/spreadsheets'],
+      );
+      
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`;
+      const res = await client.request({url});
+      console.log(client);
+
+      sheets.spreadsheets.values.get({
+        auth: client,
+        spreadsheetId: spreadsheetId,
+        range: 'Sheet1'
+     }, function (err, response) {
+        if (err) {
+            console.log('The API returned an error: ' + err);
+        } else {
+            console.log('Movie list from Google Sheets:', JSON.stringify(response));
+           
+        }
+     });
+}
+
 
 exports.getSheet = getSheet;
