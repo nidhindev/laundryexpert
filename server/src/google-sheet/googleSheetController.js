@@ -4,28 +4,23 @@ const googleSheetService = require('./googleSheetService');
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({ stdTTL: 86400, checkperiod: 3600, });
 
+
 router.get('/', (req, res) => {
-  googleSheetService.getSheet().then(result => {
-    res.setHeader('Content-Type', 'application/json');
-         res.send(result).status(200);
-  });
+  if (myCache.has("googleSheetData")) {
+    filterCustomer(req.query.phoneNumber, myCache.get('googleSheetData')).then(data => {
+      res.setHeader('Content-Type', 'application/json');
+      res.send(data).status(200);
+    });
+  } else {
+    googleSheetService.getSheet().then(result => {
+      myCache.set("googleSheetData", result, 3600)
+      filterCustomer(req.query.phoneNumber, result).then(data => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data).status(200);
+      });
+    });
+  }
 });
-// router.get('/', (req, res) => {
-//   if (myCache.has("googleSheetData")) {
-//     filterCustomer(req.query.phoneNumber, myCache.get('googleSheetData')).then(data => {
-//       res.setHeader('Content-Type', 'application/json');
-//       res.send(data).status(200);
-//     });
-//   } else {
-//     googleSheetService.getSheet().then(result => {
-//       myCache.set("googleSheetData", result, 3600)
-//       filterCustomer(req.query.phoneNumber, result).then(data => {
-//         res.setHeader('Content-Type', 'application/json');
-//         res.send(data).status(200);
-//       });
-//     });
-//   }
-// });
 
 async function filterCustomer(phoneNumber, data) {
   var customers = []

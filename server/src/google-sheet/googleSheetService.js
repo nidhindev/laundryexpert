@@ -43,7 +43,20 @@ const keys = JSON.parse(keysEnvVar);
         if (err) {
             console.log('The API returned an error: ' + err);
         } else {
-            console.log('Movie list from Google Sheets:', JSON.stringify(response));
+            console.log('Movie list from Google Sheets:', JSON.stringify(response.data.values.length));
+            const rows = response.data.values
+            for(var i=1; i <= response.data.values.length; i++) {
+                var model = {
+                    billNUmber: rows[i].Bill_Number,
+                    name: rows[i].Name,
+                    date: rows[i].Received_Date,
+                    item: rows[i].Item,
+                    totalPieces: rows[i].No_Of_Pieces,
+                    finishedPieces: rows[i].Finished_Pieces,
+                    status: rows[i].Status,
+                    phoneNumber: rows[i].Mobile_Number ,
+                }
+            }
 
         }
     });
