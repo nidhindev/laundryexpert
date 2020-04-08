@@ -40,13 +40,10 @@ const keys = JSON.parse(keysEnvVar);76y7787h
         range: 'Sheet1'
     })
     const result = await process(sheetResponse)
-    console.log('result: '+ JSON.stringify(result))
     return result
 }
 
 async function process(response) {
-    
-    var customers = [];
     const rows = response.data.values
     var customer = {
         billNumber: '',
@@ -54,12 +51,30 @@ async function process(response) {
         date: '',
         phoneNumber: '',
         items: []
-
     }
     var items = [];
-    for (var i = 1; i <= rows.length; i++) {
-        if (typeof rows[i] == 'undefined') {
-            //customer.items = items;
+    var customers = [];
+    for (var i = 1; i < rows.length; i++) {
+        if (rows[i][0] !== '') {
+            customer = {
+                billNumber: rows[i][0],
+                name: rows[i][1],
+                date: rows[i][2],
+                phoneNumber: rows[i][7],
+            }
+        }
+        const item = {
+            name: rows[i][3],
+            totalPieces: rows[i][4],
+            finishedPieces: rows[i][5],
+            status: rows[i][6],
+        }
+        items.push(item);
+        if (
+            (rows[i][0] !== '' && typeof rows[i + 1] == 'undefined') ||
+            (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i + 1][0] !== ''))
+        ) {
+            customer.items = items;
             customers.push(customer);
             items = [];
             customer = {
@@ -69,56 +84,12 @@ async function process(response) {
                 phoneNumber: '',
                 items: []
             }
-
-        }
-        else {
-            if (customer.billNumber) {
-                if (typeof rows[i + 1] !== 'undefined' &&
-                    rows[i + 1][0]) {
-                    //customer.items = items;
-                    customers.push(customer);
-                    customer = {
-                        billNumber: '',
-                        name: '',
-                        date: '',
-                        phoneNumber: '',
-                        items: []
-                    }
-                    items = [];
-                }
-
-
-
-            } else {
-                // console.log('customers: ' + JSON.stringify(customers))
-                // var test = customers.pop()
-                // test.items.push(items)
-                // customers.push(test)
-
-                // console.log('customers updated: ' + customers)
-                // items = []
-                console.log('items: ' + JSON.stringify(items))
-            }
-            const item = {
-                name: rows[i][3],
-                totalPieces: rows[i][4],
-                finishedPieces: rows[i][5],
-                status: rows[i][6],
-            }
-            items.push(item);
-            customer.items = items
-            if (rows[i][0]) {
-                customer = {
-                    billNumber: rows[i][0],
-                    name: rows[i][1],
-                    date: rows[i][2],
-                    phoneNumber: rows[i][7],
-                }
-            }
         }
     }
-        console.log('cust: ' + JSON.stringify(customers))
-return customers
+    return customers
+}
+
+async function undefinedRow() {
 
 }
 exports.getSheet = getSheet;
