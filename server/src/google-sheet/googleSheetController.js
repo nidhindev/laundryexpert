@@ -6,8 +6,9 @@ const myCache = new NodeCache({ stdTTL: 86400, checkperiod: 3600, });
 
 
 router.get('/', (req, res) => {
-  googleSheetService.getSheet('12345').then(result => {
+  googleSheetService.getSheet(req.query.phoneNumber).then(result => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.json(result).status(200);
   });
   // if (myCache.has("googleSheetData")) {

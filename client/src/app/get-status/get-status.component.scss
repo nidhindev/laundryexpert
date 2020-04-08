@@ -22,7 +22,7 @@
     height: 20px;
   }
  
-  .inprogress-icon {
+.inprogress-icon {
     color: orange;
 }
 .error-icon {
@@ -31,7 +31,18 @@
 .done-icon {
   color: green;
 }
-
+.delivered-icon {
+  color: #2323df;
+}
+.total-icon {
+  color: #3a6ad1;
+}
+.title-info {
+  color: blue;
+}
+.table {
+  width: 30%;
+}
 .accordion-extend {
   margin-block-end: .5px;
   :hover {

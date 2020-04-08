@@ -40,7 +40,7 @@ const keys = JSON.parse(keysEnvVar);76y7787h
         range: 'Sheet1'
     })
     const result = await process(sheetResponse)
-    return result
+    return result.filter(customer => customer.phoneNumber == phoneNumber)
 }
 
 async function process(response) {

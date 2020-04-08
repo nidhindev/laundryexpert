@@ -16,26 +16,53 @@
     </form>
 
     <div *ngIf="showResult; else elseBlock">
-        <mat-accordion  class="accordion-extend">
-            <mat-expansion-panel  *ngFor="let data of dataSource" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                <mat-expansion-panel-header >
-                    <mat-panel-title >
-                        Bill NO: {{data.billNumber}} 
-                    </mat-panel-title> 
+        <mat-accordion class="accordion-extend">
+            <mat-expansion-panel *ngFor="let data of dataSource" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Bill No: {{data.billNumber}}
+                    </mat-panel-title>
                     <mat-panel-description>
-                            <mat-icon [ngClass]="data.iconClass" inline="true" >{{data.iconName}}</mat-icon>
+                        <mat-icon [ngClass]="data.iconClass" inline="true">{{data.iconName}}</mat-icon>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div>Name : {{data.name}}</div>
                 <div>Phone number : {{data.phoneNumber}}</div>
                 <div>Items :
-                    <mat-list ngClass="custom-list-item" *ngFor="let item of data.items">
-                        <!--<mat-list-item> <span [matBadge]="item.quantity" matBadgeOverlap="false" matBadgeSize="small">{{item.name}}</span> </mat-list-item>--->
-                        <div ><span >{{item.quantity}}</span></div>
-                    </mat-list>
+
+                    <!--div >
+                            <mat-list ngClass="custom-list-item" *ngFor="let item of data.items">
+                            <span ><mat-icon [ngClass]="item.iconClass" inline="true" >{{item.iconName}}</mat-icon> {{item.name}} 
+                            <mat-icon inline="true" >arrow_right_alt</mat-icon>
+                            <mat-icon inline="true" ngClass="total-icon">functions</mat-icon> {{item.totalPieces}} 
+                            <mat-icon inline="true" ngClass="done-icon">done</mat-icon> {{item.finishedPieces}}</span>
+                                            </mat-list>
+
+                        </div-->
+                    <mat-grid-list cols="6" rowHeight="1:1" *ngFor="let item of data.items">
+
+                        <mat-grid-tile>
+                            <mat-icon [ngClass]="item.iconClass">{{item.iconName}}</mat-icon>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            {{item.name}}
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-icon ngClass="total-icon">functions</mat-icon>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            {{item.totalPieces}}
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-icon ngClass="done-icon">done_all</mat-icon>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            {{item.finishedPieces}}
+                        </mat-grid-tile>
+                    </mat-grid-list>
                 </div>
                 <mat-action-row>
-                    <a mat-raised-button [href]= "data.link" target="_blank" color="primary">Send to WhatsApp</a>
+                    <a mat-raised-button [href]="data.link" target="_blank" color="primary">Send to WhatsApp</a>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
