@@ -55,6 +55,7 @@ async function process(response) {
     var items = [];
     var customers = [];
     for (var i = 1; i < rows.length; i++) {
+
         if (rows[i][0] !== '') {
             customer = {
                 billNumber: rows[i][0],
@@ -71,7 +72,9 @@ async function process(response) {
         }
         items.push(item);
         if (
-            (rows[i][0] !== '' && typeof rows[i + 1] == 'undefined') ||
+            (typeof rows[i + 1] == 'undefined') || 
+            (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i+1][0]))||
+            (rows[i][0] !== '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i+1][0] && rows[i+1][0] !== ''))||
             (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i + 1][0] !== ''))
         ) {
             customer.items = items;
@@ -91,5 +94,5 @@ async function process(response) {
 
 async function undefinedRow() {
 
-}
+} 
 exports.getSheet = getSheet;
