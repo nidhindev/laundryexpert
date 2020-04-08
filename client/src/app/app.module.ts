@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {MatBadgeModule} from '@angular/material/badge';
     MatExpansionModule,
     MatListModule,
     MatBadgeModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

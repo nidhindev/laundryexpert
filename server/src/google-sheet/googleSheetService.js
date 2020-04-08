@@ -9,7 +9,7 @@ const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
 //const spreadsheetId = '17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
 //const spreadsheetId = '1-b3XumjzheSnSKYD2oShGKGaRTiysOUQ7gDGBaoZuvM' // jithu
 const spreadsheetId = '1AmP5g-6p7X5dH9BStdYVodtXrHSETEZkQud0Il0Po0U'
-async function getSheet(phoneNumber) {
+async function getSheet(phoneNumber, selectedStore) {
     //console.log(JSON.stringify(keys));
     //GoogleAuth.fromJSON() 
     /**
@@ -22,9 +22,9 @@ const keys = JSON.parse(keysEnvVar);76y7787h
 
      */
     var client = null;
-    if (gcpChache.has("gcpClient")) {
+    if (gcpChache.has(`gcpClient-${selectedStore}`)) {
         console.log('chache')
-        client = gcpChache.get('gcpClient')
+        client = gcpChache.get(`gcpClient-${selectedStore}`)
     } else {
         client = new JWT(
             keys.client_email,
@@ -32,12 +32,12 @@ const keys = JSON.parse(keysEnvVar);76y7787h
             keys.private_key,
             ['https://www.googleapis.com/auth/spreadsheets'],
         );
-        gcpChache.set("gcpClient", client);
+        gcpChache.set(`gcpClient-${selectedStore}`, client);
     }
     const sheetResponse = await sheets.spreadsheets.values.get({
         auth: client,
         spreadsheetId: spreadsheetId,
-        range: 'Sheet1'
+        range: selectedStore
     })
     const result = await process(sheetResponse)
     return result.filter(customer => customer.phoneNumber == phoneNumber)

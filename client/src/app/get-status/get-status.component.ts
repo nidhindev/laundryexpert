@@ -43,7 +43,8 @@ export class GetStatusComponent implements OnInit {
 
   createFormGroup() {
     return new FormGroup({
-      custPhoneNumber: new FormControl('', [Validators.required, phoneNumberValidator])
+      custPhoneNumber: new FormControl('', [Validators.required, phoneNumberValidator]),
+      selectedStore: new FormControl('', [Validators.required])
     });
   }
   clickMessage = '';
@@ -52,35 +53,31 @@ export class GetStatusComponent implements OnInit {
   isSearched: boolean;
 
   ngOnInit(): void {
-    this.isSearched = false
+    this.isSearched = false;
   }
   onSubmit() {
     if (this.customerData.invalid) {
       return;
     } else {
-      this.getSheets(this.customerData.value.custPhoneNumber);
-      this.showResult = true;
+      this.getSheets(this.customerData.value.custPhoneNumber, this.customerData.value.selectedStore);
       this.isSearched = true;
       this.submitted = true;
     }
   }
 
-  getSheets(phoneNumber): void {
-    const elements: PeriodicElement[] = [
-
-    ];
-    this.googleSheetService.getSheet(phoneNumber)
+  getSheets(phoneNumber, selectedStore): void {
+    console.log(selectedStore)
+    const elements: PeriodicElement[] = [];
+    this.googleSheetService.getSheet(phoneNumber, selectedStore)
       .subscribe((data: any[]) => {
         data.forEach(it => {
           let iconName = '';
           let iconClass = '';
           let items = [];
-          let allDone = false;
           let ready = false;
           let pending = false;
           let error = false;
           for (let itemRes of it.items) {
-            console.log(itemRes.status)
             let item: Item = {
               name: itemRes.name,
               totalPieces: itemRes.totalPieces,
@@ -118,8 +115,10 @@ export class GetStatusComponent implements OnInit {
           }
           let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, iconName: iconName, iconClass: iconClass, items: items }
           elements.push(element)
-          console.log(elements)
         })
+        if (elements.length > 0) {
+          this.showResult = true;
+        }
         this.dataSource = elements;
       });
   }

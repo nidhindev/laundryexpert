@@ -10,7 +10,7 @@
 
   .status-margin {
     margin-left: 10%;
-    margin-top: 5%;
+    margin-top: 25%;
     margin-right: 10%;
 
   }
@@ -59,4 +59,13 @@
   text-align: center;
   background:blue;
   
+}
+.example-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.example-radio-button {
+  margin: 5px;
 }
