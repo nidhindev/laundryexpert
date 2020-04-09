@@ -4,6 +4,9 @@ const healthCheck = require('./src/healthcheck/controller');
 const googleSheet = require('./src/google-sheet/googleSheetController')
 const http = require('http').createServer(app);
 const body_parser = require('body-parser');
+const { port } = require('./config');
+
+console.log(`Your port is ${process.env.PORT}`);
 const properties = {
     port: process.env.PORT || 3000,
   };
@@ -17,5 +20,5 @@ app.use('/googlesheet', googleSheet);
 app.use('/shipment-status', express.static('dist'));
 
 http.listen(properties.port, () => {
-    console.log('server is running on port '+ properties.port);
+    console.log('server is running on port '+ port);
 });

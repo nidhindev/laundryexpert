@@ -1,26 +1,20 @@
 var { JWT } = require('google-auth-library');
-const keys = require('./gcpconfig.json');
+//const keys = require('./gcpconfig.json');
 const { google } = require('googleapis');
 const NodeCache = require("node-cache");
-
+const { port, creds } = require('../../config');
 const sheets = google.sheets('v4');
 const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
+
 
 //const spreadsheetId = '17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
 //const spreadsheetId = '1-b3XumjzheSnSKYD2oShGKGaRTiysOUQ7gDGBaoZuvM' // jithu
 const spreadsheetId = '1AmP5g-6p7X5dH9BStdYVodtXrHSETEZkQud0Il0Po0U'
 async function getSheet(phoneNumber, selectedStore) {
-    //console.log(JSON.stringify(keys));
-    //GoogleAuth.fromJSON() 
-    /**
-     * const keysEnvVar = process.env['CREDS'];
-if (!keysEnvVar) {
-  throw new Error('The $CREDS environment variable was not found!');
-}
-const keys = JSON.parse(keysEnvVar);76y7787h
-  const client = auth.fromJSON(keys);
-
-     */
+    var keys = JSON.parse(creds);
+    if (!keys) {
+        throw new Error('The $CREDS environment variable was not found!');
+    }
     var client = null;
     if (gcpChache.has(`gcpClient-${selectedStore}`)) {
         console.log('chache')
@@ -72,9 +66,9 @@ async function process(response) {
         }
         items.push(item);
         if (
-            (typeof rows[i + 1] == 'undefined') || 
-            (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i+1][0]))||
-            (rows[i][0] !== '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i+1][0] && rows[i+1][0] !== ''))||
+            (typeof rows[i + 1] == 'undefined') ||
+            (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i + 1][0])) ||
+            (rows[i][0] !== '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i + 1][0] && rows[i + 1][0] !== '')) ||
             (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i + 1][0] !== ''))
         ) {
             customer.items = items;
@@ -94,5 +88,5 @@ async function process(response) {
 
 async function undefinedRow() {
 
-} 
+}
 exports.getSheet = getSheet;
