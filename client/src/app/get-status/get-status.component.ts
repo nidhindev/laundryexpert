@@ -77,6 +77,7 @@ export class GetStatusComponent implements OnInit {
           let ready = false;
           let pending = false;
           let error = false;
+          let state: string;
           for (let itemRes of it.items) {
             let item: Item = {
               name: itemRes.name,
@@ -86,19 +87,23 @@ export class GetStatusComponent implements OnInit {
             if (itemRes.status == 'Ready' || itemRes.status == 'Ready ') {
               item.iconName = 'check_circle';
               item.iconClass = 'done-icon';
+              state = 'ready';
               ready = true;
             } else if (itemRes.status == 'Pending ') {
               item.iconName = 'warning';
               item.iconClass = 'inprogress-icon';
+              state = 'is being processed';
               pending = true
             } else if (itemRes.status == 'Ready+return') {
               item.iconName = 'check_circle';
               item.iconClass = 'delivered-icon';
               pending = true;
+              state = 'is returned';
             } else {
               item.iconName = 'error';
               item.iconClass = 'error-icon';
               error = true;
+              state = 'is being processed';
             }
             items.push(item);
           }
@@ -112,8 +117,10 @@ export class GetStatusComponent implements OnInit {
           } else {
             iconName = 'error';
             iconClass = 'error-icon';
+            state = 'is being processed';
           }
-          let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, iconName: iconName, iconClass: iconClass, items: items }
+          const link = `https://wa.me/${it.phoneNumber}?text=Thanks for reaching us out!, Your Order No: ${it.billNumber} is ${state}.`
+          let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, link: link, iconName: iconName, iconClass: iconClass, items: items }
           elements.push(element)
         })
         if (elements.length > 0) {
