@@ -119,7 +119,7 @@ export class GetStatusComponent implements OnInit {
             iconClass = 'error-icon';
             state = 'is being processed';
           }
-          const link = `https://wa.me/${it.phoneNumber}?text=Thanks for reaching us out!, Your Order No: ${it.billNumber} is ${state}.`
+          const link = `https://wa.me/${it.phoneNumber}?text=Hi ${it.name} \r\nThanks for reaching us out!. Your Order No: ${it.billNumber} is ${state}. \r\n The Laundry Expert`
           let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, link: link, iconName: iconName, iconClass: iconClass, items: items }
           elements.push(element)
         })
