@@ -1,26 +1,92 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = require('./gcpconfig.json');
-const doc = new GoogleSpreadsheet('17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8');
+var { JWT } = require('google-auth-library');
+//const keys = require('./gcpconfig.json');
+const { google } = require('googleapis');
+const NodeCache = require("node-cache");
+const { port, creds } = require('../../config');
+const sheets = google.sheets('v4');
+const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
 
 
-async function getSheet() {
-    console.log('calling google service');
-    await doc.useServiceAccountAuth(creds);
-    await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0]; 
-    const rows = await sheet.getRows();
-    var customers = []
-    for (i = 0; i < rows.length; i++) {
-        var model = {
-            name: rows[i].Name,
-            billNumber: rows[i].BillNumber,
-            phoneNumber: rows[i].PhoneNumber,
-            status: rows[i].Status,
-            remark: rows[i].Remark,
-        }
-        customers.push(model);
+//const spreadsheetId = '17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
+//const spreadsheetId = '1-b3XumjzheSnSKYD2oShGKGaRTiysOUQ7gDGBaoZuvM' // jithu
+const spreadsheetId = '1AmP5g-6p7X5dH9BStdYVodtXrHSETEZkQud0Il0Po0U'
+async function getSheet(phoneNumber, selectedStore) {
+    var keys = JSON.parse(creds);
+    if (!keys) {
+        throw new Error('The $CREDS environment variable was not found!');
     }
-    return customers;
+    var client = null;
+    if (gcpChache.has(`gcpClient-${selectedStore}`)) {
+        console.log('chache')
+        client = gcpChache.get(`gcpClient-${selectedStore}`)
+    } else {
+        client = new JWT(
+            keys.client_email,
+            null,
+            keys.private_key,
+            ['https://www.googleapis.com/auth/spreadsheets'],
+        );
+        gcpChache.set(`gcpClient-${selectedStore}`, client);
+    }
+    const sheetResponse = await sheets.spreadsheets.values.get({
+        auth: client,
+        spreadsheetId: spreadsheetId,
+        range: selectedStore
+    })
+    const result = await process(sheetResponse)
+    return result.filter(customer => customer.phoneNumber == phoneNumber)
 }
 
+async function process(response) {
+    const rows = response.data.values
+    var customer = {
+        billNumber: '',
+        name: '',
+        date: '',
+        phoneNumber: '',
+        items: []
+    }
+    var items = [];
+    var customers = [];
+    for (var i = 1; i < rows.length; i++) {
+
+        if (rows[i][0] !== '') {
+            customer = {
+                billNumber: rows[i][0],
+                name: rows[i][1],
+                date: rows[i][2],
+                phoneNumber: rows[i][7],
+            }
+        }
+        const item = {
+            name: rows[i][3],
+            totalPieces: rows[i][4],
+            finishedPieces: rows[i][5],
+            status: rows[i][6],
+        }
+        items.push(item);
+        if (
+            (typeof rows[i + 1] == 'undefined') ||
+            (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i + 1][0])) ||
+            (rows[i][0] !== '' && (typeof rows[i + 1] !== 'undefined' && rows[i][0] !== rows[i + 1][0] && rows[i + 1][0] !== '')) ||
+            (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i + 1][0] !== ''))
+        ) {
+            customer.items = items;
+            customers.push(customer);
+            items = [];
+            customer = {
+                billNumber: '',
+                name: '',
+                date: '',
+                phoneNumber: '',
+                items: []
+            }
+        }
+    }
+    return customers
+}
+
+async function undefinedRow() {
+
+}
 exports.getSheet = getSheet;

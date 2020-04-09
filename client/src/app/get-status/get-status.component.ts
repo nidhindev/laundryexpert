@@ -2,22 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { phoneNumberValidator } from './phoneNumber-validator';
 import { GoogleSheetService } from '../google-sheet.service';
+import { allResolved } from 'q';
 
 
 export interface PeriodicElement {
-  phoneNumber: string;
-  billNumber: string;
-  name: string;
-  status: string;
-  remark: string;
-  iconName: string;
-  iconClass: string;
-  items: Item[];
+  phoneNumber?: string;
+  billNumber?: string;
+  name?: string;
+  date?: string;
+  iconName?: string;
+  iconClass?: string;
+  link?: string;
+  items?: Item[];
 }
 
 export interface Item {
-  name: string;
-  quantity: string;
+  name?: string;
+  totalPieces?: string;
+  finishedPieces?: string;
+  status?: string;
+  iconName?: string;
+  iconClass?: string;
 }
 
 @Component({
@@ -38,7 +43,8 @@ export class GetStatusComponent implements OnInit {
 
   createFormGroup() {
     return new FormGroup({
-      custPhoneNumber: new FormControl('', [Validators.required, phoneNumberValidator])
+      custPhoneNumber: new FormControl('', [Validators.required, phoneNumberValidator]),
+      selectedStore: new FormControl('', [Validators.required])
     });
   }
   clickMessage = '';
@@ -47,76 +53,74 @@ export class GetStatusComponent implements OnInit {
   isSearched: boolean;
 
   ngOnInit(): void {
-    this.isSearched = false
+    this.isSearched = false;
   }
   onSubmit() {
     if (this.customerData.invalid) {
       return;
     } else {
-      this.getSheets(this.customerData.value.custPhoneNumber);
-      this.showResult = true;
+      this.getSheets(this.customerData.value.custPhoneNumber, this.customerData.value.selectedStore);
       this.isSearched = true;
       this.submitted = true;
     }
   }
 
-  getSheets(phoneNumber): void {
-    const elements: PeriodicElement[] = [
-      {
-        name: 'nidhin',
-        billNumber: '1212',
-        phoneNumber: '9789821252',
-        status: 'in progress',
-        remark: 'on track',
-        iconName: 'error',
-        iconClass: 'error-icon',
-        items:[
-          {
-            name: 'Shirt',
-            quantity: '4'
-          },
-          {
-            name: 'Pant',
-            quantity: '10'
-          },
-          {
-            name: 'Saree',
-            quantity: '2'
+  getSheets(phoneNumber, selectedStore): void {
+    console.log(selectedStore)
+    const elements: PeriodicElement[] = [];
+    this.googleSheetService.getSheet(phoneNumber, selectedStore)
+      .subscribe((data: any[]) => {
+        data.forEach(it => {
+          let iconName = '';
+          let iconClass = '';
+          let items = [];
+          let ready = false;
+          let pending = false;
+          let error = false;
+          for (let itemRes of it.items) {
+            let item: Item = {
+              name: itemRes.name,
+              totalPieces: itemRes.totalPieces,
+              finishedPieces: itemRes.finishedPieces
+            }
+            if (itemRes.status == 'Ready' || itemRes.status == 'Ready ') {
+              item.iconName = 'check_circle';
+              item.iconClass = 'done-icon';
+              ready = true;
+            } else if (itemRes.status == 'Pending ') {
+              item.iconName = 'warning';
+              item.iconClass = 'inprogress-icon';
+              pending = true
+            } else if (itemRes.status == 'Ready+return') {
+              item.iconName = 'check_circle';
+              item.iconClass = 'delivered-icon';
+              pending = true;
+            } else {
+              item.iconName = 'error';
+              item.iconClass = 'error-icon';
+              error = true;
+            }
+            items.push(item);
           }
-        ]
-      },
-      {
-        name: 'nidhin',
-        billNumber: '1212',
-        phoneNumber: '9789821252',
-        status: 'in progress',
-        remark: 'on track',
-        iconName: 'error',
-        iconClass: 'error-icon',
-        items:[
-          {
-            name: 'Shirt',
-            quantity: '4'
-          },
-          {
-            name: 'Pant',
-            quantity: '10'
-          },
-          {
-            name: 'Saree',
-            quantity: '2'
+
+          if (ready == true && pending !== true && error !== true) {
+            iconName = 'check_circle';
+            iconClass = 'done-icon';
+          } else if (pending == true && error !== true) {
+            iconName = 'warning';
+            iconClass = 'inprogress-icon';
+          } else {
+            iconName = 'error';
+            iconClass = 'error-icon';
           }
-        ]
-      }];
-    this.dataSource = elements;
-    // this.googleSheetService.getSheet(phoneNumber)
-    //   .subscribe((data: any[])=>{
-    //     data.forEach(it =>{
-    //       let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, status: it.status, remark: it.remark }
-    //       elements.push(element)
-    //     })
-    //     this.dataSource = elements;
-    //   });
+          let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, iconName: iconName, iconClass: iconClass, items: items }
+          elements.push(element)
+        })
+        if (elements.length > 0) {
+          this.showResult = true;
+        }
+        this.dataSource = elements;
+      });
   }
 
   get f() { return this.customerData.controls; }
