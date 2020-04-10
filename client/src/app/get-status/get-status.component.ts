@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { phoneNumberValidator } from './phoneNumber-validator';
 import { GoogleSheetService } from '../google-sheet.service';
-import { allResolved } from 'q';
-
 
 export interface PeriodicElement {
   phoneNumber?: string;
   billNumber?: string;
   name?: string;
-  date?: string;
+  date?: Date;
   iconName?: string;
   iconClass?: string;
   link?: string;
@@ -34,6 +32,7 @@ export interface Item {
 
 
 export class GetStatusComponent implements OnInit {
+  today: number = Date.now();
   customerData: FormGroup;
   submitted = false;
   panelOpenState = false;
@@ -119,8 +118,9 @@ export class GetStatusComponent implements OnInit {
             iconClass = 'error-icon';
             state = 'is being processed';
           }
+          console.log("date: "+it.date)
           const link = `https://wa.me/${it.phoneNumber}?text=Hi ${it.name} \r\nThanks for reaching us out!. Your Order No: ${it.billNumber} is ${state}. \r\n The Laundry Expert`
-          let element = { name: it.name, billNumber: it.billNumber, phoneNumber: it.phoneNumber, link: link, iconName: iconName, iconClass: iconClass, items: items }
+          let element = { name: it.name, billNumber: it.billNumber, date: it.date, phoneNumber: it.phoneNumber, link: link, iconName: iconName, iconClass: iconClass, items: items }
           elements.push(element)
         })
         if (elements.length > 0) {

@@ -1,8 +1,8 @@
 <div class="status-margin">
     <h2>Find Status </h2>
     <form [formGroup]="customerData" (ngSubmit)="onSubmit()">
-        <mat-radio-group aria-label="Select an option" formControlName="selectedStore">
-            <mat-radio-button value="Veloor">Veloor</mat-radio-button><br>
+        <mat-radio-group aria-label="Select a store" formControlName="selectedStore">
+            <mat-radio-button value="Veloor" [checked] = true>Veloor</mat-radio-button><br>
             <mat-radio-button value="Velappaya">Velappaya</mat-radio-button><br>
             <mat-radio-button value="Mulamkunnathkavu">Mulamkunnathkavu</mat-radio-button><br>
         </mat-radio-group>
@@ -27,10 +27,10 @@
             <mat-expansion-panel *ngFor="let data of dataSource" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        Bill No: {{data.billNumber}}
+                        <mat-icon [ngClass]="data.iconClass">{{data.iconName}}</mat-icon> <mat-icon ngClass="account" >account_box</mat-icon> <span ngClass="card-header">{{data.billNumber}}</span> 
                     </mat-panel-title>
-                    <mat-panel-description>
-                        <mat-icon [ngClass]="data.iconClass" inline="true">{{data.iconName}}</mat-icon>
+                    <mat-panel-description ngClass="card-header-date">
+                        {{ data.date | date:'mediumDate' }} 
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div>Name : {{data.name}}</div>

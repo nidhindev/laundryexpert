@@ -2,14 +2,10 @@ var { JWT } = require('google-auth-library');
 //const keys = require('./gcpconfig.json');
 const { google } = require('googleapis');
 const NodeCache = require("node-cache");
-const { port, creds } = require('../../config');
+const { spreadsheetId, creds } = require('../../config');
 const sheets = google.sheets('v4');
 const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
 
-
-//const spreadsheetId = '17cYZqSLhHOpvP5T27dsv8A3Rk9E6-iHCH7q8uaTs5C8'
-//const spreadsheetId = '1-b3XumjzheSnSKYD2oShGKGaRTiysOUQ7gDGBaoZuvM' // jithu
-const spreadsheetId = '1AmP5g-6p7X5dH9BStdYVodtXrHSETEZkQud0Il0Po0U'
 async function getSheet(phoneNumber, selectedStore) {
     var keys = JSON.parse(creds);
     if (!keys) {
