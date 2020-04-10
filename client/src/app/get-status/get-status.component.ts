@@ -43,7 +43,7 @@ export class GetStatusComponent implements OnInit {
   createFormGroup() {
     return new FormGroup({
       custPhoneNumber: new FormControl('', [Validators.required, phoneNumberValidator]),
-      selectedStore: new FormControl('', [Validators.required])
+      selectedStore: new FormControl('Veloor')
     });
   }
   clickMessage = '';

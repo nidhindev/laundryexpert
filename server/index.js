@@ -20,5 +20,5 @@ app.use('/googlesheet', googleSheet);
 app.use('/shipment-status', express.static('dist'));
 
 http.listen(properties.port, () => {
-    console.log('server is running on port '+ port);
+    console.log('server is running on port '+ properties.port);
 });

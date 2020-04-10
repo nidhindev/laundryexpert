@@ -16,7 +16,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatRadioModule} from '@angular/material/radio';
-
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +39,7 @@ import {MatRadioModule} from '@angular/material/radio';
     MatListModule,
     MatBadgeModule,
     MatRadioModule,
+    MatButtonToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

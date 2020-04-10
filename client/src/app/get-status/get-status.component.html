@@ -1,11 +1,11 @@
 <div class="status-margin">
     <h2>Find Status </h2>
     <form [formGroup]="customerData" (ngSubmit)="onSubmit()">
-        <mat-radio-group aria-label="Select a store" formControlName="selectedStore">
-            <mat-radio-button value="Veloor" [checked] = true>Veloor</mat-radio-button><br>
-            <mat-radio-button value="Velappaya">Velappaya</mat-radio-button><br>
-            <mat-radio-button value="Mulamkunnathkavu">Mulamkunnathkavu</mat-radio-button><br>
-        </mat-radio-group>
+        <mat-button-toggle-group  aria-label="Select a store" formControlName="selectedStore">
+            <mat-button-toggle value="Veloor" [checked] = true>Veloor</mat-button-toggle>
+            <mat-button-toggle value="Velappaya">Velappaya</mat-button-toggle>
+            <mat-button-toggle value="Mulamkunnathkavu">MgKavu</mat-button-toggle>
+          </mat-button-toggle-group>
         <br>
         <mat-form-field [ngClass]="{ 'has-error': submitted && f.custPhoneNumber.errors }">
             <mat-label>Customer phone number</mat-label>
