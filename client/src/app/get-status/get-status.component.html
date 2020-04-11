@@ -27,7 +27,7 @@
             <mat-expansion-panel *ngFor="let data of dataSource" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon [ngClass]="data.iconClass">{{data.iconName}}</mat-icon> <mat-icon ngClass="account" >account_box</mat-icon> <span ngClass="card-header">{{data.billNumber}}</span> 
+                        <mat-icon [ngClass]="data.iconClass">{{data.iconName}}</mat-icon> <span ngClass="card-header">{{data.billNumber}}</span> 
                     </mat-panel-title>
                     <mat-panel-description ngClass="card-header-date">
                         {{ data.date | date:'mediumDate' }} 
