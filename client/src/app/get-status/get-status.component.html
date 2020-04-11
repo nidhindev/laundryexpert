@@ -1,11 +1,11 @@
 <div class="status-margin">
     <h2>Find Status </h2>
     <form [formGroup]="customerData" (ngSubmit)="onSubmit()">
-        <mat-button-toggle-group  aria-label="Select a store" formControlName="selectedStore">
-            <mat-button-toggle value="Veloor" [checked] = true>Veloor</mat-button-toggle>
+        <mat-button-toggle-group aria-label="Select a store" formControlName="selectedStore">
+            <mat-button-toggle value="Veloor" [checked]=true>Veloor</mat-button-toggle>
             <mat-button-toggle value="Velappaya">Velappaya</mat-button-toggle>
             <mat-button-toggle value="Mulamkunnathkavu">MgKavu</mat-button-toggle>
-          </mat-button-toggle-group>
+        </mat-button-toggle-group>
         <br>
         <mat-form-field [ngClass]="{ 'has-error': submitted && f.custPhoneNumber.errors }">
             <mat-label>Customer phone number</mat-label>
@@ -24,37 +24,29 @@
     <div *ngIf="showResult; then thenBlock else elseBlock"> </div>
     <ng-template #thenBlock>
         <mat-accordion class="accordion-extend">
-            <mat-expansion-panel *ngFor="let data of dataSource" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel *ngFor="let data of dataSource" (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon [ngClass]="data.iconClass">{{data.iconName}}</mat-icon> <span ngClass="card-header">{{data.billNumber}}</span> 
+                        <mat-icon [ngClass]="data.iconClass">{{data.iconName}}</mat-icon><span
+                            ngClass="card-header">{{data.billNumber}}</span>
                     </mat-panel-title>
                     <mat-panel-description ngClass="card-header-date">
-                        {{ data.date | date:'mediumDate' }} 
+                        {{ data.date | date:'mediumDate' }}
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 <div>Name : {{data.name}}</div>
                 <div>Phone number : {{data.phoneNumber}}</div>
                 <div>Items :
-                    <mat-grid-list cols="6" rowHeight="1:1" *ngFor="let item of data.items">
-
-                        <mat-grid-tile>
-                            <mat-icon [ngClass]="item.iconClass">{{item.iconName}}</mat-icon>
+                    <mat-grid-list cols="3" rowHeight="1:1" *ngFor="let item of data.items">
+                        <mat-grid-tile ngClass="tile-spec">
+                            <mat-icon [ngClass]="item.iconClass">{{item.iconName}}</mat-icon> <span >{{item.name}}</span>
                         </mat-grid-tile>
-                        <mat-grid-tile>
-                            {{item.name}}
+                        <mat-grid-tile ngClass="tile-spec">
+                            <span matBadge="{{item.totalPieces}}" matBadgeOverlap="false">Total</span>
                         </mat-grid-tile>
-                        <mat-grid-tile>
-                            <mat-icon ngClass="total-icon">functions</mat-icon>
-                        </mat-grid-tile>
-                        <mat-grid-tile>
-                            {{item.totalPieces}}
-                        </mat-grid-tile>
-                        <mat-grid-tile>
-                            <mat-icon ngClass="done-icon">done_all</mat-icon>
-                        </mat-grid-tile>
-                        <mat-grid-tile>
-                            {{item.finishedPieces}}
+                        <mat-grid-tile ngClass="tile-spec">
+                            <span matBadge="{{item.finishedPieces}}" matBadgeOverlap="false">Fished</span>
                         </mat-grid-tile>
                     </mat-grid-list>
                 </div>
