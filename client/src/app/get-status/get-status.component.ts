@@ -46,7 +46,7 @@ export class GetStatusComponent implements OnInit {
 
   createFormGroup() {
     return new FormGroup({
-      custPhoneNumber: new FormControl('', [Validators.required]),
+      id: new FormControl('', [Validators.required]),
       selectedStore: new FormControl('Veloor')
     });
   }
@@ -62,7 +62,7 @@ export class GetStatusComponent implements OnInit {
     if (this.customerData.invalid) {
       return;
     } else {
-      this.getSheets(this.customerData.value.custPhoneNumber, this.customerData.value.selectedStore);
+      this.getSheets(this.customerData.value.id, this.customerData.value.selectedStore);
       this.isSearched = true;
       this.submitted = true;
     }

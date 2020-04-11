@@ -7,11 +7,11 @@
             <mat-button-toggle value="Mulamkunnathkavu">MgKavu</mat-button-toggle>
         </mat-button-toggle-group>
         <br>
-        <mat-form-field [ngClass]="{ 'has-error': submitted && f.custPhoneNumber.errors }">
+        <mat-form-field [ngClass]="{ 'has-error': submitted && f.id.errors }">
             <mat-label>Phone number/ Bill Number</mat-label>
-            <input matInput placeholder="9789821252" formControlName="custPhoneNumber" value="919789821252/VA1000">
-            <div *ngIf="submitted && f.custPhoneNumber.errors" class="help-block">
-                <div *ngIf="f.custPhoneNumber.errors.required">Phone no/ Bill number is required</div>
+            <input matInput placeholder="9789821252" formControlName="id" value="919789821252/VA1000">
+            <div *ngIf="submitted && f.id.errors" class="help-block">
+                <div *ngIf="f.id.errors.required">Phone no/ Bill number is required</div>
             </div>
         </mat-form-field>
         <button mat-icon-button color="primary" type="submit" [disabled]="!customerData.valid">
