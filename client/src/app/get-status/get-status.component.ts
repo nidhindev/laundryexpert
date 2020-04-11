@@ -21,6 +21,7 @@ export interface Item {
   name?: string;
   totalPieces?: string;
   finishedPieces?: string;
+  damagedPieces?: string,
   status?: string;
   iconName?: string;
   iconClass?: string;
@@ -84,7 +85,8 @@ export class GetStatusComponent implements OnInit {
             let item: Item = {
               name: itemRes.name,
               totalPieces: itemRes.totalPieces,
-              finishedPieces: itemRes.finishedPieces
+              finishedPieces: itemRes.finishedPieces,
+              damagedPieces: itemRes.damagedPieces
             }
             if (itemRes.status == 'Ready' || itemRes.status == 'Ready ') {
               item.iconName = 'check_circle';

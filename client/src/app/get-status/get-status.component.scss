@@ -55,15 +55,38 @@
   font-size: 10px;
   font-weight: bold;
 }
-.circle {
-  width: 30px;
-  height: 30px;
+.circle-total {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 15px;
   color: #fff;
   text-align: center;
   background:blue;
-  
+  margin-left: 10px;
+}
+.circle-damaged {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 15px;
+  color: #fff;
+  text-align: center;
+  background:red;
+  margin-left: 10px;
+}
+.circle-done {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 15px;
+  color: #fff;
+  text-align: center;
+  background:green;
+  margin-left: 10px;
+}
+.item-details {
+  width: 40%;
 }
 .example-radio-group {
   display: flex;
@@ -84,4 +107,7 @@
 }
 .mat-figure {
   right:10 !important;
+}
+.mat-badge-medium.mat-badge-above .mat-badge-content {
+  top: -3px;
 }

@@ -30,7 +30,6 @@ async function getSheet(id, selectedStore, searchBy) {
     if (configChache.has('config')) {
         console.log('config cache')
         configJs = configChache.get('config')
-        console.log(configJs)
     } else {
         const config = await sheets.spreadsheets.values.get({
             auth: client,
@@ -94,6 +93,7 @@ async function process(response, config) {
             name: rows[i][3].trim(),
             totalPieces: rows[i][4].trim(),
             finishedPieces: rows[i][5].trim(),
+            damagedPieces: rows[i][6].trim(),
             status: rows[i][7].trim(),
         }
         total = total + (parseInt(item.finishedPieces) * config.find(config => config.key == rows[i][3].trim()).value);
