@@ -9,8 +9,12 @@ export class GoogleSheetService {
 
   data: any = null;
   constructor(private http: HttpClient) { }
-  getSheet(phoneNumber, selectedStore) {
-    let res = this.http.get(`${environment.googlesheetApi}?phoneNumber=${phoneNumber}&selectedStore=${selectedStore}`);
+  getSheet(id, selectedStore) {
+    var isnum = /^\d+$/.test(id);
+    var searchBy = 'billNumber'
+    if (isnum)
+      searchBy = 'phoneNumber'
+    let res = this.http.get(`${environment.googlesheetApi}?id=${id}&selectedStore=${selectedStore}&searchBy=${searchBy}`);
     return res;
   }
 }

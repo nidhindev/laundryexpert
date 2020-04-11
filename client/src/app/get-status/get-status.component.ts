@@ -45,7 +45,7 @@ export class GetStatusComponent implements OnInit {
 
   createFormGroup() {
     return new FormGroup({
-      custPhoneNumber: new FormControl('', [Validators.required, phoneNumberValidator]),
+      custPhoneNumber: new FormControl('', [Validators.required]),
       selectedStore: new FormControl('Veloor')
     });
   }
@@ -133,7 +133,6 @@ export class GetStatusComponent implements OnInit {
         if (elements.length > 0) {
           this.showResult = true;
         }
-        console.log('sending to browser: ' + JSON.stringify(elements))
         this.dataSource = elements;
       });
   }
