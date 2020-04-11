@@ -37,10 +37,12 @@
                 </mat-expansion-panel-header>
                 <div>Name : {{data.name}}</div>
                 <div>Phone number : {{data.phoneNumber}}</div>
+                <div>Due Date: {{data.dueDate | date:'mediumDate'}}</div>
+                <div>Total: {{data.total}} Rupees</div>
                 <div>Items :
                     <mat-grid-list cols="3" rowHeight="1:1" *ngFor="let item of data.items">
                         <mat-grid-tile ngClass="tile-spec">
-                            <mat-icon [ngClass]="item.iconClass">{{item.iconName}}</mat-icon> <span >{{item.name}}</span>
+                            <mat-icon [ngClass]="item.iconClass">{{item.iconName}}</mat-icon> <span>{{item.name}}</span>
                         </mat-grid-tile>
                         <mat-grid-tile ngClass="tile-spec">
                             <span matBadge="{{item.totalPieces}}" matBadgeOverlap="false">Total</span>

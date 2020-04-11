@@ -5,6 +5,7 @@ const NodeCache = require("node-cache");
 const { spreadsheetId, creds } = require('../../config');
 const sheets = google.sheets('v4');
 const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
+const configChache = new NodeCache({ stdTTL: 86400, checkperiod: 86400, });
 
 async function getSheet(phoneNumber, selectedStore) {
     var keys = JSON.parse(creds);
@@ -12,6 +13,8 @@ async function getSheet(phoneNumber, selectedStore) {
         throw new Error('The $CREDS environment variable was not found!');
     }
     var client = null;
+    var configJs = '';
+
     if (gcpChache.has(`gcpClient-${selectedStore}`)) {
         console.log('chache')
         client = gcpChache.get(`gcpClient-${selectedStore}`)
@@ -24,42 +27,70 @@ async function getSheet(phoneNumber, selectedStore) {
         );
         gcpChache.set(`gcpClient-${selectedStore}`, client);
     }
+    if (configChache.has('config')) {
+        console.log('config cache')
+        configJs = configChache.get('config')
+        console.log(configJs)
+    } else {
+        const config = await sheets.spreadsheets.values.get({
+            auth: client,
+            spreadsheetId: spreadsheetId,
+            range: 'Config'
+        });
+        configJs = await createConfig(config.data.values)
+        configChache.set('config', configJs);
+    }
     const sheetResponse = await sheets.spreadsheets.values.get({
         auth: client,
         spreadsheetId: spreadsheetId,
         range: selectedStore
     })
-    const result = await process(sheetResponse)
+    const result = await process(sheetResponse, configJs);
     return result.filter(customer => customer.phoneNumber == phoneNumber)
 }
 
-async function process(response) {
+async function createConfig(rows) {
+    var configJs = []
+    for (var i = 1; i < rows.length; i++) {
+        var configJ = {
+            'key': rows[i][0].trim(),
+            'value': parseFloat(rows[i][1])
+        }
+    }
+    return configJs
+}
+async function process(response, config) {
     const rows = response.data.values
     var customer = {
         billNumber: '',
         name: '',
         date: '',
+        dueDate: '',
         phoneNumber: '',
-        items: []
+        items: [],
+        total: 0
     }
     var items = [];
     var customers = [];
+    var total = 0;
     for (var i = 1; i < rows.length; i++) {
 
         if (rows[i][0] !== '') {
             customer = {
-                billNumber: rows[i][0],
-                name: rows[i][1],
-                date: rows[i][2],
-                phoneNumber: rows[i][7],
+                billNumber: rows[i][0].trim(),
+                name: rows[i][1].trim(),
+                date: rows[i][2].trim(),
+                dueDate: rows[i][9],
+                phoneNumber: rows[i][8].trim(),
             }
         }
         const item = {
-            name: rows[i][3],
-            totalPieces: rows[i][4],
-            finishedPieces: rows[i][5],
-            status: rows[i][6],
+            name: rows[i][3].trim(),
+            totalPieces: rows[i][4].trim(),
+            finishedPieces: rows[i][5].trim(),
+            status: rows[i][7].trim(),
         }
+        total = total + (parseInt(item.finishedPieces) * config.find(config => config.key == rows[i][3].trim()).value);
         items.push(item);
         if (
             (typeof rows[i + 1] == 'undefined') ||
@@ -68,13 +99,16 @@ async function process(response) {
             (rows[i][0] == '' && (typeof rows[i + 1] !== 'undefined' && rows[i + 1][0] !== ''))
         ) {
             customer.items = items;
+            customer.total = total;
             customers.push(customer);
             items = [];
             customer = {
                 billNumber: '',
                 name: '',
                 date: '',
+                dueDate: '',
                 phoneNumber: '',
+                total: 0,
                 items: []
             }
         }
