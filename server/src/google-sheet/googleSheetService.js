@@ -54,8 +54,9 @@ async function createConfig(rows) {
     for (var i = 1; i < rows.length; i++) {
         var configJ = {
             'key': rows[i][0].trim(),
-            'value': parseFloat(rows[i][1])
+            'value': parseFloat(rows[i][1].trim())
         }
+        configJs.push(configJ);
     }
     return configJs
 }
