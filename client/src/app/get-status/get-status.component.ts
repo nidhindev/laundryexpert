@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GoogleSheetService } from '../google-sheet.service';
 import { Item, PeriodicElement } from './model';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-get-status',
@@ -14,9 +15,18 @@ import { Item, PeriodicElement } from './model';
 export class GetStatusComponent implements OnInit {
   customerData: FormGroup;
   submitted = false;
-  panelOpenState =  false;
-  constructor(private googleSheetService: GoogleSheetService) {
+  panelOpenState = false;
+  contentClass = 'web-status-margin';
+  constructor(private googleSheetService: GoogleSheetService, breakpointObserver: BreakpointObserver) {
     this.customerData = this.createFormGroup();
+    breakpointObserver.observe([
+      Breakpoints.HandsetPortrait
+    ]).subscribe(result => {
+      console.log("matched: "+result.matches)
+      if (result.matches) {
+        this.contentClass = 'mobile-status-margin';
+      }
+    });
   }
   createFormGroup() {
     return new FormGroup({

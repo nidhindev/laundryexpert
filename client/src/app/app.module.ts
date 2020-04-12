@@ -20,6 +20,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {LayoutModule} from '@angular/cdk/layout';
+
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatDividerModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
