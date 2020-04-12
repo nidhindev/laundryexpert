@@ -8,7 +8,6 @@ const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
 const configChache = new NodeCache({ stdTTL: 86400, checkperiod: 86400, });
 
 async function getSheet(id, selectedStore, searchBy) {
-    console.log(id+selectedStore+searchBy)
     var keys = JSON.parse(creds);
     if (!keys) {
         throw new Error('The $CREDS environment variable was not found!');
@@ -17,9 +16,9 @@ async function getSheet(id, selectedStore, searchBy) {
     var configJs = '';
 
     if (gcpChache.has(`gcpClient-${selectedStore}`)) {
-        console.log('chache')
         client = gcpChache.get(`gcpClient-${selectedStore}`)
     } else {
+        console.log('calling google auth')
         client = new JWT(
             keys.client_email,
             null,
@@ -29,9 +28,9 @@ async function getSheet(id, selectedStore, searchBy) {
         gcpChache.set(`gcpClient-${selectedStore}`, client);
     }
     if (configChache.has('config')) {
-        console.log('config cache')
         configJs = configChache.get('config')
     } else {
+        console.log('calling config sheet')
         const config = await sheets.spreadsheets.values.get({
             auth: client,
             spreadsheetId: spreadsheetId,
@@ -47,7 +46,7 @@ async function getSheet(id, selectedStore, searchBy) {
     })
     const result = await process(sheetResponse, configJs);
     if (searchBy == 'billNumber') {
-        return result.filter(customer => customer.billNumber == id)
+        return result.filter(customer => customer.billNumber.toLowerCase() == id.toLowerCase())
     } else {
         return result.filter(customer => customer.phoneNumber == id)
     }
