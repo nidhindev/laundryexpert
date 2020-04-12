@@ -20,7 +20,10 @@
 
 
     </form>
-
+    <div *ngIf="showSpinner; then show"> </div>
+    <ng-template #show>
+    <mat-spinner></mat-spinner>
+    </ng-template>
     <div *ngIf="showResult; then thenBlock else elseBlock"> </div>
     <ng-template #thenBlock>
         <mat-accordion class="accordion-extend">
@@ -71,6 +74,7 @@
         </mat-accordion>
     </ng-template>
     <ng-template #elseBlock>
-        <div *ngIf="isSearched">No Results found</div>
+        <div *ngIf="isResultNotFound; then thenBlock"></div>
+        <ng-template #thenBlock>No Results found</ng-template>
     </ng-template>
 </div>

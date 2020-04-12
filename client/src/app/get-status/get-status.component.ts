@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { phoneNumberValidator } from './phoneNumber-validator';
 import { GoogleSheetService } from '../google-sheet.service';
-import { element } from 'protractor';
 
 export interface PeriodicElement {
   phoneNumber: string;
@@ -36,14 +34,12 @@ export interface Item {
 
 
 export class GetStatusComponent implements OnInit {
-  today: number = Date.now();
   customerData: FormGroup;
   submitted = false;
   panelOpenState = false;
   constructor(private googleSheetService: GoogleSheetService) {
     this.customerData = this.createFormGroup();
   }
-
   createFormGroup() {
     return new FormGroup({
       id: new FormControl('', [Validators.required]),
@@ -53,17 +49,18 @@ export class GetStatusComponent implements OnInit {
   clickMessage = '';
   dataSource = [];
   showResult = false;
-  isSearched: boolean;
+  showSpinner = false;
+  isResultNotFound = false;
 
   ngOnInit(): void {
-    this.isSearched = false;
   }
   onSubmit() {
     if (this.customerData.invalid) {
       return;
     } else {
+      this.showSpinner = true;
+      this.isResultNotFound = false;
       this.getSheets(this.customerData.value.id, this.customerData.value.selectedStore);
-      this.isSearched = true;
       this.submitted = true;
     }
   }
@@ -134,7 +131,12 @@ export class GetStatusComponent implements OnInit {
         })
         if (elements.length > 0) {
           this.showResult = true;
+          this.submitted = false;
+        } else {
+          this.isResultNotFound = true;
+          this.submitted = false;
         }
+        this.showSpinner = false;
         this.dataSource = elements;
       });
   }
