@@ -22,7 +22,7 @@ export class GetStatusComponent implements OnInit {
     breakpointObserver.observe([
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {
-      console.log("matched: "+result.matches)
+      console.log("matched: " + result.matches)
       if (result.matches) {
         this.contentClass = 'mobile-status-margin';
       }
@@ -80,23 +80,23 @@ export class GetStatusComponent implements OnInit {
             if (itemRes.status == 'Ready' || itemRes.status == 'Ready ') {
               item.iconName = 'check_circle';
               item.iconClass = 'done-icon';
-              state = 'ready';
+              state = 'ready for delivery';
               ready = true;
             } else if (itemRes.status == 'Pending ') {
               item.iconName = 'warning';
               item.iconClass = 'inprogress-icon';
-              state = 'is being processed';
+              state = 'in process';
               pending = true
             } else if (itemRes.status == 'Ready+return') {
               item.iconName = 'check_circle';
               item.iconClass = 'delivered-icon';
               pending = true;
-              state = 'is returned';
+              state = 'ready for delivery';
             } else {
               item.iconName = 'error';
               item.iconClass = 'error-icon';
               error = true;
-              state = 'is being processed';
+              state = 'in process';
             }
             items.push(item);
           }
@@ -110,9 +110,13 @@ export class GetStatusComponent implements OnInit {
           } else {
             iconName = 'error';
             iconClass = 'error-icon';
-            state = 'is being processed';
+            state = 'in process';
           }
-          const link = `https://wa.me/${it.phoneNumber}?text=Hi ${it.name} \r\nThanks for reaching us out!. Your Order No: ${it.billNumber} is ${state}. \r\n The Laundry Expert`
+          const link = `https://wa.me/${it.phoneNumber}?text=*THE LAUNDRY EXPERT*
+          %0AHi ${it.name}, 
+          %0AYour material is _${state}_.
+          %0A_Looking forward to working with you again soon._ Thank you for choosing us.
+          %0AThe Laundry Expert 😀`
           let element = {
             name: it.name, billNumber: it.billNumber, date: it.date, dueDate: it.dueDate,
             phoneNumber: it.phoneNumber, total: it.total, link: link, iconName: iconName,
