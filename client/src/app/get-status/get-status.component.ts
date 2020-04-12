@@ -1,29 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GoogleSheetService } from '../google-sheet.service';
-
-export interface PeriodicElement {
-  phoneNumber: string;
-  billNumber: string;
-  name?: string;
-  date?: Date;
-  iconName?: string;
-  iconClass?: string;
-  link?: string;
-  items?: Item[];
-  total?: number;
-  dueDate?: Date;
-}
-
-export interface Item {
-  name?: string;
-  totalPieces?: string;
-  finishedPieces?: string;
-  damagedPieces?: string,
-  status?: string;
-  iconName?: string;
-  iconClass?: string;
-}
+import { Item, PeriodicElement } from './model';
 
 @Component({
   selector: 'app-get-status',
@@ -36,7 +14,7 @@ export interface Item {
 export class GetStatusComponent implements OnInit {
   customerData: FormGroup;
   submitted = false;
-  panelOpenState = false;
+  panelOpenState =  false;
   constructor(private googleSheetService: GoogleSheetService) {
     this.customerData = this.createFormGroup();
   }
@@ -47,19 +25,23 @@ export class GetStatusComponent implements OnInit {
     });
   }
   clickMessage = '';
-  dataSource = [];
+  dataSource;
   showResult = false;
   showSpinner = false;
   isResultNotFound = false;
 
   ngOnInit(): void {
+    this.dataSource = [];
   }
+
   onSubmit() {
+    this.dataSource = [];
     if (this.customerData.invalid) {
       return;
     } else {
       this.showSpinner = true;
       this.isResultNotFound = false;
+      this.showResult = false;
       this.getSheets(this.customerData.value.id, this.customerData.value.selectedStore);
       this.submitted = true;
     }
@@ -120,7 +102,6 @@ export class GetStatusComponent implements OnInit {
             iconClass = 'error-icon';
             state = 'is being processed';
           }
-          console.log("date: " + it.date)
           const link = `https://wa.me/${it.phoneNumber}?text=Hi ${it.name} \r\nThanks for reaching us out!. Your Order No: ${it.billNumber} is ${state}. \r\n The Laundry Expert`
           let element = {
             name: it.name, billNumber: it.billNumber, date: it.date, dueDate: it.dueDate,

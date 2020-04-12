@@ -8,6 +8,7 @@ const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
 const configChache = new NodeCache({ stdTTL: 86400, checkperiod: 86400, });
 
 async function getSheet(id, selectedStore, searchBy) {
+    console.log(id+selectedStore+searchBy)
     var keys = JSON.parse(creds);
     if (!keys) {
         throw new Error('The $CREDS environment variable was not found!');
