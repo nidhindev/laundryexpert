@@ -30,13 +30,13 @@ async function generatePdf() {
         }, {
             count: 2,
             name: 'Sari',
-            cost: '25',
-            rate: '50'
+            cost: '50',
+            rate: '25'
         }, {
             count: 3,
             name: 'Shirt',
-            cost: '20',
-            rate: '60'
+            cost: '60',
+            rate: '20'
         }, {
             count: 1,
             name: 'Suit',
