@@ -21,13 +21,21 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {LayoutModule} from '@angular/cdk/layout';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { AddComponent } from './add/add.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     GetStatusComponent,
-    BannerComponent
+    BannerComponent,
+    AddComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +58,12 @@ import {LayoutModule} from '@angular/cdk/layout';
     MatChipsModule,
     MatProgressSpinnerModule,
     LayoutModule,
+    MatMenuModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
