@@ -46,7 +46,8 @@ export class AddComponent implements OnInit {
 
   addProducts() {
     const items = <FormArray>this.productFormGroup.get('addedItems');
-    items.push(this.item)
+    if (this.item.value.item !== '' && this.item.value.quantity > 0 && this.item.value.rate > 0)
+      items.push(this.item)
     this.item = this._formBuilder.group({
       item: [''],
       quantity: [1],
