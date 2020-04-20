@@ -1,92 +1,141 @@
 <mat-vertical-stepper linear=false #stepper>
+    <mat-step [stepControl]="shopFormGroup">
+        <ng-template matStepLabel>Fill out Shop Details</ng-template>
+
+        <form [formGroup]="shopFormGroup">
+            <div class="mat-h3">
+                <span>{{shopFormGroup.value.date | date:'mediumDate'}}</span>
+            </div>
+            <div class="mat-h3">
+                Invoice: <span>{{shopFormGroup.value.invoice}}</span>
+            </div>
+            <div class="shop">
+                <mat-form-field>
+                    <mat-label>Shop</mat-label>
+                    <mat-select formControlName="shopName">
+                        <mat-option *ngFor="let shop of shops" [value]="shop">
+                            {{shop}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        </form>
+        <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
+
+        <div class="back">
+            <button mat-button matStepperPrevious color="warn">Back</button>
+        </div>
+    </mat-step>
     <mat-step [stepControl]="customerFormGroup">
         <form [formGroup]="customerFormGroup">
             <ng-template matStepLabel>Fill out Customer Details</ng-template>
-            <mat-form-field>
-                <mat-label>Name</mat-label>
-                <input matInput placeholder="John Snow" formControlName="name">
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>Phone</mat-label>
-                <input matInput placeholder="919495345789" formControlName="phoneNumber">
-            </mat-form-field>
-            <div>
-                <button mat-button matStepperNext>Next</button>
+            <div class="customer-data">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="John Snow" formControlName="name">
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Phone</mat-label>
+                    <input matInput placeholder="919495345789" formControlName="phoneNumber">
+                </mat-form-field>
+            </div>
+            <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
+            <div class="back">
+                <button mat-button matStepperPrevious color="warn">Back</button>
             </div>
         </form>
     </mat-step>
 
     <mat-step [stepControl]="productFormGroup">
         <form [formGroup]="productFormGroup" class="content-product">
-            <div *ngFor="let product of productFormGroup.get('items')['controls']; let i = index;">
-                <div *ngIf="product">
-                    <div [formGroupName]="i">
-                        <mat-accordion>
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        Personal data
-                                    </mat-panel-title>
-                                    <mat-panel-description>
-                                        Type your name and age
-                                    </mat-panel-description>
-                                </mat-expansion-panel-header>
-                            </mat-expansion-panel>
-                        </mat-accordion>
-                    </div>
-                </div>
-            </div>
             <ng-template matStepLabel>Fill out Item Details</ng-template>
-            <div formArrayName="items">
-                <div *ngFor="let product of productFormGroup.get('items')['controls']; let i = index;">
-                    <div [formGroupName]="i">
-                        <div class="product-container">
-                            <div class="field-group">
-                                <mat-form-field ngClass="item">
-                                    <mat-label>Item</mat-label>
-                                    <input matInput type="text" placeholder="1,2..." formControlName="item">
-                                </mat-form-field>
-                                <mat-form-field class="quantity">
-                                    <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
-                                        (click)="onDecrement(i)" [disabled]="shouldDisableDecrement(i)">
-                                        <mat-icon>remove</mat-icon>
-                                    </button>
+            <div class="item-preview">
+                <mat-accordion>
+                    <mat-expansion-panel
+                        *ngFor="let product of productFormGroup.get('addedItems')['controls']; let i = index;">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{product.value.item}}
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Remark: {{product.value.remark}}
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        <ng-template matExpansionPanelContent>
+                            <div class="items-details">
+                                <mat-form-field>
                                     <mat-label>Quantity</mat-label>
-                                    <input matInput type="number" formControlName="quantity">
-                                    <button mat-button mat-icon-button matSuffix aria-label="Add" color="green"
-                                        (click)="onIncrement(i)">
-                                        <mat-icon>add</mat-icon>
-                                    </button>
+                                    <input matInput readonly value="{{product.value.quantity}}">
                                 </mat-form-field>
-                                <mat-form-field class="rate">
-                                    <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
-                                        (click)="onDecrementMinusTen(i)" [disabled]="shouldDisableDecrement(i)">
-                                        <mat-icon>remove</mat-icon><span class="incr">10</span>
-                                    </button>
+                                <mat-form-field>
                                     <mat-label>Rate</mat-label>
-                                    <input matInput type="number" formControlName="rate">
-                                    <button mat-button mat-icon-button matSuffix aria-label="Add" color="green"
-                                        (click)="onInclementPlusTen(i)">
-                                        <mat-icon>add</mat-icon><span class="incr">10</span>
-                                    </button>
-                                </mat-form-field>
-
-
-                            </div>
-                            <div class="field-group-remark">
-                                <mat-form-field class="remark">
-                                    <mat-label>Remark</mat-label>
-                                    <textarea matInput type="text" placeholder="1,2..."
-                                        formControlName="remark"></textarea>
+                                    <input matInput readonly value="{{product.value.rate}}">
                                 </mat-form-field>
                             </div>
-
-                        </div>
-                    </div>
-                </div>
+                        </ng-template>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
-
-            <button mat-button (click)="addProducts()">Add</button>
         </form>
+        <form [formGroup]="item" class="content-product">
+            <div class="product-container">
+                <div class="field-group">
+                    <span class="item">
+                        <mat-form-field ngClass="item">
+                            <mat-label>Item</mat-label>
+                            <input matInput type="text" placeholder="Shirt" formControlName="item">
+                        </mat-form-field>
+                    </span>
+                    <mat-form-field>
+                        <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
+                            (click)="onDecrement(0)" [disabled]="shouldDisableDecrement(0)">
+                            <mat-icon>remove</mat-icon>
+                        </button>
+                        <mat-label>Quantity</mat-label>
+                        <input matInput type="number" formControlName="quantity">
+                        <button mat-button mat-icon-button matSuffix aria-label="Add" color="green"
+                            (click)="onIncrement(0)">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-form-field class="rate">
+                        <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
+                            (click)="onDecrementMinusTen(0)" [disabled]="shouldDisableDecrement(0)">
+                            <mat-icon>remove</mat-icon><span class="incr">10</span>
+                        </button>
+                        <mat-label>Rate</mat-label>
+                        <input matInput type="number" formControlName="rate">
+                        <button mat-button mat-icon-button matSuffix aria-label="Add" color="green"
+                            (click)="onInclementPlusTen(0)">
+                            <mat-icon>add</mat-icon><span class="incr">10</span>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <div class="field-group-remark">
+                    <mat-form-field class="remark">
+                        <mat-label>Remark</mat-label>
+                        <textarea matInput type="text" formControlName="remark"></textarea>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </form>
+        <div class="addProduct">
+            <button mat-button (click)="addProducts()">
+                <mat-icon class="add-icon">add_circle</mat-icon>
+            </button><br>
+        </div>
+        <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
+        <div class="back">
+            <button mat-button matStepperPrevious color="warn">Back</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>Click submit to save.</p>
+        <div class="next">
+            <button mat-raised-button matStepperPrevious color="primary">Submit</button>
+        </div>
     </mat-step>
 </mat-vertical-stepper>

@@ -1,7 +1,6 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add',
@@ -10,11 +9,12 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class AddComponent implements OnInit {
   customerFormGroup: FormGroup;
-  items: FormArray;
+  shopFormGroup: FormGroup;
+  item: FormGroup;
   addedItems: FormArray = new FormArray([]);
   productFormGroup: FormGroup;
   itemControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  shops: string[] = ['Veloor', 'Velappaya', 'MgKavu'];
   filteredOptions: Observable<string[]>;
 
 
@@ -27,81 +27,84 @@ export class AddComponent implements OnInit {
       phoneNumber: ['']
     });
     this.productFormGroup = this._formBuilder.group({
-      items: new FormArray([
-        this._formBuilder.group({
-          item: [''],
-          quantity: [1],
-          rate: [''],
-          remark: ['']
-        })
+      addedItems: new FormArray([
       ])
+    });
+    this.item = this._formBuilder.group({
+      item: [''],
+      quantity: [1],
+      rate: [50],
+      remark: ['']
+    });
+    this.shopFormGroup = this._formBuilder.group({
+      invoice: [new Date().getTime()],
+      shopName: [this.shops[0]],
+      date: [Date.now()]
     })
   }
 
 
   addProducts() {
-    const items = <FormArray>this.productFormGroup.get('items');
-    items.push(
-      this._formBuilder.group({
-        item: [''],
-        quantity: [1],
-        rate: [''],
-        remark: ['']
-      })
-    );
-    this.addedItems.push(items)
+    const items = <FormArray>this.productFormGroup.get('addedItems');
+    items.push(this.item)
+    this.item = this._formBuilder.group({
+      item: [''],
+      quantity: [1],
+      rate: [50],
+      remark: ['']
+    })
   }
 
   onIncrement(index): void {
-    const items = <FormArray>this.productFormGroup.get('items');
-    let value: number = Number(items.at(index).value.quantity) + 1;
-    items.at(index).patchValue({
+    //const items = <FormArray>this.productFormGroup.get('items');
+    let value: number = Number(this.item.value.quantity) + 1;
+    this.item.patchValue({
       quantity: [value]
     })
 
   }
 
   onDecrement(index): void {
-    const items = <FormArray>this.productFormGroup.get('items');
-    let value: number = Number(items.at(index).value.quantity) - 1;
-    items.at(index).patchValue({
+    //const items = <FormArray>this.productFormGroup.get('items');
+    let value: number = Number(this.item.value.quantity) - 1;
+    this.item.patchValue({
       quantity: [value]
     })
   }
   onDecrementMinusFive(index) {
-    const items = <FormArray>this.productFormGroup.get('items');
-    let value: number = Number(items.at(index).value.rate) - 5;
-    items.at(index).patchValue({
+    //const items = <FormArray>this.productFormGroup.get('items');
+    let value: number = Number(this.item.value.rate) - 5;
+    this.item.patchValue({
       rate: [value]
     })
   }
   onDecrementMinusTen(index) {
-    const items = <FormArray>this.productFormGroup.get('items');
-    let value: number = Number(items.at(index).value.rate) - 10;
-    items.at(index).patchValue({
+    //const items = <FormArray>this.productFormGroup.get('items');
+    let value: number = Number(this.item.value.rate) - 10;
+    this.item.patchValue({
       rate: [value]
     })
   }
   onInclementPlusFive(index) {
-    const items = <FormArray>this.productFormGroup.get('items');
-    let value: number = Number(items.at(index).value.rate) + 5;
-    items.at(index).patchValue({
+    //const items = <FormArray>this.productFormGroup.get('items');
+    let value: number = Number(this.item.value.rate) + 5;
+    this.item.patchValue({
       rate: [value]
     })
   }
   onInclementPlusTen(index) {
-    const items = <FormArray>this.productFormGroup.get('items');
-    let value: number = Number(items.at(index).value.rate) + 10;
-    items.at(index).patchValue({
+    //const items = <FormArray>this.productFormGroup.get('items');
+    let value: number = Number(this.item.value.rate) + 10;
+    this.item.patchValue({
       rate: [value]
     })
   }
   shouldDisableDecrement(index): boolean {
-    const items = <FormArray>this.productFormGroup.get('items');
-    if (Number(items.at(index).value.quantity) <= 0) {
+    //const items = <FormArray>this.productFormGroup.get('items');
+    if (Number(this.item.value.quantity) <= 0) {
       return true;
     } else {
       return false;
     }
   }
-}
+} 
