@@ -70,12 +70,22 @@
     width: 70%;
     margin-bottom: 30px;
 }
-.item-preview .mat-expansion-panel{
-    background-color: #9FA8DA;
+.item-preview .mat-expansion-panel {
+    background-color: #9fa8da;
 }
 .add-icon {
     color: green;
     font-size: 50px;
+}
+.mat-expansion-panel {
+    margin-bottom: 5px;
+}
+.mat-expansion-panel-header-description {
+    justify-content: space-between;
+}
+.mat-expansion-panel-header-title,
+.mat-expansion-panel-header-description {
+    flex-basis: 0;
 }
 @media screen and (min-width: 320px) and (max-width: 412px) {
     .mat-button {

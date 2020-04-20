@@ -55,12 +55,9 @@
                     <mat-expansion-panel
                         *ngFor="let product of productFormGroup.get('addedItems')['controls']; let i = index;">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
-                                {{product.value.item}}
-                            </mat-panel-title>
-                            <mat-panel-description>
-                                Remark: {{product.value.remark}}
-                            </mat-panel-description>
+                                <mat-panel-title>
+                                    {{product.value.item}}
+                                </mat-panel-title>
                         </mat-expansion-panel-header>
                         <ng-template matExpansionPanelContent>
                             <div class="items-details">
@@ -72,6 +69,7 @@
                                     <mat-label>Rate</mat-label>
                                     <input matInput readonly value="{{product.value.rate}}">
                                 </mat-form-field>
+                                <p>Remark: {{product.value.remark}}</p>
                             </div>
                         </ng-template>
                     </mat-expansion-panel>
