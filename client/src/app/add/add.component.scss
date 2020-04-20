@@ -1,0 +1,41 @@
+.content-product {
+    width: 100%;
+}
+.mat-form-field {
+    font-size: 15px;
+    margin-right: 20px;
+    text-align: center;
+    width: 40%;
+}
+
+.mat-button {
+    float: right;
+    margin-right: 20%;
+}
+.incr {
+    margin-top: 12px;
+}
+@media screen and (min-width: 320px) and (max-width: 412px) {
+    .mat-button {
+        margin-right: 10%;
+    }
+
+    .content-product .product-container .field-group .mat-form-field {
+        margin-right: 5px;
+        width: 90%;
+        font-size: 20px;
+    }
+    .content-product .product-container .field-group .mat-form-field .mat-icon {
+        margin-top: 10px;
+        width: 90%;
+        font-size: 20px;
+    }
+    .content-product .product-container .field-group .mat-form-field input.mat-input-element {
+        margin-top: -0.0625em;
+    }
+
+    .content-product .product-container .field-group-remark .mat-form-field {
+        margin-right: 10px;
+        width: 100%;
+    }
+}
