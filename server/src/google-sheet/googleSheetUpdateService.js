@@ -30,20 +30,12 @@ async function updateSheet(body) {
         range: selectedStore
     })
     const request = {
-        // The ID of the spreadsheet to update.
-        spreadsheetId: spreadsheetId,  // TODO: Update placeholder value.
-
-        // The A1 notation of the values to update.
-        range: `${selectedStore}!A${sheetResponse.data.values.length}:J${sheetResponse.data.values.length + body.values.length}`,  // TODO: Update placeholder value.
-
-        // How the input data should be interpreted.
-        valueInputOption: 'USER_ENTERED',  // TODO: Update placeholder value.
-
+        spreadsheetId: spreadsheetId,
+        range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:L${sheetResponse.data.values.length + 1 + body.values.length}`,  // TODO: Update placeholder value.
+        valueInputOption: 'USER_ENTERED',
         resource: {
-            // TODO: Add desired properties to the request body. All existing properties
-            // will be replaced.
             majorDimension: "ROWS",
-            range: `${selectedStore}!A${sheetResponse.data.values.length}:J${sheetResponse.data.values.length + body.values.length}`,
+            range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:L${sheetResponse.data.values.length + 1 + body.values.length}`,
             values: body.values
         },
 
@@ -52,8 +44,6 @@ async function updateSheet(body) {
     try {
         const response = (await sheets.spreadsheets.values.update(request)).data;
         return response
-        // TODO: Change code below to process the `response` object:
-        console.log(JSON.stringify(response, null, 2));
     } catch (err) {
         console.error(err);
         return err;
