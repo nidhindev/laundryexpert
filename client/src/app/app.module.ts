@@ -28,6 +28,9 @@ import { AddComponent } from './add/add.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatSelectModule} from '@angular/material/select';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { ResultComponent } from './add/result/result.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 
 @NgModule({
@@ -35,7 +38,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     AppComponent,
     GetStatusComponent,
     BannerComponent,
-    AddComponent
+    AddComponent,
+    ResultComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +68,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatStepperModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatDialogModule,
+    ClipboardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

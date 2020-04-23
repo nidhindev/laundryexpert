@@ -58,7 +58,7 @@
             <form [formGroup]="productFormGroup" class="content-product">
                 <ng-template matStepLabel>Fill out Item Details</ng-template>
                 <div class="item-preview">
-                    <mat-accordion>
+                    <mat-accordion *ngIf = "isitemPreviewEnabled">
                         <mat-expansion-panel
                             *ngFor="let product of productFormGroup.get('addedItems')['controls']; let i = index;">
                             <mat-expansion-panel-header>
@@ -69,6 +69,7 @@
                             <ng-template matExpansionPanelContent>
                                 <div class="items-details">
                                     <mat-form-field>
+                                        koko
                                         <mat-label>Quantity</mat-label>
                                         <input matInput readonly value="{{product.value.quantity}}">
                                     </mat-form-field>

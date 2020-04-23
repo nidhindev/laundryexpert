@@ -1,9 +1,12 @@
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Shop, Customer, Item, Sheet } from './model'
 import { sheetUpdator } from './objectConsolidator'
 import { GoogleSheetService } from '../google-sheet.service';
+import { NavigationExtras, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ResultComponent } from './result/result.component'
 
 @Component({
   selector: 'app-add',
@@ -19,15 +22,22 @@ export class AddComponent implements OnInit {
   itemControl = new FormControl();
   shops: string[] = ['Veloor', 'Velappaya', 'MgKavu'];
   filteredOptions: Observable<string[]>;
+  isitemPreviewEnabled: boolean;
 
   updateSuccess: boolean = false;
   isUpdated: boolean = false;
   responseHasError: boolean = false;
 
-  constructor(private _formBuilder: FormBuilder, private googleSheetService: GoogleSheetService) {
+  animal: string;
+  name: string;
+
+
+  constructor(private _formBuilder: FormBuilder, public dialog: MatDialog,
+    private googleSheetService: GoogleSheetService, public router: Router) {
   }
 
   ngOnInit(): void {
+    this.isitemPreviewEnabled = false
     this.customerFormGroup = this._formBuilder.group({
       name: [''],
       phoneNumber: ['']
@@ -81,19 +91,31 @@ export class AddComponent implements OnInit {
         } else {
           this.responseHasError = true;
         }
-        this.customerFormGroup.reset();
-        this.shopFormGroup.reset();
-        this.item.reset();
-        this.productFormGroup.reset(this._formBuilder.group({
-          addedItems: new FormArray([])
-        }));
+        const dialogRef = this.dialog.open(ResultComponent, {
+          width: '250px',
+          data: { shop: shop, customer: customer }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
+          this.customerFormGroup.reset();
+          this.shopFormGroup.reset();
+          this.item.reset();
+          this.productFormGroup = this._formBuilder.group({
+            addedItems: new FormArray([
+            ])
+          });
+          this.isitemPreviewEnabled = false;
+        });
+
       });
-    this.addedItems = new FormArray([])
+
   }
   addProducts() {
     const items = <FormArray>this.productFormGroup.get('addedItems');
     if (this.item.value.item !== '' && this.item.value.quantity > 0 && this.item.value.rate > 0)
       items.push(this.item)
+    this.isitemPreviewEnabled = true;
     this.item = this._formBuilder.group({
       item: [''],
       quantity: [1],

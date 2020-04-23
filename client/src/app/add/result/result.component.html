@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Accepted</h1>
+<div mat-dialog-content>
+    <h2>Customer: {{data.customer.name}}</h2> <br>
+    <h3>Invoice No: {{data.shop.invoice}}</h3>
+    <mat-form-field>
+        <mat-label>Favorite Animal</mat-label>
+        <input matInput [(ngModel)]="data.animal">
+    </mat-form-field>
+</div>
+<div>
+    <p>Click ok, invoice number is copied</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button [cdkCopyToClipboard]="data.shop.invoice" mat-dialog-close="ok" cdkFocusInitial>Ok</button>
+</div>
