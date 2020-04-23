@@ -15,12 +15,11 @@ export class GoogleSheetService {
     var searchBy = 'billNumber'
     if (isphoneNumber)
       searchBy = 'phoneNumber'
-    let res = this.http.get(`${environment.googlesheetApi}?id=${id}&selectedStore=${selectedStore}&searchBy=${searchBy}`);
+    let res = this.http.get(`${environment.googlesheetApi}/customer?id=${id}&selectedStore=${selectedStore}&searchBy=${searchBy}`);
     return res;
   }
 
   updateSheet(sheet ) {
-    console.log(JSON.stringify(sheet))
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
@@ -28,5 +27,9 @@ export class GoogleSheetService {
     };
     let res = this.http.put(`${environment.googlesheetApi}/update`, sheet, httpOptions);
     return res;
+  }
+
+  getPricing() {
+    return this.http.get(`${environment.googlesheetApi}/pricing`);
   }
 }

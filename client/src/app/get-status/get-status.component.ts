@@ -22,7 +22,6 @@ export class GetStatusComponent implements OnInit {
     breakpointObserver.observe([
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {
-      console.log("matched: " + result.matches)
       if (result.matches) {
         this.contentClass = 'mobile-status-margin';
       }
@@ -58,7 +57,6 @@ export class GetStatusComponent implements OnInit {
   }
 
   getSheets(phoneNumber, selectedStore): void {
-    console.log(selectedStore)
     const elements: PeriodicElement[] = [];
     this.googleSheetService.getSheet(phoneNumber, selectedStore)
       .subscribe((data: any[]) => {

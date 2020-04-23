@@ -6,7 +6,7 @@ import { sheetUpdator } from './objectConsolidator'
 import { GoogleSheetService } from '../google-sheet.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultComponent } from './result/result.component'
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add',
@@ -21,16 +21,16 @@ export class AddComponent implements OnInit {
   productFormGroup: FormGroup;
   itemControl = new FormControl();
   shops: string[] = ['Veloor', 'Velappaya', 'MgKavu'];
-  itemOptions: Array<string> = ['Shirt', 'Pant', 'Jacket', 'SetSaree','Saree', 'Dothi', 'Blouse', 'Churithar']
+  itemOptions: Array<string> = []
   filteredOptions: Observable<string[]>;
   isitemPreviewEnabled: boolean;
 
   updateSuccess: boolean = false;
   isUpdated: boolean = false;
+  notReady: boolean = true;
   responseHasError: boolean = false;
 
-  animal: string;
-  name: string;
+  itemNameSubscription
 
 
   constructor(private _formBuilder: FormBuilder, public dialog: MatDialog,
@@ -50,7 +50,7 @@ export class AddComponent implements OnInit {
     this.item = this._formBuilder.group({
       item: [''],
       quantity: [1],
-      rate: [50],
+      rate: [],
       remark: ['']
     });
     this.shopFormGroup = this._formBuilder.group({
@@ -58,11 +58,27 @@ export class AddComponent implements OnInit {
       shopName: [],
       date: [Date.now()]
     });
-    this.filteredOptions = this.item.get("item").valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
+
+    this.googleSheetService.getPricing().subscribe(result => {
+      for (let entry of JSON.parse(JSON.stringify(result))) {
+        this.itemOptions.push(entry.key)
+      }
+      this.filteredOptions = this.item.get("item").valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+      this.notReady = false
+    });
+    this.itemNameSubscription = this.item.get("item").valueChanges.subscribe(val => {
+      this.googleSheetService.getPricing().subscribe(result => {
+        let priceObject = JSON.parse(JSON.stringify(result)).find(config => config.key == val)
+        if (priceObject) {
+          this.item.get("rate").setValue(Number(priceObject.value))
+        }
+      })
+
+    })
   }
 
   onSubmit() {
@@ -90,7 +106,6 @@ export class AddComponent implements OnInit {
     let sheet: Sheet = sheetUpdator(shop, customer, items);
     this.googleSheetService.updateSheet(sheet)
       .subscribe((response: any) => {
-        console.log('response: ' + JSON.stringify(response));
         this.isUpdated = false
         if (response.updatedRows == items.length) {
           this.updateSuccess = true;
@@ -103,7 +118,6 @@ export class AddComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          console.log('The dialog was closed');
           this.customerFormGroup.reset();
           this.shopFormGroup.reset();
           this.item.reset();

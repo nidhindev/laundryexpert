@@ -49,6 +49,7 @@
 }
 .addProduct {
     padding-right: 370px;
+    height: 70px;
 }
 .addProduct .mat-button {
     width: 100%;
@@ -87,6 +88,14 @@
 .mat-expansion-panel-header-description {
     flex-basis: 0;
 }
+
+.spinner-wrapper {
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
 @media screen and (min-width: 320px) and (max-width: 412px) {
     .mat-button {
         margin-right: 10%;
