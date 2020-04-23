@@ -96,6 +96,7 @@ async function process(response, config) {
             damagedPieces: rows[i][6].trim(),
             status: rows[i][7].trim(),
         }
+        console.log("item: "+rows[i][3])
         total = total + (parseInt(item.finishedPieces) * config.find(config => config.key == rows[i][3].trim()).value);
         items.push(item);
         if (

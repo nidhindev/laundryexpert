@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { Shop, Customer, Item, Sheet } from './model'
 import { sheetUpdator } from './objectConsolidator'
 import { GoogleSheetService } from '../google-sheet.service';
-import { NavigationExtras, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultComponent } from './result/result.component'
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-add',
@@ -21,6 +21,7 @@ export class AddComponent implements OnInit {
   productFormGroup: FormGroup;
   itemControl = new FormControl();
   shops: string[] = ['Veloor', 'Velappaya', 'MgKavu'];
+  itemOptions: Array<string> = ['Shirt', 'Pant', 'Jacket', 'SetSaree','Saree', 'Dothi', 'Blouse', 'Churithar']
   filteredOptions: Observable<string[]>;
   isitemPreviewEnabled: boolean;
 
@@ -33,7 +34,7 @@ export class AddComponent implements OnInit {
 
 
   constructor(private _formBuilder: FormBuilder, public dialog: MatDialog,
-    private googleSheetService: GoogleSheetService, public router: Router) {
+    private googleSheetService: GoogleSheetService) {
   }
 
   ngOnInit(): void {
@@ -54,9 +55,14 @@ export class AddComponent implements OnInit {
     });
     this.shopFormGroup = this._formBuilder.group({
       invoice: [new Date().getTime()],
-      shopName: [this.shops[0]],
+      shopName: [],
       date: [Date.now()]
-    })
+    });
+    this.filteredOptions = this.item.get("item").valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
   onSubmit() {
@@ -175,5 +181,10 @@ export class AddComponent implements OnInit {
     } else {
       return false;
     }
+  }
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.itemOptions.filter(option => option.toLowerCase().includes(filterValue));
   }
 } 

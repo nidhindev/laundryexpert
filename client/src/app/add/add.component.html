@@ -90,8 +90,12 @@
                         <span class="item">
                             <mat-form-field ngClass="item">
                                 <mat-label>Item</mat-label>
-                                <input matInput type="text" placeholder="Shirt" formControlName="item" required>
+                                <input matInput type="text" placeholder="Shirt" formControlName="item" [matAutocomplete]="auto" required>
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option *ngFor="let itemOption of filteredOptions | async" [value]="itemOption">{{itemOption}}</mat-option>
+                                  </mat-autocomplete>
                             </mat-form-field>
+                            
                         </span>
                         <mat-form-field>
                             <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
