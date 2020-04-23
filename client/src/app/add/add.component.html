@@ -1,4 +1,10 @@
-
+<div *ngIf="isUpdated; then showSpinner else showForm"> </div>
+    <ng-template #showSpinner>
+        <div class="spinner-wrapper">
+            <mat-progress-spinner mode="indeterminate" diameter=30></mat-progress-spinner>
+        </div>
+    </ng-template>    
+<ng-template #showForm>
     <mat-vertical-stepper linear=true #stepper>
         <mat-step [stepControl]="shopFormGroup">
             <ng-template matStepLabel>Fill out Shop Details</ng-template>
@@ -139,3 +145,4 @@
 
         </mat-step>
     </mat-vertical-stepper>
+</ng-template>

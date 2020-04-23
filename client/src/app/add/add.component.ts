@@ -14,12 +14,15 @@ export class AddComponent implements OnInit {
   customerFormGroup: FormGroup;
   shopFormGroup: FormGroup;
   item: FormGroup;
-  addedItems: FormArray = new FormArray([]);
+  addedItems: FormArray;
   productFormGroup: FormGroup;
   itemControl = new FormControl();
   shops: string[] = ['Veloor', 'Velappaya', 'MgKavu'];
   filteredOptions: Observable<string[]>;
 
+  updateSuccess: boolean = false;
+  isUpdated: boolean = false;
+  responseHasError: boolean = false;
 
   constructor(private _formBuilder: FormBuilder, private googleSheetService: GoogleSheetService) {
   }
@@ -47,6 +50,7 @@ export class AddComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isUpdated = true
     let shop: Shop = {
       invoice: this.shopFormGroup.value.invoice,
       date: this.shopFormGroup.value.date,
@@ -69,10 +73,22 @@ export class AddComponent implements OnInit {
     }
     let sheet: Sheet = sheetUpdator(shop, customer, items);
     this.googleSheetService.updateSheet(sheet)
-      .subscribe((response: any[]) => {
+      .subscribe((response: any) => {
         console.log('response: ' + JSON.stringify(response));
+        this.isUpdated = false
+        if (response.updatedRows == items.length) {
+          this.updateSuccess = true;
+        } else {
+          this.responseHasError = true;
+        }
+        this.customerFormGroup.reset();
+        this.shopFormGroup.reset();
+        this.item.reset();
+        this.productFormGroup.reset(this._formBuilder.group({
+          addedItems: new FormArray([])
+        }));
       });
-
+    this.addedItems = new FormArray([])
   }
   addProducts() {
     const items = <FormArray>this.productFormGroup.get('addedItems');

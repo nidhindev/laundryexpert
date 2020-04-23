@@ -13,7 +13,6 @@ router.put('/update', (req, res) => {
   googleSheetUpdateService.updateSheet(req.body).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-    console.log(JSON.stringify(res.getHeaders))
     res.json(result).status(200);
   });
 });
