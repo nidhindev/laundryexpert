@@ -1,9 +1,9 @@
 <div *ngIf="isUpdated || notReady ; then showSpinner else showForm"> </div>
-    <ng-template #showSpinner>
-        <div class="spinner-wrapper">
-            <mat-progress-spinner mode="indeterminate" diameter=70></mat-progress-spinner>
-        </div>
-    </ng-template>    
+<ng-template #showSpinner>
+    <div class="spinner-wrapper">
+        <mat-progress-spinner mode="indeterminate" diameter=70></mat-progress-spinner>
+    </div>
+</ng-template>
 <ng-template #showForm>
     <mat-vertical-stepper linear=true #stepper>
         <mat-step [stepControl]="shopFormGroup">
@@ -58,7 +58,7 @@
             <form [formGroup]="productFormGroup" class="content-product">
                 <ng-template matStepLabel>Fill out Item Details</ng-template>
                 <div class="item-preview">
-                    <mat-accordion *ngIf = "isitemPreviewEnabled">
+                    <mat-accordion *ngIf="isitemPreviewEnabled">
                         <mat-expansion-panel
                             *ngFor="let product of productFormGroup.get('addedItems')['controls']; let i = index;">
                             <mat-expansion-panel-header>
@@ -90,12 +90,14 @@
                         <span class="item">
                             <mat-form-field ngClass="item">
                                 <mat-label>Item</mat-label>
-                                <input matInput type="text" placeholder="Shirt" formControlName="item" [matAutocomplete]="auto" required>
+                                <input matInput type="text" placeholder="Shirt" formControlName="item"
+                                    [matAutocomplete]="auto" required>
                                 <mat-autocomplete #auto="matAutocomplete">
-                                    <mat-option *ngFor="let itemOption of filteredOptions | async" [value]="itemOption">{{itemOption}}</mat-option>
-                                  </mat-autocomplete>
+                                    <mat-option *ngFor="let itemOption of filteredOptions | async" [value]="itemOption">
+                                        {{itemOption}}</mat-option>
+                                </mat-autocomplete>
                             </mat-form-field>
-                            
+
                         </span>
                         <mat-form-field>
                             <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
@@ -135,7 +137,7 @@
                     </div>
                 </div>
             </form>
-            
+
             <!-- <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
             <div class="back">
                 <button mat-button matStepperPrevious color="warn">Back</button>
@@ -144,12 +146,22 @@
         <mat-step>
             <ng-template matStepLabel>Done</ng-template>
             <h2 style="text-align: center;">Preview</h2>
+            <h3 mat-subheader>Details</h3>
             <h3>Invoice: {{shopFormGroup.value.invoice}}</h3>
             <h3>Shop: {{shopFormGroup.value.shopName}}</h3>
             <h3>Items</h3>
-            <mat-list role="list" *ngFor="let product of productFormGroup.get('addedItems')['controls'];">
-                <mat-list-item role="listitem">{{product.value.item}} {{product.value.quantity}} {{product.value.rate}}</mat-list-item>
-              </mat-list>
+            <mat-grid-list cols="3" rowHeight="2:1"  *ngFor="let product of productFormGroup.get('addedItems')['controls'];">
+                <mat-grid-tile >
+                    {{product.value.item}}
+                </mat-grid-tile>
+                <mat-grid-tile >
+                   Qualtity: {{product.value.quantity}}
+                </mat-grid-tile>
+                <mat-grid-tile >
+                    Rate: {{product.value.rate}}
+                </mat-grid-tile>
+                <mat-divider></mat-divider>
+            </mat-grid-list>
             <div class="next">
                 <button mat-raised-button color="primary" (click)="onSubmit()" type="submit">Save</button>
             </div>

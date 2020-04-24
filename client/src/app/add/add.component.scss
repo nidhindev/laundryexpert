@@ -66,6 +66,7 @@
 }
 .next {
     padding-right: 200px;
+    margin-bottom:30px;
 }
 .item-preview {
     width: 70%;
@@ -96,7 +97,9 @@
     align-items: center;
     justify-content: center;
   }
-
+.item-preview {
+    margin-right: 8px;
+}
 @media screen and (min-width: 320px) and (max-width: 412px) {
     .mat-button {
         margin-right: 10%;
