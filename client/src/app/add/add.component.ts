@@ -29,7 +29,7 @@ export class AddComponent implements OnInit {
   isUpdated: boolean = false;
   notReady: boolean = true;
   responseHasError: boolean = false;
-
+  priceList
   itemNameSubscription
 
 
@@ -72,6 +72,7 @@ export class AddComponent implements OnInit {
     });
     this.itemNameSubscription = this.item.get("item").valueChanges.subscribe(val => {
       this.googleSheetService.getPricing().subscribe(result => {
+        this.priceList = JSON.parse(JSON.stringify(result))
         let priceObject = JSON.parse(JSON.stringify(result)).find(config => config.key == val)
         if (priceObject) {
           this.item.get("rate").setValue(Number(priceObject.value))
@@ -79,6 +80,16 @@ export class AddComponent implements OnInit {
       })
 
     })
+  }
+  ngDoCheck() {
+    if (this.priceList) {
+      this.itemNameSubscription = this.item.get("item").valueChanges.subscribe(val => {
+        let priceObject = JSON.parse(JSON.stringify(this.priceList)).find(config => config.key == val)
+        if (priceObject) {
+          this.item.get("rate").setValue(Number(priceObject.value))
+        }
+      })
+    }
   }
 
   onSubmit() {
@@ -141,7 +152,12 @@ export class AddComponent implements OnInit {
       quantity: [1],
       rate: [50],
       remark: ['']
-    })
+    });
+    this.filteredOptions = this.item.get("item").valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
   }
 
   onIncrement(index): void {

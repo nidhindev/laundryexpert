@@ -128,14 +128,14 @@
                             <textarea matInput type="text" formControlName="remark"></textarea>
                         </mat-form-field>
                     </div>
-
+                    <div class="addProduct">
+                        <button mat-button (click)="addProducts()">
+                            <mat-icon class="add-icon">add_circle</mat-icon>
+                        </button><br>
+                    </div>
                 </div>
             </form>
-            <div class="addProduct">
-                <button mat-button (click)="addProducts()">
-                    <mat-icon class="add-icon">add_circle</mat-icon>
-                </button><br>
-            </div>
+            
             <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
             <div class="back">
                 <button mat-button matStepperPrevious color="warn">Back</button>
