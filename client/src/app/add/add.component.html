@@ -28,11 +28,11 @@
                 </div>
 
             </form>
-            <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
+            <!-- <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
 
             <div class="back">
                 <button mat-button matStepperPrevious color="warn">Back</button>
-            </div>
+            </div> -->
         </mat-step>
         <mat-step [stepControl]="customerFormGroup">
             <form [formGroup]="customerFormGroup">
@@ -47,10 +47,10 @@
                         <input matInput placeholder="919495345789" formControlName="phoneNumber" required>
                     </mat-form-field>
                 </div>
-                <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
+                <!-- <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
                 <div class="back">
                     <button mat-button matStepperPrevious color="warn">Back</button>
-                </div>
+                </div> -->
             </form>
         </mat-step>
 
@@ -136,16 +136,22 @@
                 </div>
             </form>
             
-            <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
+            <!-- <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
             <div class="back">
                 <button mat-button matStepperPrevious color="warn">Back</button>
-            </div>
+            </div> -->
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Done</ng-template>
-            <p>Click submit to save.</p>
+            <h2 style="text-align: center;">Preview</h2>
+            <h3>Invoice: {{shopFormGroup.value.invoice}}</h3>
+            <h3>Shop: {{shopFormGroup.value.shopName}}</h3>
+            <h3>Items</h3>
+            <mat-list role="list" *ngFor="let product of productFormGroup.get('addedItems')['controls'];">
+                <mat-list-item role="listitem">{{product.value.item}} {{product.value.quantity}} {{product.value.rate}}</mat-list-item>
+              </mat-list>
             <div class="next">
-                <button mat-raised-button color="primary" (click)="onSubmit()" type="submit">Submit</button>
+                <button mat-raised-button color="primary" (click)="onSubmit()" type="submit">Save</button>
             </div>
 
         </mat-step>
