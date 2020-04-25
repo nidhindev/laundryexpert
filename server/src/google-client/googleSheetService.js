@@ -27,6 +27,7 @@ async function addRows(body) {
         spreadsheetId: spreadsheetId,
         range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:L${sheetResponse.data.values.length + 1 + body.values.length}`,  // TODO: Update placeholder value.
         valueInputOption: 'USER_ENTERED',
+        includeValuesInResponse: true,
         resource: {
             majorDimension: "ROWS",
             range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:L${sheetResponse.data.values.length + 1 + body.values.length}`,
@@ -45,6 +46,7 @@ async function addRows(body) {
 }
 
 async function updateRowByIndex(body, sheetMeta) {
+    const sheets = google.sheets('v4');
     const client = gcpChache.get('gcpClient');
     const request = {
         spreadsheetId: spreadsheetId,

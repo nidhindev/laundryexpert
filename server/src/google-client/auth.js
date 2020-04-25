@@ -1,5 +1,5 @@
 const auth = require("../cache/appCache");
-const { JWT } = require("./google-auth-library");
+const { JWT } = require("google-auth-library");
 const { creds } = require("../../config");
 function setUpGoogleAuth() {
     var keys = JSON.parse(creds);
@@ -14,6 +14,7 @@ function setUpGoogleAuth() {
             ['https://www.googleapis.com/auth/spreadsheets'],
         );
         auth.gcpChache.set('gcpClient', client);
+        console.log(JSON.stringify(client))
     }
 }
 

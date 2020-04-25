@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  googlesheetApi: 'http://localhost:3000/googlesheet'
+  googlesheetApi: 'http://localhost:3000/googlesheet',
+  business: {
+    pricing: 'http://localhost:3000/business/pricing'
+  }
 };
 
 /*

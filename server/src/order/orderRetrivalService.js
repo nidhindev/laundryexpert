@@ -1,4 +1,5 @@
 const googleSheetService = require('../google-client/googleSheetService')
+const { configChache } = require("../cache/appCache");
 
 async function getSheet(id, selectedStore, searchBy) {
     let sheetResponse = await googleSheetService.getSheet(selectedStore);
@@ -11,7 +12,7 @@ async function getSheet(id, selectedStore, searchBy) {
 }
 
 async function process(response) {
-    const config =     businessConfig = configChache.get('config')
+    const config = configChache.get('config')
     const rows = response.data.values
     var customer = {
         billNumber: '',

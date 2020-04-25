@@ -1,16 +1,12 @@
-const { google } = require('./googleapis');
-const { spreadsheetId } = require('../../config');
-const { gcpChache } = require("../cache/appCache");
 const businessOffsetService = require('../business/businessOffsetService')
 const googleSheetService = require('../google-client/googleSheetService')
-async function updateSheet(body) {
 
+async function updateSheet(body) {
+    const selectedStore = body.store;
     var offsets = await businessOffsetService.findOffset()
     const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
     body.values[0][0] = invoiceNumber
-    const selectedStore = body.store;
     return await googleSheetService.addRows(body, selectedStore);
-   
 }
 async function createInvoiceNumber(offsets, store) {
     switch (store) {

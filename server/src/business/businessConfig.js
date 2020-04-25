@@ -1,5 +1,5 @@
 const { gcpChache, configChache } = require("../cache/appCache");
-const { google } = require('./googleapis');
+const { google } = require('googleapis');
 const { spreadsheetId } = require('../../config');
 
 
@@ -14,6 +14,8 @@ async function getConfig() {
     });
     const businessConfig = await createConfig(config.data.values)
     configChache.set('config', businessConfig);
+    console.log(JSON.stringify(businessConfig))
+
 }
 
 async function createConfig(rows) {
