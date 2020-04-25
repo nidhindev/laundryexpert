@@ -59,7 +59,7 @@ export class AddComponent implements OnInit {
     });
 
     this.googleSheetService.getPricing().subscribe(result => {
-      for (let entry of JSON.parse(JSON.stringify(result))) {
+      for (let entry of JSON.parse(JSON.stringify(result)).pricing) {
         this.itemOptions.push(entry.key)
       }
       this.filteredOptions = this.item.get("item").valueChanges
@@ -71,8 +71,8 @@ export class AddComponent implements OnInit {
     });
     this.itemNameSubscription = this.item.get("item").valueChanges.subscribe(val => {
       this.googleSheetService.getPricing().subscribe(result => {
-        this.priceList = JSON.parse(JSON.stringify(result))
-        let priceObject = JSON.parse(JSON.stringify(result)).find(config => config.key == val)
+        this.priceList = JSON.parse(JSON.stringify(result)).pricing
+        let priceObject = JSON.parse(JSON.stringify(result)).pricing.find(config => config.key == val)
         if (priceObject) {
           this.item.get("rate").setValue(Number(priceObject.value))
         }

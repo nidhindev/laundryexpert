@@ -18,14 +18,25 @@ async function getConfig() {
 
 async function createConfig(rows) {
     var configJs = []
+    var rmks = []
     for (var i = 1; i < rows.length; i++) {
-        var configJ = {
-            'key': rows[i][0].trim(),
-            'value': parseFloat(rows[i][1].trim())
+        if (rows[i][0] != '') {
+            var configJ = {
+                'key': rows[i][0].trim(),
+                'value': parseFloat(rows[i][1].trim())
+            }
+            configJs.push(configJ);
         }
-        configJs.push(configJ);
+        if (rows[i][0] != '') {
+            rmks.push(rows[i][3].trim())
+
+        }
     }
-    return configJs
+    let businessConfig = {
+        pricing: configJs,
+        remarks: rmks
+    }
+    return businessConfig
 }
 
 exports.getConfig = getConfig;

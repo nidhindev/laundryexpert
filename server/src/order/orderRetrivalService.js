@@ -12,7 +12,7 @@ async function getSheet(id, selectedStore, searchBy) {
 }
 
 async function process(response) {
-    const config = configChache.get('config')
+    const config = configChache.get('config').pricing
     const rows = response.data.values
     var customer = {
         billNumber: '',
