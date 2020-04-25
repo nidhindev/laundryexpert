@@ -1,8 +1,8 @@
 const { google } = require('googleapis');
 const { spreadsheetId } = require('../../config');
-const { gcpChache, configChache } = require("../cache/appCache");
+const { gcpChache } = require("../cache/appCache");
 
-async function findOffset(selectedStore) {
+async function findOffset() {
     var client = gcpChache.get('gcpClient')
     const sheets = google.sheets('v4');
     const sheetResponse = await sheets.spreadsheets.values.get({
@@ -13,12 +13,15 @@ async function findOffset(selectedStore) {
     return await convertOffset(sheetResponse.data.values);
 }
 async function convertOffset(values) {
-    console.log('rows: '+JSON.stringify(values))
-    return offset = {
-        veloor: Number(values[1][1].trim()),
-        velappa: Number(values[2][1].trim()),
-        mgKavu: Number(values[3][1].trim())
+    var offsets = []
+    for (var i = 1; i < values.length; i++) {
+        var offset = {
+            'key': values[i][0].trim(),
+            'value': parseInt(values[i][1].trim())
+        }
+        offsets.push(offset);
     }
+    return offsets
 }
 
 exports.findOffset = findOffset;

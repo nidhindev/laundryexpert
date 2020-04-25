@@ -13,9 +13,6 @@
                 <div class="mat-h3">
                     <span>{{shopFormGroup.value.date | date:'mediumDate'}}</span>
                 </div>
-                <div class="mat-h3">
-                    Invoice: <span>{{shopFormGroup.value.invoice}}</span>
-                </div>
                 <div class="shop">
                     <mat-form-field>
                         <mat-label>Shop</mat-label>
@@ -147,7 +144,6 @@
             <ng-template matStepLabel>Done</ng-template>
             <h2 style="text-align: center;">Preview</h2>
             <h3 mat-subheader>Details</h3>
-            <h3>Invoice: {{shopFormGroup.value.invoice}}</h3>
             <h3>Shop: {{shopFormGroup.value.shopName}}</h3>
             <h3>Items</h3>
             <mat-grid-list cols="3" rowHeight="2:1"  *ngFor="let product of productFormGroup.get('addedItems')['controls'];">

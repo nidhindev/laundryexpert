@@ -54,7 +54,6 @@ export class AddComponent implements OnInit {
       remark: ['']
     });
     this.shopFormGroup = this._formBuilder.group({
-      invoice: [new Date().getTime()],
       shopName: [],
       date: [Date.now()]
     });
@@ -95,7 +94,6 @@ export class AddComponent implements OnInit {
   onSubmit() {
     this.isUpdated = true
     let shop: Shop = {
-      invoice: this.shopFormGroup.value.invoice,
       date: this.shopFormGroup.value.date,
       shopName: this.shopFormGroup.value.shopName
     }
@@ -118,6 +116,7 @@ export class AddComponent implements OnInit {
     this.googleSheetService.updateSheet(sheet)
       .subscribe((response: any) => {
         this.isUpdated = false
+        let invoiceNumber = response.updatedData.values[0]
         if (response.updatedRows == items.length) {
           this.updateSuccess = true;
         } else {
@@ -125,7 +124,7 @@ export class AddComponent implements OnInit {
         }
         const dialogRef = this.dialog.open(ResultComponent, {
           width: '250px',
-          data: { shop: shop, customer: customer }
+          data: { updatedValues: response.updatedData.values[0] }
         });
 
         dialogRef.afterClosed().subscribe(result => {

@@ -9,7 +9,6 @@ const { port } = require('./config');
 const auth = require('./src/google-sheet/auth');
 const cron = require("node-cron");
 const businessConfig = require('./src/google-sheet/businessConfig')
-
 console.log(`Your port is ${process.env.PORT}`);
 const properties = {
     port: process.env.PORT || 3000,
@@ -22,19 +21,19 @@ app.use(express.static('dist'));
 app.use('/infra/healthcheck', healthCheck);
 app.use('/googlesheet', googleSheet);
 app.use('/document', invoiceController);
-app.use('/**', express.static('dist'));
+//app.use('/**', express.static('dist'));
 app.use(function () {
     googleAuth.setUpGoogleAuth();
 });
 
 cron.schedule("*/58 * * * *", function () {
-    console.log("running a task every minute");
+    console.log("running a task every 58 minute");
     auth.setUpGoogleAuth();
 });
 
 http.listen(properties.port, () => {
     auth.setUpGoogleAuth();
-    businessConfig.getConfig()
+    businessConfig.getConfig();
     console.log('server is running on port ' + properties.port);
 });
 
