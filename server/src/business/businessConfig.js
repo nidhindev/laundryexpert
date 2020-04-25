@@ -14,8 +14,6 @@ async function getConfig() {
     });
     const businessConfig = await createConfig(config.data.values)
     configChache.set('config', businessConfig);
-    console.log(JSON.stringify(businessConfig))
-
 }
 
 async function createConfig(rows) {
