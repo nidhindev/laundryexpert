@@ -1,69 +1,24 @@
-var { JWT } = require('google-auth-library');
 const { google } = require('googleapis');
-const NodeCache = require("node-cache"); 
-const { spreadsheetId, creds } = require('../../config');
-const sheets = google.sheets('v4');
-const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
-const configChache = new NodeCache({ stdTTL: 86400, checkperiod: 86400, });
+const { spreadsheetId } = require('../../config');
+const {gcpChache, configChache} = require ("../cache/appCache");
 
 async function getSheet(id, selectedStore, searchBy) {
-    var keys = JSON.parse(creds);
-    if (!keys) {
-        throw new Error('The $CREDS environment variable was not found!');
-    }
-    var client = gcpChache.get(gcpOauth)
-    var configJs = '';
-
-    if (gcpChache.has('gcpOauth')) {
-        console.log('got from ca')
-        client = gcpChache.get(gcpOauth)
-    } else {
-        console.log('calling google auth')
-        client = new JWT(
-            keys.client_email,
-            null,
-            keys.private_key,
-            ['https://www.googleapis.com/auth/spreadsheets'],
-        );
-        gcpChache.set(`gcpClient-${selectedStore}`, client);
-    }
-    if (configChache.has('config')) {
-        configJs = configChache.get('config')
-    } else {
-        console.log('calling config sheet')
-        const config = await sheets.spreadsheets.values.get({
-            auth: client,
-            spreadsheetId: spreadsheetId,
-            range: 'Config'
-        });
-        configJs = await createConfig(config.data.values)
-        configChache.set('config', configJs);
-    }
+    var client = gcpChache.get('gcpClient')  
+    const sheets = google.sheets('v4');  
     const sheetResponse = await sheets.spreadsheets.values.get({
         auth: client,
         spreadsheetId: spreadsheetId,
         range: selectedStore
-    })
-    const result = await process(sheetResponse, configJs);
+    });
+    businessConfig = configChache.get('config')
+    const result = await process(sheetResponse, businessConfig);
     if (searchBy == 'billNumber') {
         return result.filter(customer => customer.billNumber.toLowerCase() == id.toLowerCase())
     } else {
         return result.filter(customer => customer.phoneNumber == id)
     }
-
 }
 
-async function createConfig(rows) {
-    var configJs = []
-    for (var i = 1; i < rows.length; i++) {
-        var configJ = {
-            'key': rows[i][0].trim(),
-            'value': parseFloat(rows[i][1].trim())
-        }
-        configJs.push(configJ);
-    }
-    return configJs
-}
 async function process(response, config) {
     const rows = response.data.values
     var customer = {
@@ -122,7 +77,4 @@ async function process(response, config) {
     return customers
 }
 
-async function undefinedRow() {
-
-}
 exports.getSheet = getSheet;
