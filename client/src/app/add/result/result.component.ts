@@ -3,8 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Shop, Customer } from '../model'
 import { from } from 'rxjs';
 export interface DialogData {
-  shop: Shop;
-  customer: Customer;
+  updatedValues: Array<string>
 }
 @Component({
   selector: 'app-result',
