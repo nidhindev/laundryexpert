@@ -1,6 +1,6 @@
 var { JWT } = require('google-auth-library');
 const { google } = require('googleapis');
-const NodeCache = require("node-cache");
+const NodeCache = require("node-cache"); 
 const { spreadsheetId, creds } = require('../../config');
 const sheets = google.sheets('v4');
 const gcpChache = new NodeCache({ stdTTL: 3500, checkperiod: 3600, });
@@ -11,11 +11,12 @@ async function getSheet(id, selectedStore, searchBy) {
     if (!keys) {
         throw new Error('The $CREDS environment variable was not found!');
     }
-    var client = null;
+    var client = gcpChache.get(gcpOauth)
     var configJs = '';
 
-    if (gcpChache.has(`gcpClient-${selectedStore}`)) {
-        client = gcpChache.get(`gcpClient-${selectedStore}`)
+    if (gcpChache.has('gcpOauth')) {
+        console.log('got from ca')
+        client = gcpChache.get(gcpOauth)
     } else {
         console.log('calling google auth')
         client = new JWT(
