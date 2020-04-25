@@ -1,12 +1,14 @@
 const auth = require("../cache/appCache");
-const { JWT } = require("google-auth-library");
-const { creds } = require("../../config");
+const {JWT} = require("google-auth-library");
+const {creds} = require("../../config");
+
 function setUpGoogleAuth() {
     var keys = JSON.parse(creds);
     if (!keys) {
         throw new Error('The $CREDS environment variable was not found!');
-    } else {
-        console.log('calling google auth')
+    }
+    else {
+        console.log('calling google auth');
         var client = new JWT(
             keys.client_email,
             null,

@@ -1,23 +1,18 @@
-const NodeCache = require("node-cache");
 const { gcpChache, configChache } = require("../cache/appCache");
 const { google } = require('googleapis');
 const { spreadsheetId } = require('../../config');
+const googleSheetService = require('./googleSheetService');
 
 
 async function getConfig() {
     console.log('calling config sheet to get config')
-    var client = gcpChache.get('gcpClient')
-    const sheets = google.sheets('v4');
-    const config = await sheets.spreadsheets.values.get({
-        auth: client,
-        spreadsheetId: spreadsheetId,
-        range: 'Config'
-    });
-    const businessConfig = await createConfig(config.data.values)
+    const config = await googleSheetService.getSheet('Config');
+    const businessConfig = await createConfigFromSheetRows(config.data.values)
     configChache.set('config', businessConfig);
+    console.log(businessConfig)
 }
 
-async function createConfig(rows) {
+async function createConfigFromSheetRows(rows) {
     var configJs = []
     for (var i = 1; i < rows.length; i++) {
         var configJ = {

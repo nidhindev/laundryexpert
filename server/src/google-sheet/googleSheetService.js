@@ -1,10 +1,25 @@
-const { google } = require('googleapis');
-const { spreadsheetId } = require('../../config');
-const { gcpChache } = require("../cache/appCache");
+const {google} = require('googleapis');
+const {spreadsheetId} = require('../../config');
+const {gcpChache} = require("../cache/appCache");
 
-async function updateSheet(body) {
+const sheets = google.sheets('v4');
+
+const client = gcpChache.get('gcpClient');
+
+async function getSheet(sheetName) {
+    const client = gcpChache.get('gcpClient');
+
+    const sheetResponse = await sheets.spreadsheets.values.get({
+        auth: client,
+        spreadsheetId: spreadsheetId,
+        range: sheetName
+    });
+    console.log('Response for calling sheet ' + sheetName + sheetResponse.toString())
+    return sheetResponse
+}
+
+async function addRows(body) {
     const selectedStore = body.store;
-    const sheets = google.sheets('v4');
     const client = gcpChache.get('gcpClient');
     const sheetResponse = await sheets.spreadsheets.values.get({
         auth: client,
@@ -31,4 +46,6 @@ async function updateSheet(body) {
         return err;
     }
 }
-exports.updateSheet = updateSheet;
+
+exports.getSheet = getSheet;
+exports.addRows = addRows;

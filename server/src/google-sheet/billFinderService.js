@@ -1,26 +1,22 @@
-const { google } = require('googleapis');
-const { spreadsheetId } = require('../../config');
-const {gcpChache, configChache} = require ("../cache/appCache");
+const googleSheetService = require('./googleSheetService');
+const {configChache} = require("../cache/appCache");
 
-async function getSheet(id, selectedStore, searchBy) {
-    var client = gcpChache.get('gcpClient')  
-    const sheets = google.sheets('v4');  
-    const sheetResponse = await sheets.spreadsheets.values.get({
-        auth: client,
-        spreadsheetId: spreadsheetId,
-        range: selectedStore
-    });
-    businessConfig = configChache.get('config')
-    const result = await process(sheetResponse, businessConfig);
-    if (searchBy == 'billNumber') {
-        return result.filter(customer => customer.billNumber.toLowerCase() == id.toLowerCase())
-    } else {
-        return result.filter(customer => customer.phoneNumber == id)
+async function getRows(id, selectedStore, searchBy) {
+    let sheetResponse = await googleSheetService.getSheet(selectedStore);
+    const result = await convertSheetRowsToDomain(sheetResponse);
+
+    if (searchBy === 'billNumber') {
+        return result.filter(customer => customer.billNumber.toLowerCase() === id.toLowerCase())
+    }
+    else {
+        return result.filter(customer => customer.phoneNumber === id)
     }
 }
 
-async function process(response, config) {
-    const rows = response.data.values
+async function convertSheetRowsToDomain(response) {
+    const config = configChache.get('config');
+
+    const rows = response.data.values;
     var customer = {
         billNumber: '',
         name: '',
@@ -29,7 +25,7 @@ async function process(response, config) {
         phoneNumber: '',
         items: [],
         total: 0
-    }
+    };
     var items = [];
     var customers = [];
     var total = 0;
@@ -50,7 +46,7 @@ async function process(response, config) {
             finishedPieces: rows[i][5].trim(),
             damagedPieces: rows[i][6].trim(),
             status: rows[i][7].trim(),
-        }
+        };
         total = total + (parseInt(item.finishedPieces) * config.find(config => config.key == rows[i][3].trim()).value);
         items.push(item);
         if (
@@ -77,4 +73,4 @@ async function process(response, config) {
     return customers
 }
 
-exports.getSheet = getSheet;
+exports.getSheet = getRows;
