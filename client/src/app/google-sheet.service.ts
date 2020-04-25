@@ -30,6 +30,6 @@ export class GoogleSheetService {
   }
 
   getPricing() {
-    return this.http.get(`${environment.googlesheetApi}/pricing`);
+    return this.http.get(`${environment.business.pricing}`);
   }
 }

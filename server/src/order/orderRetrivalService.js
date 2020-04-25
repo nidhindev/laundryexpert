@@ -1,17 +1,9 @@
-const { google } = require('googleapis');
-const { spreadsheetId } = require('../../config');
-const {gcpChache, configChache} = require ("../cache/appCache");
+const googleSheetService = require('../google-client/googleSheetService')
+const { configChache } = require("../cache/appCache");
 
 async function getSheet(id, selectedStore, searchBy) {
-    var client = gcpChache.get('gcpClient')  
-    const sheets = google.sheets('v4');  
-    const sheetResponse = await sheets.spreadsheets.values.get({
-        auth: client,
-        spreadsheetId: spreadsheetId,
-        range: selectedStore
-    });
-    businessConfig = configChache.get('config')
-    const result = await process(sheetResponse, businessConfig);
+    let sheetResponse = await googleSheetService.getSheet(selectedStore);
+    const result = await process(sheetResponse);
     if (searchBy == 'billNumber') {
         return result.filter(customer => customer.billNumber.toLowerCase() == id.toLowerCase())
     } else {
@@ -19,7 +11,8 @@ async function getSheet(id, selectedStore, searchBy) {
     }
 }
 
-async function process(response, config) {
+async function process(response) {
+    const config = configChache.get('config')
     const rows = response.data.values
     var customer = {
         billNumber: '',
