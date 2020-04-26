@@ -21,8 +21,11 @@ export class AddComponent implements OnInit {
   productFormGroup: FormGroup;
   itemControl = new FormControl();
   shops: string[] = ['Veloor', 'Velappaya', 'MgKavu'];
-  itemOptions: Array<string> = []
+  itemOptions: Array<string> = [];
+  remarkOptions: Array<string> = [];
   filteredOptions: Observable<string[]>;
+  filteredRemarkOptions: Observable<string[]>;
+
   isitemPreviewEnabled: boolean;
 
   updateSuccess: boolean = false;
@@ -57,7 +60,6 @@ export class AddComponent implements OnInit {
       shopName: [],
       date: [Date.now()]
     });
-
     this.googleSheetService.getPricing().subscribe(result => {
       for (let entry of JSON.parse(JSON.stringify(result)).pricing) {
         this.itemOptions.push(entry.key)
@@ -65,7 +67,15 @@ export class AddComponent implements OnInit {
       this.filteredOptions = this.item.get("item").valueChanges
         .pipe(
           startWith(''),
-          map(value => this._filter(value))
+          map(value => this._filterItem(value))
+        );
+      for (let remark of JSON.parse(JSON.stringify(result)).remarks) {
+        this.remarkOptions.push(remark)
+      }
+      this.filteredRemarkOptions = this.item.get("remark").valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRemark(value))
         );
       this.notReady = false
     });
@@ -155,7 +165,12 @@ export class AddComponent implements OnInit {
     this.filteredOptions = this.item.get("item").valueChanges
       .pipe(
         startWith(''),
-        map(value => this._filter(value))
+        map(value => this._filterItem(value))
+      );
+    this.filteredRemarkOptions = this.item.get("remark").valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filterRemark(value))
       );
   }
 
@@ -211,9 +226,13 @@ export class AddComponent implements OnInit {
       return false;
     }
   }
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  private _filterItem(value: string): string[] {
+    const filterValue = value?.toLowerCase();
+    return this.itemOptions.filter(option => option?.toLowerCase()?.includes(filterValue));
 
-    return this.itemOptions.filter(option => option.toLowerCase().includes(filterValue));
+  }
+  private _filterRemark(value: string): string[] {
+    const filterValue = value?.toLowerCase();
+    return this.remarkOptions.filter(option => option?.toLowerCase()?.includes(filterValue));
   }
 } 
