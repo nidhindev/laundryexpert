@@ -5,7 +5,9 @@ async function updateSheet(body) {
     const selectedStore = body.store;
     var offsets = await businessOffsetService.findOffset()
     const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
-    body.values[0][0] = invoiceNumber
+    for (var i = 0; i < body.values.length; i++) {
+        body.values[i][0] = invoiceNumber
+    }
     return await googleSheetService.addRows(body, selectedStore);
 }
 async function createInvoiceNumber(offsets, store) {
