@@ -31,7 +31,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ResultComponent } from './add/result/result.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ClipboardModule} from '@angular/cdk/clipboard';
-
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -70,6 +70,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
     MatAutocompleteModule,
     MatDialogModule,
     ClipboardModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

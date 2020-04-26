@@ -52,9 +52,11 @@ export class AddComponent implements OnInit {
     });
     this.item = this._formBuilder.group({
       item: [''],
+      isIroning: [false],
       quantity: [1],
       rate: [],
-      remark: ['']
+      remark: [''],
+      itemPreviewIcon: ['circle-image-laundry']
     });
     this.shopFormGroup = this._formBuilder.group({
       shopName: [],
@@ -154,13 +156,18 @@ export class AddComponent implements OnInit {
   addProducts() {
     const items = <FormArray>this.productFormGroup.get('addedItems');
     if (this.item.value.item !== '' && this.item.value.quantity > 0 && this.item.value.rate > 0)
+    if(this.item.value.isIroning) {
+      this.item.get('itemPreviewIcon').setValue('circle-image-ironing');
+    }
       items.push(this.item)
     this.isitemPreviewEnabled = true;
     this.item = this._formBuilder.group({
       item: [''],
+      isIroning: [false],
       quantity: [1],
       rate: [50],
-      remark: ['']
+      remark: [''],
+      itemPreviewIcon: ['circle-image-laundry']
     });
     this.filteredOptions = this.item.get("item").valueChanges
       .pipe(
