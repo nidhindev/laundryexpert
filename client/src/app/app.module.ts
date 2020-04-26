@@ -32,6 +32,8 @@ import { ResultComponent } from './add/result/result.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatCardModule} from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -71,6 +73,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatDialogModule,
     ClipboardModule,
     MatSlideToggleModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

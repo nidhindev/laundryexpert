@@ -32,9 +32,10 @@ export class AddComponent implements OnInit {
   isUpdated: boolean = false;
   notReady: boolean = true;
   responseHasError: boolean = false;
-  priceList
-  itemNameSubscription
+  priceList;
+  itemNameSubscription;
 
+  isSubmotDiabled: boolean = true;
 
   constructor(private _formBuilder: FormBuilder, public dialog: MatDialog,
     private googleSheetService: GoogleSheetService) {
@@ -56,7 +57,8 @@ export class AddComponent implements OnInit {
       quantity: [1],
       rate: [],
       remark: [''],
-      itemPreviewIcon: ['circle-image-laundry']
+      itemPreviewIcon: ['circle-image-laundry'],
+      hasRemark: ['no-remark']
     });
     this.shopFormGroup = this._formBuilder.group({
       shopName: [],
@@ -155,19 +157,25 @@ export class AddComponent implements OnInit {
   }
   addProducts() {
     const items = <FormArray>this.productFormGroup.get('addedItems');
-    if (this.item.value.item !== '' && this.item.value.quantity > 0 && this.item.value.rate > 0)
-    if(this.item.value.isIroning) {
-      this.item.get('itemPreviewIcon').setValue('circle-image-ironing');
-    }
+    if (this.item.value.item !== '' && this.item.value.quantity > 0 && this.item.value.rate > 0) {
+      if (this.item.value.isIroning) {
+        this.item.get('itemPreviewIcon').setValue('circle-image-ironing');
+      }
+      if (this.item.value.remark != '') {
+        this.item.get('hasRemark').setValue('has-remark');
+      }
       items.push(this.item)
+    }
     this.isitemPreviewEnabled = true;
+    this.isSubmotDiabled = false;
     this.item = this._formBuilder.group({
       item: [''],
       isIroning: [false],
       quantity: [1],
       rate: [50],
       remark: [''],
-      itemPreviewIcon: ['circle-image-laundry']
+      itemPreviewIcon: ['circle-image-laundry'],
+      hasRemark: ['no-remark']
     });
     this.filteredOptions = this.item.get("item").valueChanges
       .pipe(
