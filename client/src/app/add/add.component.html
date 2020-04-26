@@ -58,15 +58,19 @@
                     <mat-accordion *ngIf="isitemPreviewEnabled">
                         <mat-expansion-panel
                             *ngFor="let product of productFormGroup.get('addedItems')['controls']; let i = index;">
+
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    {{product.value.item}}
-                                </mat-panel-title>
+                                <div class="item-header">
+                                    <mat-panel-title>
+                                        <div [ngClass]="product.value.itemPreviewIcon"></div>
+                                        <span class="item-header-inline">{{product.value.item}}</span>
+                                    </mat-panel-title>
+                                </div>
+
                             </mat-expansion-panel-header>
                             <ng-template matExpansionPanelContent>
                                 <div class="items-details">
                                     <mat-form-field>
-                                        koko
                                         <mat-label>Quantity</mat-label>
                                         <input matInput readonly value="{{product.value.quantity}}">
                                     </mat-form-field>
@@ -84,17 +88,17 @@
             <form [formGroup]="item" class="content-product">
                 <div class="product-container">
                     <div class="field-group">
+                        <mat-slide-toggle color="primary" formControlName="isIroning">Ironing</mat-slide-toggle>
                         <span class="item">
                             <mat-form-field ngClass="item">
                                 <mat-label>Item</mat-label>
                                 <input matInput type="text" placeholder="Shirt" formControlName="item"
-                                    [matAutocomplete]="auto" required>
-                                <mat-autocomplete #auto="matAutocomplete">
+                                    [matAutocomplete]="autoItem" required>
+                                <mat-autocomplete #autoItem="matAutocomplete">
                                     <mat-option *ngFor="let itemOption of filteredOptions | async" [value]="itemOption">
                                         {{itemOption}}</mat-option>
                                 </mat-autocomplete>
                             </mat-form-field>
-
                         </span>
                         <mat-form-field>
                             <button mat-button mat-icon-button matPrefix aria-label="Remove" color="red"
@@ -122,9 +126,14 @@
                         </mat-form-field>
                     </div>
                     <div class="field-group-remark">
-                        <mat-form-field class="remark">
+                        <mat-form-field ngClass="remark">
                             <mat-label>Remark</mat-label>
-                            <textarea matInput type="text" formControlName="remark"></textarea>
+                            <input matInput type="text" placeholder="sjdfhjk" formControlName="remark"
+                                [matAutocomplete]="remark">
+                            <mat-autocomplete #remark="matAutocomplete">
+                                <mat-option *ngFor="let option of filteredRemarkOptions | async" [value]="option">
+                                    {{option}}</mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
                     </div>
                     <div class="addProduct">
@@ -146,14 +155,15 @@
             <h3 mat-subheader>Details</h3>
             <h3>Shop: {{shopFormGroup.value.shopName}}</h3>
             <h3>Items</h3>
-            <mat-grid-list cols="3" rowHeight="2:1"  *ngFor="let product of productFormGroup.get('addedItems')['controls'];">
-                <mat-grid-tile >
+            <mat-grid-list cols="3" rowHeight="2:1"
+                *ngFor="let product of productFormGroup.get('addedItems')['controls'];">
+                <mat-grid-tile>
                     {{product.value.item}}
                 </mat-grid-tile>
-                <mat-grid-tile >
-                   Qualtity: {{product.value.quantity}}
+                <mat-grid-tile>
+                    Qualtity: {{product.value.quantity}}
                 </mat-grid-tile>
-                <mat-grid-tile >
+                <mat-grid-tile>
                     Rate: {{product.value.rate}}
                 </mat-grid-tile>
                 <mat-divider></mat-divider>

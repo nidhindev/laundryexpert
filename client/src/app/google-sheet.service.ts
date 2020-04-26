@@ -29,7 +29,7 @@ export class GoogleSheetService {
     return res;
   }
 
-  getPricing() {
+  getBusinessConfig() {
     return this.http.get(`${environment.business}`);
   }
 }
