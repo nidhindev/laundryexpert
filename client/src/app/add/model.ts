@@ -12,6 +12,7 @@ export interface Item {
     quantity?: number;
     rate?: number;
     remark?: string,
+    isIroning?: boolean
 }
 
 export interface Sheet {

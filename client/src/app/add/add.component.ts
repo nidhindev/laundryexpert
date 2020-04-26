@@ -121,6 +121,7 @@ export class AddComponent implements OnInit {
         quantity: product.value.quantity,
         rate: product.value.rate,
         remark: product.value.remark,
+        isIroning: Boolean(product.value.isIroning)
       }
       items.push(item);
     }
@@ -128,7 +129,6 @@ export class AddComponent implements OnInit {
     this.googleSheetService.updateSheet(sheet)
       .subscribe((response: any) => {
         this.isUpdated = false
-        let invoiceNumber = response.updatedData.values[0]
         if (response.updatedRows == items.length) {
           this.updateSuccess = true;
         } else {
