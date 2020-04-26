@@ -33,6 +33,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
+import { UpdateComponent } from './update/update.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {MatCardModule} from '@angular/material/card';
     BannerComponent,
     AddComponent,
     ResultComponent,
+    UpdateComponent,
   ],
   imports: [
     BrowserModule,

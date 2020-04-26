@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit {
-  links = [{'label': 'Search', 'path':'./search'}, {'label': 'Add', 'path':'./add'}];
+  links = [{'label': 'Search', 'path':'./search'}, {'label': 'Add', 'path':'./add'}, {'label': 'Update', 'path':'update'}];
   activeLink = this.links[0];
   constructor() { }
 

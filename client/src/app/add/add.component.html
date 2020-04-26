@@ -42,7 +42,8 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Phone</mat-label>
-                            <input matInput type="tel" placeholder="919495345789" formControlName="phoneNumber" required>
+                            <input matInput type="tel" placeholder="919495345789" formControlName="phoneNumber"
+                                required>
                         </mat-form-field>
                     </div>
                     <!-- <div class="next"><button mat-button matStepperNext color="primary">Next</button></div>
@@ -90,7 +91,7 @@
                     <div class="product-container">
                         <div class="field-group">
                             <mat-slide-toggle class="ironing-toggler" color="primary" formControlName="isIroning">
-                                Ironing
+                                Ironing Only
                             </mat-slide-toggle>
                             <span class="item">
                                 <mat-form-field ngClass="item">
@@ -165,18 +166,15 @@
                                         <span>{{shopFormGroup.value.date | date:'mediumDate'}}</span></div>
                                 </mat-list-item>
                                 <mat-list-item>
-                                    <div style="text-align: left; width: 100%;">
-                                        <mat-icon color="primary">store_mall_directory</mat-icon>
-                                        <span style="margin-right: 5px;">{{shopFormGroup.value.shopName}}</span>
-                                    </div>
+                                    <mat-icon matPrefix color="primary">storefront</mat-icon>
+                                    <span class="preview-meta">{{shopFormGroup.value.shopName}}</span>
                                 </mat-list-item>
                                 <mat-list-item>
-                                    <mat-icon color="primary">emoji_people</mat-icon>
-                                    <span style="margin-right: 5px;">{{customerFormGroup.value.name}}</span>
-                                </mat-list-item>
-                                <mat-list-item>
-                                    <mat-icon color="primary">phone</mat-icon>
-                                    <span style="margin-right: 5px;">{{customerFormGroup.value.phoneNumber}}</span>
+                                    <mat-icon matPrefix color="primary">account_circle</mat-icon>
+                                    <span style="width: 70%;" class="preview-meta">{{customerFormGroup.value.name}}</span>
+                                    <mat-icon matPrefix color="primary">phone</mat-icon>
+                                    <span style="width: 30%;"
+                                        class="preview-meta">{{customerFormGroup.value.phoneNumber}}</span>
                                 </mat-list-item>
                             </mat-list>
                         </mat-card-subtitle>
