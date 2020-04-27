@@ -25,12 +25,12 @@ async function addRows(body) {
     });
     const request = {
         spreadsheetId: spreadsheetId,
-        range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:M${sheetResponse.data.values.length + 1 + body.values.length}`,  // TODO: Update placeholder value.
+        range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:N${sheetResponse.data.values.length + 1 + body.values.length}`,  // TODO: Update placeholder value.
         valueInputOption: 'USER_ENTERED',
         includeValuesInResponse: true,
         resource: {
             majorDimension: "ROWS",
-            range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:M${sheetResponse.data.values.length + 1 + body.values.length}`,
+            range: `${selectedStore}!A${sheetResponse.data.values.length + 1}:N${sheetResponse.data.values.length + 1 + body.values.length}`,
             values: body.values
         },
 

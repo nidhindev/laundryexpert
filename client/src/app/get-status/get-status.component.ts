@@ -74,13 +74,13 @@ export class GetStatusComponent implements OnInit {
             statusIconClass: 'error-icon'
           }
           if (it.status == 'Pending') {
-            orderStyle.statusIconName = 'warning';
+            orderStyle.statusIconName = 'build';
             orderStyle.statusIconClass = 'inprogress-icon';
-          } else if (it.storeName == 'Done') {
+          } else if (it.status == 'Done') {
             orderStyle.statusIconName = 'done';
             orderStyle.statusIconClass = 'done-icon';
-          } else if (it.storeName == 'Delivered') {
-            orderStyle.statusIconName = 'delivered';
+          } else if (it.status == 'Delivered') {
+            orderStyle.statusIconName = 'done_all';
             orderStyle.statusIconClass = 'delivered-icon';
           }
           let customer: Customer = {
