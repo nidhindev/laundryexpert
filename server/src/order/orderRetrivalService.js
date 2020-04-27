@@ -23,7 +23,7 @@ async function getOrders(storeName, orderNumber, customerPhone) {
     }
 
     let response = {
-        "shopName": storeName,
+        "storeName": storeName,
         "orders": orders
     };
     return response
