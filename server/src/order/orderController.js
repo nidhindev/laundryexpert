@@ -28,7 +28,7 @@ router.get('/archive', (req, res) => {
 });
 
 router.get('/v2', (req, res) => {
-  orderRetrivalService.getSheetV2().then(result => {
+  orderRetrivalService.getOrders(req.query.storeName, req.query.orderNumber, req.query.customerPhone).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
     res.json(result).status(200);

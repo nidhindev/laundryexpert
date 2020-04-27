@@ -12,8 +12,20 @@ async function getSheet(id, selectedStore, searchBy) {
     }
 }
 
-async function getSheetV2() {
-    let response = await googleSheetServiceV2.getSheet('testSheet');
+async function getOrders(storeName, orderNumber, customerPhone) {
+    let orders = await googleSheetServiceV2.getSheet(storeName);
+    if(orderNumber){
+        console.log('Filtering for orderNumber : ' + orderNumber)
+        orders = orders.filter(order => order.order.orderNumber === orderNumber);
+    } else if (customerPhone){
+        console.log('Filtering for customerPhone : ' + customerPhone)
+        orders = orders.filter(order => order.order.customerPhone === customerPhone);
+    }
+
+    let response = {
+        "shopName": storeName,
+        "orders": orders
+    };
     return response
 }
 
@@ -77,4 +89,4 @@ async function process(response) {
 }
 
 exports.getSheet = getSheet;
-exports.getSheetV2 = getSheetV2;
+exports.getOrders = getOrders;

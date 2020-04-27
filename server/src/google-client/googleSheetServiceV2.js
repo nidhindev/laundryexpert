@@ -13,13 +13,8 @@ async function getSheet(sheetName) {
         range: sheetName
     });
 
-    const orders = await googleUtils.mapSheetRowsToOrderList(sheetResponse.data.values)
-    let response = {
-        "shopName": sheetName,
-        "orders": orders
-    };
-
-    return response;
+    const orders = await googleUtils.mapSheetRowsToOrderList(sheetResponse.data.values);
+    return orders;
 }
 
 exports.getSheet = getSheet;

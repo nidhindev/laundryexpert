@@ -37,7 +37,6 @@ async function createOrderRowsFromRows(rows) {
                 singleOrderRows.push(rows[j]);
             }
             else if (singleOrderRows[0][0] === rows[j][0]) {
-                singleOrderRows.concat('SingleOrderRows length more than 1');
                 singleOrderRows.push(rows[j]);
             } else {
                 break;
