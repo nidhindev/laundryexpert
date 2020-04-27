@@ -1,10 +1,10 @@
 
 
-async function mapSheetRowsToOrderList(rows) {
+async function mapSheetRowsToOrderList(rows, storeName) {
     const groupedOrderRows = await createOrderRowsFromRows(rows);
     let orders = [];
     for (let i = 0; i < groupedOrderRows.length; i++) {
-        let singleOrderModel = await createOrderFromRows(groupedOrderRows[i]);
+        let singleOrderModel = await createOrderFromRows(groupedOrderRows[i], storeName);
         orders.push(singleOrderModel)
     }
     return orders;
@@ -51,7 +51,7 @@ async function createOrderRowsFromRows(rows) {
 }
 
 
-async function createOrderFromRows(rows) {
+async function createOrderFromRows(rows, storeName) {
     let order = {
         "orderNumber": rows[0][0],
         "customerName": rows[0][1],
@@ -63,6 +63,7 @@ async function createOrderFromRows(rows) {
     let items = await createItemsFromRows(rows);
 
     let singleOrder = {
+        "storeName" : storeName,
         "order": order,
         "items": items
     };
