@@ -64,7 +64,7 @@ async function createOrderFromRows(rows, storeName) {
 
     let singleOrder = {
         "storeName" : storeName,
-        "order": order,
+        "orderDetail": order,
         "items": items
     };
 
