@@ -1,17 +1,21 @@
 const businessOffsetService = require('../business/businessOffsetService')
 const googleSheetService = require('../google-client/googleSheetServiceV2')
+const googleSheetServiceV1 = require('../google-client/googleSheetService')
 
 async function createOrder(body) {
-    const selectedStore = body.storeName;
-    let offsets = await businessOffsetService.findOffset();
-    const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
-    for (let i = 0; i < body.values.length; i++) {
-        body.values[i][0] = invoiceNumber
+
+    for (let i = 0; i < body.orders.length; i++) {
+        const selectedStore = body.orders[i].storeName;
+        let offsets = await businessOffsetService.findOffset();
+        const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
+        console.log("InvoiceNumber : " + invoiceNumber);
+        body.orders[i].orderNumber = invoiceNumber;
     }
-    return await googleSheetService.createOrder(selectedStore, body.orders);
+    return await googleSheetService.createOrder(body.orders);
 }
 
 async function createInvoiceNumber(offsets, store) {
+    console.log("selectedStore : " + store);
     switch (store) {
         case 'Veloor': {
             await updateOffset(store, offsets.find(offset => offset.key == store).value + 1);
@@ -24,7 +28,10 @@ async function createInvoiceNumber(offsets, store) {
         case 'MgKavu': {
             await updateOffset(store, offsets.find(offset => offset.key == store).value + 1);
             return `MU${offsets.find(offset => offset.key == store).value}`;
-
+        }
+        case 'testsheet': {
+            await updateOffset(store, offsets.find(offset => offset.key == store).value + 1);
+            return `MU${offsets.find(offset => offset.key == store).value}`;
         }
     }
 }
@@ -38,7 +45,7 @@ async function updateOffset(store, offset) {
         endColumm: 'B',
         endIndex: shopIndex
     }
-    await googleSheetService.updateRowByIndex([[offset]], sheetMeta);
+    await googleSheetServiceV1.updateRowByIndex([[offset]], sheetMeta);
 }
 
 async function findShopIndex(store) {
@@ -54,6 +61,10 @@ async function findShopIndex(store) {
         }
         case 'MgKavu': {
             shopIndex = 4;
+            break
+        }
+        case 'testsheet': {
+            shopIndex = 5;
             break
         }
     }

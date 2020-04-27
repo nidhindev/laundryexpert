@@ -18,18 +18,27 @@ async function getOrdersFromStore(storeName) {
 }
 
 
-async function createOrder(sheetName, orders) {
+async function createOrder(orders) {
     const sheets = google.sheets('v4');
     const client = gcpChache.get('gcpClient');
 
-    const sheetResponse = await sheets.spreadsheets.values.get({
-        auth: client,
-        spreadsheetId: spreadsheetId,
-        range: sheetName
-    });
+    let sheetOrders = await googleUtils.createSheetRowsFromOrderList(orders);
 
-    //const orders = await googleUtils.mapSheetRowsToOrderList(sheetResponse.data.values);
-    return orders;
+
+    const addrequest = {
+        spreadsheetId: spreadsheetId,
+        range: orders[0].storeName,
+        auth: client,
+        valueInputOption: 'USER_ENTERED',
+        resource: {
+            majorDimension: "ROWS",
+            values: sheetOrders
+        },
+    };
+    //add values to archive sheet
+    let res = await sheets.spreadsheets.values.append(addrequest);
+
+    return "ok";
 }
 
 exports.getOrdersFromStore = getOrdersFromStore;

@@ -1,4 +1,35 @@
+async function createSheetRowsFromOrderList(orders) {
+    let sheetsRows = [];
 
+    for (let i = 0; i < orders.length; i++) {
+        let orderRows = await createSheetRowsFromOrder(orders[i]);
+        sheetsRows.push(orderRows)
+    }
+    return sheetsRows
+}
+
+async function createSheetRowsFromOrder(order) {
+    let orderRows = [];
+    const customer = order.customer;
+    if (!order.status){
+        order.status = 'PENDING';
+    }
+    for (let i = 0; i < order.items.length; i++){
+        let item = order.items[i];
+        if (!item.finishedCount){
+            item.finishedCount=0;
+        }
+        if (!item.returnCount){
+            item.returnCount=0;
+        }
+
+        const orderRow = [order.orderNumber, customer.customerName, customer.customerPhone, order.orderDate, order.dueDate, order.status,
+        i+1, item.itemName, item.ironOnly, item.rate, item.totalCount, item.finishedCount, item.returnCount, item.remarks];
+
+        orderRows.push(orderRow);
+    }
+    return orderRows;
+}
 
 async function mapSheetRowsToOrderList(rows, storeName) {
     const groupedOrderRows = await createOrderRowsFromRows(rows);
@@ -38,12 +69,13 @@ async function createOrderRowsFromRows(rows) {
             }
             else if (singleOrderRows[0][0] === rows[j][0]) {
                 singleOrderRows.push(rows[j]);
-            } else {
+            }
+            else {
                 break;
             }
         }
         i = i + singleOrderRows.length;
-        console.log('Grouped ' + singleOrderRows.length + ' rows for the bill number ' + singleOrderRows[0][0])
+        console.log('Grouped ' + singleOrderRows.length + ' rows for the bill number ' + singleOrderRows[0][0]);
         groupedOrderRows.push(singleOrderRows);
     }
 
@@ -53,18 +85,20 @@ async function createOrderRowsFromRows(rows) {
 
 async function createOrderFromRows(rows, storeName) {
     let order = {
-        "orderNumber": rows[0][0],
+    };
+    let customer = {
         "customerName": rows[0][1],
         "customerPhone": rows[0][2],
-        "orderDate": rows[0][3],
-        "dueDate": rows[0][4],
-        "status": rows[0][5]
-    };
+    }
     let items = await createItemsFromRows(rows);
 
     let singleOrder = {
-        "storeName" : storeName,
-        "orderDetail": order,
+        "storeName": storeName,
+        "orderNumber": rows[0][0],
+        "orderDate": rows[0][3],
+        "dueDate": rows[0][4],
+        "status": rows[0][5],
+        "customer" : customer,
         "items": items
     };
 
@@ -72,4 +106,5 @@ async function createOrderFromRows(rows, storeName) {
 }
 
 
+exports.createSheetRowsFromOrderList = createSheetRowsFromOrderList;
 exports.mapSheetRowsToOrderList = mapSheetRowsToOrderList;

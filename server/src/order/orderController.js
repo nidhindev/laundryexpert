@@ -36,7 +36,7 @@ router.get('/v2', (req, res) => {
   });
 });
 
-router.put('/v2', (req, res) => {
+router.post('/v2', (req, res) => {
   orderUpdateServiceV2.createOrder(req.body).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');

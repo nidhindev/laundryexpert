@@ -4,7 +4,9 @@ const googleSheetService = require('../google-client/googleSheetService')
 async function updateSheet(body) {
     const selectedStore = body.store;
     var offsets = await businessOffsetService.findOffset()
+
     const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
+    console.log("InvoiceNumber : " + invoiceNumber);
     for (var i = 0; i < body.values.length; i++) {
         body.values[i][0] = invoiceNumber
     }
