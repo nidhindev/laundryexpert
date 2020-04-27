@@ -1,4 +1,5 @@
 const googleSheetService = require('../google-client/googleSheetService')
+const googleSheetServiceV2 = require('../google-client/googleSheetServiceV2')
 const { configChache } = require("../cache/appCache");
 
 async function getSheet(id, selectedStore, searchBy) {
@@ -9,6 +10,11 @@ async function getSheet(id, selectedStore, searchBy) {
     } else {
         return result.filter(customer => customer.phoneNumber == id)
     }
+}
+
+async function getSheetV2() {
+    let response = await googleSheetServiceV2.getSheet('testSheet');
+    return response
 }
 
 async function process(response) {
@@ -71,3 +77,4 @@ async function process(response) {
 }
 
 exports.getSheet = getSheet;
+exports.getSheetV2 = getSheetV2;
