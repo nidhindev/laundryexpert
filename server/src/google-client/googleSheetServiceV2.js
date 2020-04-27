@@ -47,7 +47,6 @@ async function createResponseModel(rows, sheetName) {
         "shopName": sheetName,
         "orders": orders
     };
-    console.log(response);
     return response;
 }
 
@@ -57,15 +56,19 @@ async function createOrderRowsFromRows(rowsFromSheet) {
     let groupedOrderRows = []; //groupsOrderRows = list of singleOrderRows
     for (let i = 1; i < rows.length;) {
         let singleOrderRows = []; // list of rows with same orderNumber
-        for (let j = i; j < rows.length; j++, i++) {
+        for (let j = i; j < rows.length; j++) {
             if (singleOrderRows.length < 1) {
                 singleOrderRows.push(rows[j]);
             }
             else if (singleOrderRows[0][0] === rows[j][0]) {
                 singleOrderRows.concat('SingleOrderRows length more than 1');
                 singleOrderRows.push(rows[j]);
+            } else {
+                break;
             }
         }
+        i = i + singleOrderRows.length;
+        console.log('Grouped ' + singleOrderRows.length + ' rows for the bill number ' + singleOrderRows[0][0])
         groupedOrderRows.push(singleOrderRows);
     }
 
