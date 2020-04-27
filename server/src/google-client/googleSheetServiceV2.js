@@ -24,7 +24,6 @@ async function createOrder(orders) {
 
     let sheetOrders = await googleUtils.createSheetRowsFromOrderList(orders);
 
-
     const addrequest = {
         spreadsheetId: spreadsheetId,
         range: orders[0].storeName,
@@ -36,9 +35,9 @@ async function createOrder(orders) {
         },
     };
     //add values to archive sheet
-    let res = await sheets.spreadsheets.values.append(addrequest);
-
-    return "ok";
+    const response = await sheets.spreadsheets.values.append(addrequest);
+    return response.config.data.values;
+    //return googleUtils.mapSheetRowsToOrderList(response.config.data.values, orders[0].storeName);
 }
 
 exports.getOrdersFromStore = getOrdersFromStore;

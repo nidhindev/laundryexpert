@@ -3,28 +3,32 @@ async function createSheetRowsFromOrderList(orders) {
 
     for (let i = 0; i < orders.length; i++) {
         let orderRows = await createSheetRowsFromOrder(orders[i]);
-        sheetsRows.push(orderRows)
+        sheetsRows = sheetsRows.concat(orderRows)
     }
-    return sheetsRows
+    console.log('Number of rows appended : ' + sheetsRows.length);
+    return sheetsRows;
 }
 
 async function createSheetRowsFromOrder(order) {
     let orderRows = [];
     const customer = order.customer;
-    if (!order.status){
+    if (!order.status) {
         order.status = 'PENDING';
     }
-    for (let i = 0; i < order.items.length; i++){
+    for (let i = 0; i < order.items.length; i++) {
         let item = order.items[i];
-        if (!item.finishedCount){
-            item.finishedCount=0;
+        if (!item.finishedCount) {
+            item.finishedCount = 0;
         }
-        if (!item.returnCount){
-            item.returnCount=0;
+        if (!item.returnCount) {
+            item.returnCount = 0;
+        }
+        if (!item.remarks) {
+            item.remarks = '';
         }
 
         const orderRow = [order.orderNumber, customer.customerName, customer.customerPhone, order.orderDate, order.dueDate, order.status,
-        i+1, item.itemName, item.ironOnly, item.rate, item.totalCount, item.finishedCount, item.returnCount, item.remarks];
+            i + 1, item.itemName, item.ironOnly, item.rate, item.totalCount, item.finishedCount, item.returnCount, item.remarks];
 
         orderRows.push(orderRow);
     }
@@ -84,8 +88,7 @@ async function createOrderRowsFromRows(rows) {
 
 
 async function createOrderFromRows(rows, storeName) {
-    let order = {
-    };
+    let order = {};
     let customer = {
         "customerName": rows[0][1],
         "customerPhone": rows[0][2],
@@ -98,7 +101,7 @@ async function createOrderFromRows(rows, storeName) {
         "orderDate": rows[0][3],
         "dueDate": rows[0][4],
         "status": rows[0][5],
-        "customer" : customer,
+        "customer": customer,
         "items": items
     };
 
