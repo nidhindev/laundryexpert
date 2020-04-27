@@ -3,7 +3,7 @@ const {spreadsheetId} = require('../../config');
 const {gcpChache} = require("../cache/appCache");
 const googleUtils = require("./googleUtilsForOrder");
 
-async function getSheet(sheetName) {
+async function getOrdersFromSheet(sheetName) {
     const sheets = google.sheets('v4');
     const client = gcpChache.get('gcpClient');
 
@@ -17,4 +17,4 @@ async function getSheet(sheetName) {
     return orders;
 }
 
-exports.getSheet = getSheet;
+exports.getOrdersFromSheet = getOrdersFromSheet;
