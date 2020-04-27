@@ -1,6 +1,6 @@
 <div [ngClass]="contentClass">
     <h2>Find Status </h2>
-    <form [formGroup]="customerData" (ngSubmit)="onSubmit()" ngClass="form-field-custom">
+    <form [formGroup]="customerData" (ngSubmit)="onSubmit()">
         <mat-button-toggle-group aria-label="Select a store" formControlName="selectedStore">
             <mat-button-toggle value="Veloor" [checked]=true>Veloor</mat-button-toggle>
             <mat-button-toggle value="Velappaya">Velappaya</mat-button-toggle>
@@ -34,41 +34,40 @@
                 (closed)="panelOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <mat-icon [ngClass]="data.iconClass">{{data.iconName}}</mat-icon><span
-                            ngClass="card-header">{{data.billNumber}}</span>
+                        <mat-icon [ngClass]="data.orderStyle.statusIconClass">{{data.orderStyle.statusIconName}}
+                        </mat-icon><span ngClass="card-header">{{data.orderNumber}}</span>
                     </mat-panel-title>
                     <mat-panel-description ngClass="card-header-date">
-                        {{ data.date | date:'mediumDate' }}
+                        {{ data.orderDate | date:'mediumDate' }}
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <div>Name : {{data.name}}</div>
-                <div>Phone number : {{data.phoneNumber}}</div>
+                <div>Name : {{data.customer.customerName}}</div>
+                <div>Phone number : {{data.customer.customerPhone}}</div>
                 <div>Due Date: {{data.dueDate | date:'mediumDate'}}</div>
                 <div>Total: {{data.total}} Rupees</div>
                 <div>Items :
                     <mat-list *ngFor="let item of data.items">
                         <mat-list-item>
-                            <mat-icon [ngClass]="item.iconClass">{{item.iconName}}</mat-icon>
-                            <span ngClass="item-details">{{item.name}}</span>
-                            <span ngClass="circle-total">{{item.totalPieces}}</span>
-                            <span ngClass="circle-done">{{item.finishedPieces}}</span>
-                            <div *ngIf="item.damagedPieces; then thenBlock"> </div>
-                            <ng-template #thenBlock>
-                                <span ngClass="circle-damaged">{{item.damagedPieces}}</span>
+                            <span ngClass="item-details">{{item.itemName}}</span>
+                            <span ngClass="circle-total">{{item.totalCount}}</span>
+                            <div *ngIf="item.finishedCount; then thenBlockFinishedCount else elseBlockFinishedCount">
+                            </div>
+                            <ng-template #thenBlockFinishedCount>
+                                <span ngClass="circle-done">{{item.finishedCount}}</span>
+                            </ng-template>
+                            <ng-template #elseBlockFinishedCount>
+                                <span ngClass="circle-done">0</span>
+                            </ng-template>
+                            <div *ngIf="item.returnCount; then thenBlockReturnCount else elseBlockReturnCount"> </div>
+                            <ng-template #thenBlockReturnCount>
+                                <span ngClass="circle-damaged">{{item.returnCount}}</span>
+                            </ng-template>
+                            <ng-template #elseBlockReturnCount>
+                                <span ngClass="circle-damaged">0</span>
                             </ng-template>
                         </mat-list-item>
-                        <!-- <mat-grid-list cols="2" rowHeight="2:1">                
-                        
-                            <mat-grid-tile ngClass="tile-spec">
-                                <span matBadge="{{item.finishedPieces}}" matBadgeOverlap="false">Fished</span>
-                            </mat-grid-tile>
-                            <mat-grid-tile ngClass="tile-spec">
-                                <span matBadge="{{item.damagedPieces}}" matBadgeOverlap="false">Damaged</span>
-                            </mat-grid-tile>
-                        </mat-grid-list> -->
                         <mat-divider></mat-divider>
                     </mat-list>
-
                 </div>
                 <mat-action-row>
                     <a mat-raised-button [href]="data.link" target="_blank" color="primary">Send to WhatsApp</a>

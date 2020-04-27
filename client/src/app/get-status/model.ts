@@ -12,11 +12,36 @@ export interface PeriodicElement {
   }
   
   export interface Item {
-    name?: string;
-    totalPieces?: string;
-    finishedPieces?: string;
-    damagedPieces?: string,
-    status?: string;
-    iconName?: string;
-    iconClass?: string;
+    seqNumber?: string,
+    itemName?: string,
+    ironOnly: boolean,
+    rate: number,
+    totalCount: number,
+    finishedCount?: number,
+    returnCount?: number
+    remark?: string
+  }
+
+  export interface Customer {
+    customerName: string,
+    customerPhone?: string,
+  }
+  export interface Order {
+    orderNumber: string,
+    storeName: string,
+    customer: Customer,
+    orderDate: Date,
+    dueDate?: Date,
+    status: string,
+    link?: string,
+    items: Item[],
+    orderStyle: OrderStyle,
+    total?: number
+  }
+  export interface OrderStyle {
+    statusIconName?: string,
+    statusIconClass? :string
+  }
+  export interface OrderResponse {
+    orders: Order[]
   }

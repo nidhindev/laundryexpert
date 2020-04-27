@@ -12,10 +12,10 @@ export class GoogleSheetService {
   constructor(private http: HttpClient) { }
   getSheet(id, selectedStore) {
     var isphoneNumber =  phoneNumberValidator(id); 
-    var searchBy = 'billNumber'
+    var query = `storeName=${selectedStore}&orderNumber=${id}`
     if (isphoneNumber)
-      searchBy = 'phoneNumber'
-    let res = this.http.get(`${environment.googlesheetApi}/customer?id=${id}&selectedStore=${selectedStore}&searchBy=${searchBy}`);
+    query = `storeName=${selectedStore}&phoneNUmber=${id}`
+    let res = this.http.get(`${environment.googlesheetApi}/customer/v2?${query}`);
     return res;
   }
 
