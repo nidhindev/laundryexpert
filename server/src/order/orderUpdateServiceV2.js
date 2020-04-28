@@ -13,6 +13,11 @@ async function createOrder(body) {
     return await googleSheetService.createOrder(body.orders);
 }
 
+
+async function updateOrder(body) {
+    return await googleSheetService.updateOrder(body.orders);
+}
+
 async function createInvoiceNumber(offsets, store) {
     switch (store) {
         case 'Veloor': {
@@ -69,3 +74,4 @@ async function findShopIndex(store) {
     return shopIndex;
 }
 exports.createOrder = createOrder;
+exports.updateOrder = updateOrder;

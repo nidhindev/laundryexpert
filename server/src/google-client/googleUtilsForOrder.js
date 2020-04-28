@@ -35,6 +35,15 @@ async function createSheetRowsFromOrderList(orders) {
     return sheetsRows;
 }
 
+async function findRowNumberForOrder(sheetsRows, order) {
+    for (let i = 0; i < sheetsRows.length; i++) {
+        if(sheetsRows[i][0] === order.orderNumber){
+            return i+1
+        }
+    }
+    return -1;
+}
+
 async function createSheetRowsFromOrder(order) {
     let orderRows = [];
     const customer = order.customer;
@@ -138,3 +147,4 @@ async function createOrderFromRows(rows, storeName) {
 exports.createSheetRowsFromOrderList = createSheetRowsFromOrderList;
 exports.mapSheetRowsToOrderList = mapSheetRowsToOrderList;
 exports.pupulateResponseForCreateOrders = pupulateResponseForCreateOrders;
+exports.findRowNumberForOrder = findRowNumberForOrder;

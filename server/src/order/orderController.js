@@ -44,4 +44,13 @@ router.post('/v2', (req, res) => {
   });
 });
 
+
+router.put('/v2', (req, res) => {
+  orderUpdateServiceV2.updateOrder(req.body).then(result => {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.json(result).status(result.status);
+  });
+});
+
 module.exports = router;
