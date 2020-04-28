@@ -1,3 +1,21 @@
+async function pupulateResponseForCreateOrders(orders) {
+    let ordersResponse = [];
+    orders.forEach(order => {
+        let itemWiseTotals = order.items.map(item => item.rate * item.totalCount);
+        let totalPriceForOrder = itemWiseTotals.reduce((a, b) => a + b, 0);
+        console.log('Total price for order ' + order.orderNumber + ' : ' + totalPriceForOrder);
+        let singleOrderResponse = {
+            "orderNumber": order.orderNumber,
+            "orderDate": order.orderDate,
+            "dueDate": order.dueDate,
+            "customer": order.customer,
+            "totalPrice": totalPriceForOrder
+        };
+        ordersResponse.push(singleOrderResponse);
+    });
+    return ordersResponse;
+}
+
 async function createSheetRowsFromOrderList(orders) {
     let sheetsRows = [];
 
@@ -88,11 +106,10 @@ async function createOrderRowsFromRows(rows) {
 
 
 async function createOrderFromRows(rows, storeName) {
-    let order = {};
     let customer = {
         "customerName": rows[0][1],
         "customerPhone": rows[0][2],
-    }
+    };
     let items = await createItemsFromRows(rows);
 
     let singleOrder = {
@@ -111,3 +128,4 @@ async function createOrderFromRows(rows, storeName) {
 
 exports.createSheetRowsFromOrderList = createSheetRowsFromOrderList;
 exports.mapSheetRowsToOrderList = mapSheetRowsToOrderList;
+exports.pupulateResponseForCreateOrders = pupulateResponseForCreateOrders;

@@ -17,7 +17,6 @@ async function getOrdersFromStore(storeName) {
     return orders;
 }
 
-
 async function createOrder(orders) {
     const sheets = google.sheets('v4');
     const client = gcpChache.get('gcpClient');
@@ -35,9 +34,14 @@ async function createOrder(orders) {
         },
     };
     //add values to archive sheet
-    const response = await sheets.spreadsheets.values.append(addrequest);
-    return response.config.data.values;
-    //return googleUtils.mapSheetRowsToOrderList(response.config.data.values, orders[0].storeName);
+    const sheetResponse = await sheets.spreadsheets.values.append(addrequest);
+    let priceDetails = await googleUtils.pupulateResponseForCreateOrders(orders);
+    let response = {
+        'status': sheetResponse.status,
+        'orders': priceDetails
+    };
+
+    return response;
 }
 
 exports.getOrdersFromStore = getOrdersFromStore;
