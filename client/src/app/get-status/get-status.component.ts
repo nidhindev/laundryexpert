@@ -60,8 +60,6 @@ export class GetStatusComponent implements OnInit {
     const orders: Order[] = [];
     this.googleSheetService.getSheet(phoneNumber, selectedStore)
       .subscribe((data: OrderResponse) => {
-        console.log(JSON.stringify(data))
-
         data.orders.forEach(it => {
           let iconName = '';
           let iconClass = '';
@@ -106,8 +104,6 @@ export class GetStatusComponent implements OnInit {
           %0AYour material is _${it.status}_.
           %0A_Looking forward to working with you again soon._ Thank you for choosing us.
           %0AThe Laundry Expert 😀`
-          console.log('it: ' + it.orderDate)
-
           let order: Order = {
             storeName: it.storeName,
             orderNumber: it.orderNumber,
@@ -120,7 +116,6 @@ export class GetStatusComponent implements OnInit {
             totalPrice: it.totalPrice,
             orderStyle: orderStyle
           }
-          console.log(JSON.stringify(order))
           orders.push(order)
         })
         if (orders.length > 0) {
@@ -132,7 +127,6 @@ export class GetStatusComponent implements OnInit {
         }
         this.showSpinner = false;
         this.dataSource = orders;
-        console.log(JSON.stringify(this.dataSource))
       });
   }
 

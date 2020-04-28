@@ -59,7 +59,6 @@ async function generatePdf() {
         await page.setContent(html)
         await page.pdf({ path: 'dist/invoice.pdf', format: 'A4' })
         await browser.close();
-        console.log("Invoice is created for user")
     }).catch(err => {
         console.error(err)
     });

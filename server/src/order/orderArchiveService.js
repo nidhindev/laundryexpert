@@ -5,7 +5,6 @@ async function archiveSheet(selectedStore) {
     let response = await googleSheetService.getSheet(selectedStore);
     let rows = response.data.values;
     let numberOfRowsToDelete = findNumberOfRowsToDelete(rows);
-    console.log("Rows to delete " + rows)
     if(numberOfRowsToDelete>0){
         let response1 = await googleSheetService.deleteRowsFromTop('testshop', numberOfRowsToDelete)
     }

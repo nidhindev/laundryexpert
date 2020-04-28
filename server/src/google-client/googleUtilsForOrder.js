@@ -32,7 +32,6 @@ async function createSheetRowsFromOrderList(orders) {
         let orderRows = await createSheetRowsFromOrder(orders[i]);
         sheetsRows = sheetsRows.concat(orderRows)
     }
-    console.log('Number of rows appended : ' + sheetsRows.length);
     return sheetsRows;
 }
 
@@ -106,7 +105,6 @@ async function createOrderRowsFromRows(rows) {
             }
         }
         i = i + singleOrderRows.length;
-        console.log('Grouped ' + singleOrderRows.length + ' rows for the bill number ' + singleOrderRows[0][0]);
         groupedOrderRows.push(singleOrderRows);
     }
 

@@ -8,14 +8,12 @@ async function createOrder(body) {
         const selectedStore = body.orders[i].storeName;
         let offsets = await businessOffsetService.findOffset();
         const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
-        console.log("InvoiceNumber : " + invoiceNumber);
         body.orders[i].orderNumber = invoiceNumber;
     }
     return await googleSheetService.createOrder(body.orders);
 }
 
 async function createInvoiceNumber(offsets, store) {
-    console.log("selectedStore : " + store);
     switch (store) {
         case 'Veloor': {
             await updateOffset(store, offsets.find(offset => offset.key == store).value + 1);

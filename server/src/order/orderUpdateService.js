@@ -6,7 +6,6 @@ async function updateSheet(body) {
     var offsets = await businessOffsetService.findOffset()
 
     const invoiceNumber = await createInvoiceNumber(offsets, selectedStore);
-    console.log("InvoiceNumber : " + invoiceNumber);
     for (var i = 0; i < body.values.length; i++) {
         body.values[i][0] = invoiceNumber
     }

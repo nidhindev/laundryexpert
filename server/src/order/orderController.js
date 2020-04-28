@@ -32,7 +32,6 @@ router.get('/customer/v2', (req, res) => {
   orderRetrivalService.getOrders(req.query.storeName, req.query.orderNumber, req.query.customerPhone).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-    console.log('hihi:' +JSON.stringify(result))
     res.json(result).status(200);
   });
 });

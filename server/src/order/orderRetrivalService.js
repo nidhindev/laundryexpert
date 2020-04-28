@@ -15,10 +15,8 @@ async function getSheet(id, selectedStore, searchBy) {
 async function getOrders(storeName, orderNumber, customerPhone) {
     let orders = await googleSheetServiceV2.getOrdersFromStore(storeName);
     if(orderNumber){
-        console.log('Filtering for orderNumber : ' + orderNumber)
         orders = orders.filter(order => order.orderNumber === orderNumber);
     } else if (customerPhone){
-        console.log('Filtering for customerPhone : ' + customerPhone)
         orders = orders.filter(order => order.customer.customerPhone === customerPhone);
     }
 

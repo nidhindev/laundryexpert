@@ -48,7 +48,6 @@ export class UpdateComponent implements OnInit {
     })
   }
   onSubmit() {
-    console.log("dssd")
     this.dataSource = [];
     if (this.customerData.invalid) {
       return;
@@ -61,15 +60,11 @@ export class UpdateComponent implements OnInit {
     }
   }
   submit() {
-    console.log("sgjfhdghjß")
-    console.log(this.orderFormGroup)
+
   }
   getSheets(id, selectedStore): void {
-    console.log(id + selectedStore)
     this.googleSheetService.getSheet(id, selectedStore)
       .subscribe((data: OrderResponse) => {
-        console.log(data.orders[0].customer.customerName)
-        //this.customerFormGroup.get("name").setValue(data.orders[0].customer.customerName)
         let orderStyle: OrderStyle = {
           statusIconName: 'errror',
           statusIconClass: 'error-icon'
@@ -92,7 +87,6 @@ export class UpdateComponent implements OnInit {
           statusIconName: [orderStyle.statusIconName],
           statusIconClass: [orderStyle.statusIconClass]
         });
-        console.log('gfdfg: ' + this.customerFormGroup.value.name)
         const items = <FormArray>this.orderFormGroup.get('items');
         for (let it of data.orders[0].items) {
           let finishedCount = 0;
@@ -114,7 +108,6 @@ export class UpdateComponent implements OnInit {
           });
           items.push(item)
         }
-        console.log('gfdfg: ' + this.customerFormGroup.value.name);
         this.showResult = true;
         this.showSpinner = false;
       });
