@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import { GoogleSheetService } from '../google-sheet.service';
-import { Customer, Item } from './model'
+import { Item, Order, Customer, OrderResponse, OrderStyle } from '../model';
+
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
@@ -11,6 +12,8 @@ export class UpdateComponent implements OnInit {
 
   customerData: FormGroup;
   customerFormGroup: FormGroup;
+  orderFormGroup: FormGroup;
+  itemFormGroup: FormGroup;
   submitted = false;
   showSpinner = false;
   showResult = false;
@@ -30,8 +33,22 @@ export class UpdateComponent implements OnInit {
       billNumber: [''],
       date: [''],
     });
+    this.itemFormGroup = this._formBuilder.group({
+      ironOnly: [''],
+      rate: [''],
+      totalCount: [''],
+      finishedCount: [0],
+      itemName: [''],
+      remark: [''],
+      returnCount: [0]
+    });
+    this.orderFormGroup = this._formBuilder.group({
+      items: new FormArray([]),
+      temp: ['']
+    })
   }
   onSubmit() {
+    console.log("dssd")
     this.dataSource = [];
     if (this.customerData.invalid) {
       return;
@@ -43,31 +60,61 @@ export class UpdateComponent implements OnInit {
       this.submitted = true;
     }
   }
+  submit() {
+    console.log("sgjfhdghjß")
+    console.log(this.orderFormGroup)
+  }
   getSheets(id, selectedStore): void {
     console.log(id + selectedStore)
     this.googleSheetService.getSheet(id, selectedStore)
-      .subscribe((data: any[]) => {
-        console.log(JSON.stringify(data))
-        let customer: Customer = {
-          name: data[0].name,
-          phoneNumber: data[0].phoneNumber,
-          billNumber: data[0].billNumber,
-          date: data[0].date
+      .subscribe((data: OrderResponse) => {
+        console.log(data.orders[0].customer.customerName)
+        //this.customerFormGroup.get("name").setValue(data.orders[0].customer.customerName)
+        let orderStyle: OrderStyle = {
+          statusIconName: 'errror',
+          statusIconClass: 'error-icon'
         }
-        let items: Array<Item> = []
-        data.forEach(it => {
-          let item:Item = {
-            
-          }
-
-        });
-
+        if (data.orders[0].status == 'Pending') {
+          orderStyle.statusIconName = 'build';
+          orderStyle.statusIconClass = 'inprogress-icon';
+        } else if (data.orders[0].status == 'Done') {
+          orderStyle.statusIconName = 'done';
+          orderStyle.statusIconClass = 'done-icon';
+        } else if (data.orders[0].status == 'Delivered') {
+          orderStyle.statusIconName = 'done_all';
+          orderStyle.statusIconClass = 'delivered-icon';
+        }
         this.customerFormGroup = this._formBuilder.group({
-          name: [customer.name],
-          phoneNumber: [customer.phoneNumber],
-          billNumber: [customer.billNumber],
-          date: [customer.date],
+          name: [data.orders[0].customer.customerName],
+          phoneNumber: [data.orders[0].customer.customerPhone],
+          billNumber: [data.orders[0].orderNumber],
+          date: [data.orders[0].orderDate],
+          statusIconName: [orderStyle.statusIconName],
+          statusIconClass: [orderStyle.statusIconClass]
         });
+        console.log('gfdfg: ' + this.customerFormGroup.value.name)
+        const items = <FormArray>this.orderFormGroup.get('items');
+        for (let it of data.orders[0].items) {
+          let finishedCount = 0;
+          let returnCount = 0;
+          if (it.finishedCount) {
+            finishedCount = it.finishedCount;
+          }
+          if (it.returnCount) {
+            returnCount = it.returnCount;
+          }
+          let item = this._formBuilder.group({
+            ironOnly: it.ironOnly,
+            rate: it.rate,
+            totalCount: it.totalCount,
+            finishedCount: finishedCount,
+            itemName: it.itemName,
+            remark: it.remark,
+            returnCount: returnCount
+          });
+          items.push(item)
+        }
+        console.log('gfdfg: ' + this.customerFormGroup.value.name);
         this.showResult = true;
         this.showSpinner = false;
       });

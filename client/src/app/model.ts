@@ -35,8 +35,8 @@ export interface PeriodicElement {
     status: string,
     link?: string,
     items: Item[],
-    orderStyle: OrderStyle,
-    total?: number
+    orderStyle?: OrderStyle,
+    totalPrice?: number
   }
   export interface OrderStyle {
     statusIconName?: string,

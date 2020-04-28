@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GoogleSheetService } from '../google-sheet.service';
-import { Item, Order, Customer, OrderResponse, OrderStyle } from './model';
+import { Item, Order, Customer, OrderResponse, OrderStyle } from '../model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -117,6 +117,7 @@ export class GetStatusComponent implements OnInit {
             status: it.status,
             link: link,
             items: items,
+            totalPrice: it.totalPrice,
             orderStyle: orderStyle
           }
           console.log(JSON.stringify(order))

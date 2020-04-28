@@ -44,7 +44,7 @@
                 <div>Name : {{data.customer.customerName}}</div>
                 <div>Phone number : {{data.customer.customerPhone}}</div>
                 <div>Due Date: {{data.dueDate | date:'mediumDate'}}</div>
-                <div>Total: {{data.total}} Rupees</div>
+                <div>Total: &#8377; {{data.totalPrice}}</div>
                 <div>Items :
                     <mat-list *ngFor="let item of data.items">
                         <mat-list-item>
