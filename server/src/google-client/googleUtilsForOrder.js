@@ -1,15 +1,24 @@
+function createEstimatedCostFromItems(items) {
+    let itemWiseTotals = items.map(item => item.rate * item.totalCount);
+    let totalEstimatedPriceForOrder = itemWiseTotals.reduce((a, b) => a + b, 0);
+    return totalEstimatedPriceForOrder
+}
+
+function createActualCostFromItems(items) {
+    let itemWiseTotals = items.map(item => item.rate * item.finishedCount);
+    let totalActualPriceForOrder = itemWiseTotals.reduce((a, b) => a + b, 0);
+    return totalActualPriceForOrder
+}
+
 async function pupulateResponseForCreateOrders(orders) {
     let ordersResponse = [];
     orders.forEach(order => {
-        let itemWiseTotals = order.items.map(item => item.rate * item.totalCount);
-        let totalPriceForOrder = itemWiseTotals.reduce((a, b) => a + b, 0);
-        console.log('Total price for order ' + order.orderNumber + ' : ' + totalPriceForOrder);
         let singleOrderResponse = {
-            "orderNumber": order.orderNumber,
-            "orderDate": order.orderDate,
-            "dueDate": order.dueDate,
-            "customer": order.customer,
-            "totalPrice": totalPriceForOrder
+            'orderNumber': order.orderNumber,
+            'orderDate': order.orderDate,
+            'dueDate': order.dueDate,
+            'customer': order.customer,
+            'estimatedCost': createEstimatedCostFromItems(order.items)
         };
         ordersResponse.push(singleOrderResponse);
     });
@@ -67,14 +76,14 @@ async function createItemsFromRows(rows) {
     let items = [];
     rows.forEach(row => {
         let item = {
-            "seqNumber": row[6],
-            "itemName": row[7],
-            "ironOnly": row[8],
-            "rate": row[9],
-            "totalCount": row[10],
-            "finishedCount": row[11],
-            "returnCount": row[12],
-            "remarks": row[13]
+            'seqNumber': row[6],
+            'itemName': row[7],
+            'ironOnly': row[8],
+            'rate': row[9],
+            'totalCount': row[10],
+            'finishedCount': row[11],
+            'returnCount': row[12],
+            'remarks': row[13]
         };
         items = items.concat(item);
     });
@@ -107,19 +116,21 @@ async function createOrderRowsFromRows(rows) {
 
 async function createOrderFromRows(rows, storeName) {
     let customer = {
-        "customerName": rows[0][1],
-        "customerPhone": rows[0][2],
+        'customerName': rows[0][1],
+        'customerPhone': rows[0][2],
     };
     let items = await createItemsFromRows(rows);
 
     let singleOrder = {
-        "storeName": storeName,
-        "orderNumber": rows[0][0],
-        "orderDate": rows[0][3],
-        "dueDate": rows[0][4],
-        "status": rows[0][5],
-        "customer": customer,
-        "items": items
+        'storeName': storeName,
+        'orderNumber': rows[0][0],
+        'orderDate': rows[0][3],
+        'dueDate': rows[0][4],
+        'status': rows[0][5],
+        'customer': customer,
+        'items': items,
+        'estimatedCost': createEstimatedCostFromItems(items),
+        'actualCost': createActualCostFromItems(items)
     };
 
     return singleOrder;
