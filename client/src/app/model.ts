@@ -14,7 +14,8 @@ export interface PeriodicElement {
   export interface Item {
     seqNumber?: string,
     itemName?: string,
-    ironOnly: boolean,
+    ironOnly: string,
+    itemPreviewIcon? :string,
     rate: number,
     totalCount: number,
     finishedCount?: number,
@@ -40,7 +41,7 @@ export interface PeriodicElement {
   }
   export interface OrderStyle {
     statusIconName?: string,
-    statusIconClass? :string
+    statusIconClass? :string,
   }
   export interface OrderResponse {
     orders: Order[]

@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+}
 .result {
     margin-right: 50%;
 }
@@ -21,20 +21,32 @@
 }
 .inprogress-icon {
     color: orange;
-  }
-  .error-icon {
+}
+.error-icon {
     color: red;
-  }
-  .done-icon {
+}
+.done-icon {
     color: green;
-  }
-  .delivered-icon {
+}
+.delivered-icon {
     color: #2323df;
-  }
+}
 .result .mat-expansion-panel-header-description {
-    text-align:right;
+    text-align: right;
     margin-right: 10%;
-  }
+}
+.circle-image-ironing {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: url("../../assets/iron.png") no-repeat center;
+}
+.circle-image-laundry {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: url("../../assets/laundry.png") no-repeat center;
+}
 .item-view {
     width: 20%;
     margin-left: 25px;

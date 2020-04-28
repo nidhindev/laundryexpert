@@ -13,7 +13,6 @@ export class UpdateComponent implements OnInit {
   customerData: FormGroup;
   customerFormGroup: FormGroup;
   orderFormGroup: FormGroup;
-  itemFormGroup: FormGroup;
   submitted = false;
   showSpinner = false;
   showResult = false;
@@ -32,19 +31,11 @@ export class UpdateComponent implements OnInit {
       phoneNumber: [''],
       billNumber: [''],
       date: [''],
-    });
-    this.itemFormGroup = this._formBuilder.group({
-      ironOnly: [''],
-      rate: [''],
-      totalCount: [''],
-      finishedCount: [0],
-      itemName: [''],
-      remark: [''],
-      returnCount: [0]
+      isItemReadyForDelivery: [''],
+      isDelivered: ['']
     });
     this.orderFormGroup = this._formBuilder.group({
-      items: new FormArray([]),
-      temp: ['']
+      items: new FormArray([])
     })
   }
   onSubmit() {
@@ -69,13 +60,18 @@ export class UpdateComponent implements OnInit {
           statusIconName: 'errror',
           statusIconClass: 'error-icon'
         }
+        let isItemReadyForDelivery = false;
+        let isDelivered = false;
         if (data.orders[0].status == 'Pending') {
           orderStyle.statusIconName = 'build';
           orderStyle.statusIconClass = 'inprogress-icon';
         } else if (data.orders[0].status == 'Done') {
+          isItemReadyForDelivery = true;
           orderStyle.statusIconName = 'done';
           orderStyle.statusIconClass = 'done-icon';
         } else if (data.orders[0].status == 'Delivered') {
+          isItemReadyForDelivery = true;
+          isDelivered = true;
           orderStyle.statusIconName = 'done_all';
           orderStyle.statusIconClass = 'delivered-icon';
         }
@@ -85,7 +81,9 @@ export class UpdateComponent implements OnInit {
           billNumber: [data.orders[0].orderNumber],
           date: [data.orders[0].orderDate],
           statusIconName: [orderStyle.statusIconName],
-          statusIconClass: [orderStyle.statusIconClass]
+          statusIconClass: [orderStyle.statusIconClass],
+          isItemReadyForDelivery: [isItemReadyForDelivery],
+          isDelivered: [isDelivered]
         });
         const items = <FormArray>this.orderFormGroup.get('items');
         for (let it of data.orders[0].items) {
@@ -97,6 +95,10 @@ export class UpdateComponent implements OnInit {
           if (it.returnCount) {
             returnCount = it.returnCount;
           }
+          let itemPreviewIcon = 'circle-image-laundry'
+          if (it.ironOnly.toLowerCase().toLowerCase() == 'true') {
+            itemPreviewIcon = 'circle-image-ironing'
+          }
           let item = this._formBuilder.group({
             ironOnly: it.ironOnly,
             rate: it.rate,
@@ -104,9 +106,10 @@ export class UpdateComponent implements OnInit {
             finishedCount: finishedCount,
             itemName: it.itemName,
             remark: it.remark,
-            returnCount: returnCount
+            returnCount: returnCount,
+            itemPreviewIcon: itemPreviewIcon
           });
-          items.push(item)
+          items.push(item);
         }
         this.showResult = true;
         this.showSpinner = false;
