@@ -24,7 +24,6 @@
         </div>
     </ng-template>
     <div *ngIf="showResult; then thenBlock else elseBlock"> </div>
-
     <ng-template #thenBlock>
         <div class="result">
             <mat-card role="group">
@@ -91,5 +90,5 @@
         <div *ngIf="isResultNotFound; then thenBlock"></div>
         <ng-template #thenBlock>No Results found</ng-template>
     </ng-template>
-
+    
 </div>

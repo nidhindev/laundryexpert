@@ -28,7 +28,7 @@ router.get('/archive', (req, res) => {
   });
 });
 
-router.get('/customer/v2', (req, res) => {
+router.get('/order/v2', (req, res) => {
   orderRetrivalService.getOrders(req.query.storeName, req.query.orderNumber, req.query.customerPhone).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -36,7 +36,7 @@ router.get('/customer/v2', (req, res) => {
   });
 });
 
-router.post('/v2', (req, res) => {
+router.post('/order/v2', (req, res) => {
   orderUpdateServiceV2.createOrder(req.body).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -45,7 +45,7 @@ router.post('/v2', (req, res) => {
 });
 
 
-router.put('/v2', (req, res) => {
+router.put('/order/v2', (req, res) => {
   orderUpdateServiceV2.updateOrder(req.body).then(result => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');

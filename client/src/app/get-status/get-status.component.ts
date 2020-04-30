@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GoogleSheetService } from '../google-sheet.service';
-import { Item, Order, Customer, OrderResponse, OrderStyle } from '../model';
+import { Item, Order, Customer, OrderModel, OrderStyle } from '../model';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -59,7 +59,7 @@ export class GetStatusComponent implements OnInit {
   getSheets(phoneNumber, selectedStore): void {
     const orders: Order[] = [];
     this.googleSheetService.getSheet(phoneNumber, selectedStore)
-      .subscribe((data: OrderResponse) => {
+      .subscribe((data: OrderModel) => {
         data.orders.forEach(it => {
           let iconName = '';
           let iconClass = '';
@@ -94,7 +94,7 @@ export class GetStatusComponent implements OnInit {
               totalCount: itemRes.totalCount,
               finishedCount: itemRes.finishedCount,
               returnCount: itemRes.returnCount,
-              remark: itemRes.remark
+              remarks: itemRes.remarks
             }
             items.push(item);
           }

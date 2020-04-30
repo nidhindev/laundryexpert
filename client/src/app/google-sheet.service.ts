@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from './../environments/environment';
 import { phoneNumberValidator } from './phoneNumber-validator'
 import { HttpHeaders } from '@angular/common/http';
+import { OrderModel } from './model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,21 +13,30 @@ export class GoogleSheetService {
 
   constructor(private http: HttpClient) { }
   getSheet(id, selectedStore) {
-    var isphoneNumber =  phoneNumberValidator(id); 
+    var isphoneNumber = phoneNumberValidator(id);
     var query = `storeName=${selectedStore}&orderNumber=${id}`
     if (isphoneNumber)
-    query = `storeName=${selectedStore}&phoneNUmber=${id}`
-    let res = this.http.get(`${environment.googlesheetApi}/customer/v2?${query}`);
+      query = `storeName=${selectedStore}&phoneNUmber=${id}`
+    let res = this.http.get(`${environment.googlesheetApi}/order/v2?${query}`);
     return res;
   }
 
-  updateSheet(sheet ) {
+  updateSheet(sheet) {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
       })
     };
     let res = this.http.put(`${environment.googlesheetApi}/update`, sheet, httpOptions);
+    return res;
+  }
+  updateOrder(orderModel: OrderModel) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    let res = this.http.put(`${environment.googlesheetApi}/order/v2`, orderModel, httpOptions);
     return res;
   }
 

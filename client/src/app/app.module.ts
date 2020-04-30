@@ -34,6 +34,7 @@ import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
 import { UpdateComponent } from './update/update.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { UpdateComponent } from './update/update.component';
     ClipboardModule,
     MatSlideToggleModule,
     MatCardModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
