@@ -10,7 +10,7 @@ import { GetStatusComponent } from './get-status/get-status.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BannerComponent } from './banner/banner.component';
 import {MatTableModule} from '@angular/material/table';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
@@ -35,7 +35,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
 import { UpdateComponent } from './update/update.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { BusinessComponent } from './business/business.component';
+import { LaundryexpertComponent } from './laundryexpert/laundryexpert.component';
 
 
 @NgModule({
@@ -46,7 +46,7 @@ import { BusinessComponent } from './business/business.component';
     AddComponent,
     ResultComponent,
     UpdateComponent,
-    BusinessComponent,
+    LaundryexpertComponent,
   ],
   imports: [
     BrowserModule,

@@ -3,15 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { GetStatusComponent } from './get-status/get-status.component';
 import { AddComponent } from './add/add.component';
 import { UpdateComponent } from './update/update.component';
-import {BusinessComponent} from './business/business.component';
+import {LaundryexpertComponent} from './laundryexpert/laundryexpert.component';
 const routes: Routes = [
   { path: 'search', component: GetStatusComponent },
-  { path: 'business', component: BusinessComponent },
+  { path: 'laundryexpert', component: LaundryexpertComponent },
   { path: 'add', component: AddComponent },
   { path: 'update', component: UpdateComponent },
   { path: 'add', redirectTo: '/add', pathMatch: 'full' },
   { path: 'search', redirectTo: '/search', pathMatch: 'full' },
-  { path: 'business', redirectTo: '/business', pathMatch: 'full' },
+  { path: 'laundryexpert', redirectTo: '/laundryexpert', pathMatch: 'full' },
   { path: '', redirectTo: '/search', pathMatch: 'full' },
 ];
 
