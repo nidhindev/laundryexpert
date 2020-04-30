@@ -35,6 +35,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatCardModule} from '@angular/material/card';
 import { UpdateComponent } from './update/update.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { BusinessComponent } from './business/business.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AddComponent,
     ResultComponent,
     UpdateComponent,
+    BusinessComponent,
   ],
   imports: [
     BrowserModule,
