@@ -27,12 +27,16 @@
     <ng-template #thenBlock>
         <div class="result">
             <mat-card role="group">
+
                 <mat-card-title>
                     <mat-icon [ngClass]="customerFormGroup.value.statusIconClass">
                         {{customerFormGroup.value.statusIconName}}</mat-icon>
                     <span> {{customerFormGroup.value.billNumber}}</span>
-                    <span style="float: right;" *ngIf="customerFormGroup.value.isItemReadyForDelivery">
-                        <mat-slide-toggle [checked]="customerFormGroup.value.isDelivered">Delivered</mat-slide-toggle>
+                    <span style="float: right;" *ngIf="customerFormGroup.value.isItemHasToBeDelivery">
+                        <div [formGroup]="customerFormGroup">
+                            <mat-slide-toggle [checked]="customerFormGroup.value.isDelivered"
+                                formControlName="isDelivered">Delivered</mat-slide-toggle>
+                        </div>
                     </span>
                 </mat-card-title>
                 <mat-card-subtitle>
@@ -70,18 +74,18 @@
                                 </mat-form-field>
                                 <mat-form-field class="item-view">
                                     <mat-label>Done</mat-label>
-                                    <input matInput type="tel" formControlName="finishedCount">
+                                    <input matInput type="tel" [readonly]="customerFormGroup.value.readOnly" formControlName="finishedCount">
                                 </mat-form-field>
                                 <mat-form-field class="item-view">
                                     <mat-label>Return</mat-label>
-                                    <input matInput type="tel" formControlName="returnCount">
+                                    <input matInput type="tel" [readonly]="customerFormGroup.value.readOnly" formControlName="returnCount">
                                 </mat-form-field>
                             </form>
                         </mat-expansion-panel>
                     </mat-accordion>
                 </mat-card-content>
                 <mat-card-actions style="text-align: right;">
-                    <button mat-raised-button color="primary" (click)="submit()">Save </button>
+                    <button mat-raised-button color="primary" [disabled]="customerFormGroup.value.readOnly" (click)="submit()">Save </button>
                 </mat-card-actions>
             </mat-card>
         </div>
@@ -90,5 +94,5 @@
         <div *ngIf="isResultNotFound; then thenBlock"></div>
         <ng-template #thenBlock>No Results found</ng-template>
     </ng-template>
-    
+
 </div>

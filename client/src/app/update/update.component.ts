@@ -34,9 +34,11 @@ export class UpdateComponent implements OnInit {
       phoneNumber: [''],
       billNumber: [''],
       date: [''],
-      isItemReadyForDelivery: [''],
+      isItemHasToBeDelivery: [''],
       isDelivered: [''],
-      status: ['']
+      isAllCompleted: [false],
+      status: [''],
+      readOnly: [false]
     });
     this.orderFormGroup = this._formBuilder.group({
       items: new FormArray([])
@@ -47,6 +49,19 @@ export class UpdateComponent implements OnInit {
     if (this.customerData.invalid) {
       return;
     } else {
+      this.customerFormGroup = this._formBuilder.group({
+        name: [''],
+        phoneNumber: [''],
+        billNumber: [''],
+        date: [''],
+        isItemHasToBeDelivery: [false],
+        readOnly: [false],
+        isDelivered: [''],
+        status: ['']
+      });
+      this.orderFormGroup = this._formBuilder.group({
+        items: new FormArray([])
+      })
       this.showSpinner = true;
       this.isResultNotFound = false;
       this.showResult = false;
@@ -74,7 +89,8 @@ export class UpdateComponent implements OnInit {
           phoneNumber: [''],
           billNumber: [''],
           date: [''],
-          isItemReadyForDelivery: [''],
+          isItemHasToBeDelivery: [false],
+          readOnly: [false],
           isDelivered: [''],
           status: ['']
         });
@@ -99,22 +115,23 @@ export class UpdateComponent implements OnInit {
             statusIconName: 'errror',
             statusIconClass: 'error-icon'
           }
-          let isItemReadyForDelivery = false;
+          let isItemHasToBeDelivery = false;
           let isDelivered = false;
+          let readOnly= false;
           let status = this.customerFormGroup.value.status;
           if (data.orders[0].status.toLowerCase() == 'pending') {
-            this.customerFormGroup.get('status').setValue('Pending')
+            status = 'PENDING'
             orderStyle.statusIconName = 'build';
             orderStyle.statusIconClass = 'inprogress-icon';
           } else if (data.orders[0].status.toLowerCase() == 'done') {
-            this.customerFormGroup.get('status').setValue('Done')
-            isItemReadyForDelivery = true;
+            status = 'DONE'
+            isItemHasToBeDelivery = true;
             orderStyle.statusIconName = 'done';
             orderStyle.statusIconClass = 'done-icon';
           } else if (data.orders[0].status.toLowerCase() == 'delivered') {
-            this.customerFormGroup.get('status').setValue('Delivered')
-            isItemReadyForDelivery = true;
+            status = 'DELIVERED'
             isDelivered = true;
+            readOnly = true;
             orderStyle.statusIconName = 'done_all';
             orderStyle.statusIconClass = 'delivered-icon';
           }
@@ -125,9 +142,10 @@ export class UpdateComponent implements OnInit {
             date: [data.orders[0].orderDate],
             statusIconName: [orderStyle.statusIconName],
             statusIconClass: [orderStyle.statusIconClass],
-            isItemReadyForDelivery: [isItemReadyForDelivery],
+            isItemHasToBeDelivery: [isItemHasToBeDelivery],
             isDelivered: [isDelivered],
-            status: [status]
+            status: [status],
+            readOnly: readOnly
           });
           const items = <FormArray>this.orderFormGroup.get('items');
           for (let it of data.orders[0].items) {

@@ -37,7 +37,7 @@ export interface Order {
   link?: string,
   items: Item[],
   orderStyle?: OrderStyle,
-  totalPrice?: number
+  estimatedCost?: number
 }
 export interface OrderStyle {
   statusIconName?: string,

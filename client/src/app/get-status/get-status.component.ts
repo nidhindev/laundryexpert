@@ -61,23 +61,18 @@ export class GetStatusComponent implements OnInit {
     this.googleSheetService.getSheet(phoneNumber, selectedStore)
       .subscribe((data: OrderModel) => {
         data.orders.forEach(it => {
-          let iconName = '';
-          let iconClass = '';
           let items = [];
-          let ready = false;
-          let pending = false;
-          let error = false;
           let orderStyle: OrderStyle = {
             statusIconName: 'errror',
             statusIconClass: 'error-icon'
           }
-          if (it.status == 'Pending') {
+          if (it.status == 'PENDING') {
             orderStyle.statusIconName = 'build';
             orderStyle.statusIconClass = 'inprogress-icon';
-          } else if (it.status == 'Done') {
+          } else if (it.status == 'DONE') {
             orderStyle.statusIconName = 'done';
             orderStyle.statusIconClass = 'done-icon';
-          } else if (it.status == 'Delivered') {
+          } else if (it.status == 'DELIVERED') {
             orderStyle.statusIconName = 'done_all';
             orderStyle.statusIconClass = 'delivered-icon';
           }
@@ -113,7 +108,7 @@ export class GetStatusComponent implements OnInit {
             status: it.status,
             link: link,
             items: items,
-            totalPrice: it.totalPrice,
+            estimatedCost: it.estimatedCost,
             orderStyle: orderStyle
           }
           orders.push(order)
