@@ -11,7 +11,6 @@ const cron = require("node-cron");
 const businessConfig = require('./src/business/businessConfig');
 const businessController  = require('./src/business/businessController');
 
-console.log(`Your port is ${process.env.PORT}`);
 const properties = {
     port: process.env.PORT || 3000,
 };

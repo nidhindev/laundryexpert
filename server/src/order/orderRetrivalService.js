@@ -6,16 +6,16 @@ async function getSheet(id, selectedStore, searchBy) {
     let sheetResponse = await googleSheetService.getSheet(selectedStore);
     const result = await process(sheetResponse);
     if (searchBy == 'billNumber') {
-        return result.filter(customer => customer.billNumber.toLowerCase() == id.toLowerCase())
+        return result.filter(customer => customer.billNumber.toLowerCase() === id.toLowerCase())
     } else {
-        return result.filter(customer => customer.phoneNumber == id)
+        return result.filter(customer => customer.phoneNumber === id)
     }
 }
 
 async function getOrders(storeName, orderNumber, customerPhone) {
     let orders = await googleSheetServiceV2.getOrdersFromStore(storeName);
     if(orderNumber){
-        orders = orders.filter(order => order.orderNumber === orderNumber);
+        orders = orders.filter(order => order.orderNumber.toLowerCase() === orderNumber.toLowerCase());
     } else if (customerPhone){
         orders = orders.filter(order => order.customer.customerPhone === customerPhone);
     }
