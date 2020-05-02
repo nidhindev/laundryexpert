@@ -37,8 +37,8 @@ async function createSheetRowsFromOrderList(orders) {
 
 async function findRowNumberForOrder(sheetsRows, order) {
     for (let i = 0; i < sheetsRows.length; i++) {
-        if(sheetsRows[i][0] === order.orderNumber){
-            return i+1
+        if (sheetsRows[i][0] === order.orderNumber) {
+            return i + 1
         }
     }
     return -1;
@@ -47,9 +47,14 @@ async function findRowNumberForOrder(sheetsRows, order) {
 async function createSheetRowsFromOrder(order) {
     let orderRows = [];
     const customer = order.customer;
-    if (!order.status) {
-        order.status = 'PENDING';
+    if (order.status === 'DELIVERED') {
+        order.deliveredDate = new Date().toISOString();
     }
+    else {
+        order.deliveredDate = ''
+    }
+
+    console.log(order.deliveredDate);
     for (let i = 0; i < order.items.length; i++) {
         let item = order.items[i];
         if (!item.finishedCount) {
@@ -62,7 +67,7 @@ async function createSheetRowsFromOrder(order) {
             item.remarks = '';
         }
 
-        const orderRow = [order.orderNumber, customer.customerName, customer.customerPhone, order.orderDate, order.dueDate, order.status,
+        const orderRow = [order.orderNumber, customer.customerName, customer.customerPhone, order.orderDate, order.dueDate, order.deliveredDate,
             i + 1, item.itemName, item.ironOnly, item.rate, item.totalCount, item.finishedCount, item.returnCount, item.remarks];
 
         orderRows.push(orderRow);
@@ -71,7 +76,7 @@ async function createSheetRowsFromOrder(order) {
 }
 
 async function mapSheetRowsToOrderList(rows, storeName) {
-    const groupedOrderRows = await createOrderRowsFromRows(rows);
+    const groupedOrderRows = await createOrderRowsFromRows(rows);    // group rows based on the orders with unique orderNumber
     let orders = [];
     for (let i = 0; i < groupedOrderRows.length; i++) {
         let singleOrderModel = await createOrderFromRows(groupedOrderRows[i], storeName);
@@ -82,20 +87,39 @@ async function mapSheetRowsToOrderList(rows, storeName) {
 
 async function createItemsFromRows(rows) {
     let items = [];
+    let status = 'DONE';
     rows.forEach(row => {
+        let itemStatus = '';
+        if (+row[10] === ((+row[11]) + (+row[12]))) {   //Converting char to int by add '+' infront
+            itemStatus = 'DONE';
+        }
+        else {
+            itemStatus = 'PENDING';
+        }
+        // Adding + at the beginning convert the field to number
         let item = {
-            'seqNumber': row[6],
+            'seqNumber': +row[6],
             'itemName': row[7],
             'ironOnly': row[8],
-            'rate': row[9],
-            'totalCount': row[10],
-            'finishedCount': row[11],
-            'returnCount': row[12],
-            'remarks': row[13]
+            'rate': +row[9],
+            'totalCount': +row[10],
+            'finishedCount': +row[11],
+            'returnCount': +row[12],
+            'remarks': row[13],
+            'itemStatus': itemStatus
         };
         items = items.concat(item);
+
+        if(itemStatus === 'PENDING'){
+            status = itemStatus;
+        }
     });
-    return items;
+
+    let itemsResult = {
+        'items': items,
+        'status': status
+    };
+    return itemsResult;
 }
 
 async function createOrderRowsFromRows(rows) {
@@ -120,24 +144,27 @@ async function createOrderRowsFromRows(rows) {
     return groupedOrderRows;
 }
 
-
 async function createOrderFromRows(rows, storeName) {
     let customer = {
         'customerName': rows[0][1],
         'customerPhone': rows[0][2],
     };
-    let items = await createItemsFromRows(rows);
+    let status = '';
+    let deliveredDate = null;
+
+    let itemsResult = await createItemsFromRows(rows);
 
     let singleOrder = {
         'storeName': storeName,
         'orderNumber': rows[0][0],
         'orderDate': rows[0][3],
         'dueDate': rows[0][4],
-        'status': rows[0][5],
+        'deliveredTime': rows[0][5],
+        'status': rows[0][5].length > 7 ? 'DELIVERED' : itemsResult.status,
         'customer': customer,
-        'items': items,
-        'estimatedCost': createEstimatedCostFromItems(items),
-        'actualCost': createActualCostFromItems(items)
+        'items': itemsResult.items,
+        'estimatedCost': createEstimatedCostFromItems(itemsResult.items),
+        'actualCost': createActualCostFromItems(itemsResult.items)
     };
 
     return singleOrder;
