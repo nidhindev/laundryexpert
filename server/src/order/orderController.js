@@ -53,4 +53,15 @@ router.put('/order/v2', (req, res) => {
   });
 });
 
+
+// eg: /order/v2/status?storeName=testsheet&status=DELIVERED&orderNumber=1002
+router.put('/order/v2/status', (req, res) => {
+  orderUpdateServiceV2.updateOrderAsDelivered(req.query.storeName, req.query.orderNumber, req.query.status).then(result => {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.json(result).status(result.status);
+  });
+});
+
+
 module.exports = router;

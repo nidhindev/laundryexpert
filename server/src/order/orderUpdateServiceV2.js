@@ -14,6 +14,17 @@ async function createOrder(body) {
 }
 
 
+async function updateOrderAsDelivered(storeName, orderNumber, status) {
+    if (status === 'DELIVERED') {
+        return await googleSheetService.updateOrderAsDelivered(storeName, orderNumber);
+    }
+    else {
+        return {
+            'status': 400
+        };
+    }
+}
+
 async function updateOrder(body) {
     return await googleSheetService.updateOrder(body.orders);
 }
@@ -73,5 +84,7 @@ async function findShopIndex(store) {
     }
     return shopIndex;
 }
+
 exports.createOrder = createOrder;
 exports.updateOrder = updateOrder;
+exports.updateOrderAsDelivered = updateOrderAsDelivered;
