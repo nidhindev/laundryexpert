@@ -102,7 +102,7 @@ async function createOrder(orders) {
     };
     //add values to archive sheet
     const sheetResponse = await sheets.spreadsheets.values.append(addrequest);
-    let priceDetails = await googleUtils.pupulateResponseForCreateOrders(orders);
+    let priceDetails = await googleUtils.populateResponseForCreateOrders(orders);
     let response = {
         'status': sheetResponse.status,
         'orders': priceDetails

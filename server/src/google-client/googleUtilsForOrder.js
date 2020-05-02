@@ -10,7 +10,7 @@ function createActualCostFromItems(items) {
     return totalActualPriceForOrder
 }
 
-async function pupulateResponseForCreateOrders(orders) {
+async function populateResponseForCreateOrders(orders) {
     let ordersResponse = [];
     orders.forEach(order => {
         let singleOrderResponse = {
@@ -65,6 +65,8 @@ async function createSheetRowsFromOrder(order) {
         }
         if (!item.remarks) {
             item.remarks = '';
+        } else {
+            item.remarks = item.remarks.join(); //conver list to comma seperated string
         }
 
         const orderRow = [order.orderNumber, customer.customerName, customer.customerPhone, order.orderDate, order.dueDate, order.deliveredDate,
@@ -96,6 +98,11 @@ async function createItemsFromRows(rows) {
         else {
             itemStatus = 'PENDING';
         }
+
+        let remarks = '';
+        if( row[13]){
+            remarks = row[13].split(','); //spliting comma separated remarks to array
+        }
         // Adding + at the beginning convert the field to number
         let item = {
             'seqNumber': +row[6],
@@ -105,7 +112,7 @@ async function createItemsFromRows(rows) {
             'totalCount': +row[10],
             'finishedCount': +row[11],
             'returnCount': +row[12],
-            'remarks': row[13],
+            'remarks': remarks,
             'itemStatus': itemStatus
         };
         items = items.concat(item);
@@ -173,5 +180,5 @@ async function createOrderFromRows(rows, storeName) {
 
 exports.createSheetRowsFromOrderList = createSheetRowsFromOrderList;
 exports.mapSheetRowsToOrderList = mapSheetRowsToOrderList;
-exports.pupulateResponseForCreateOrders = pupulateResponseForCreateOrders;
+exports.populateResponseForCreateOrders = populateResponseForCreateOrders;
 exports.findRowNumberForOrder = findRowNumberForOrder;
