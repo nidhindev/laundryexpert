@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const healthCheck = require('./src/healthcheck/controller');
-const googleSheet = require('./src/order/orderController')
+const orderController = require('./src/order/orderController')
 const invoiceController = require('./src/invoice/controller')
 const http = require('http').createServer(app);
 const body_parser = require('body-parser');
@@ -20,7 +20,7 @@ app.use(body_parser.urlencoded({
 app.use(body_parser.json());
 app.use(express.static('dist'));
 app.use('/infra/healthcheck', healthCheck);
-app.use('/googlesheet', googleSheet);
+app.use('/order', orderController);
 app.use('/document', invoiceController);
 app.use('/business', businessController);
 

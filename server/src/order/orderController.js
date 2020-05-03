@@ -22,28 +22,28 @@ router.get('/archive', (req, res) => {
   });
 });
 
-router.get('/order/v2', (req, res) => {
+router.get('/v2', (req, res) => {
   orderRetrivalService.getOrders(req.query.storeName, req.query.orderNumber, req.query.customerPhone).then(result => {
     res.json(result).status(200);
   });
 });
 
-router.post('/order/v2', (req, res) => {
+router.post('/v2', (req, res) => {
   orderUpdateServiceV2.createOrder(req.body).then(result => {
     res.json(result).status(result.status);
   });
 });
 
 
-router.put('/order/v2', (req, res) => {
+router.put('/v2', (req, res) => {
   orderUpdateServiceV2.updateOrder(req.body).then(result => {
     res.json(result).status(result.status);
   });
 });
 
 
-// eg: /order/v2/status?storeName=testsheet&status=DELIVERED&orderNumber=1002
-router.put('/order/v2/status', (req, res) => {
+// eg: v2/status?storeName=testsheet&status=DELIVERED&orderNumber=1002
+router.put('/v2/status', (req, res) => {
   orderUpdateServiceV2.updateOrderAsDelivered(req.query.storeName, req.query.orderNumber, req.query.status).then(result => {
     res.json(result).status(result.status);
   });
